@@ -1,6 +1,6 @@
 /*
  * @Author: xuran
- * @LastEditTime: 2023-03-27 11:21:20
+ * @LastEditTime: 2023-05-29 13:22:01
  * @Description: file content
  */
 
@@ -82,7 +82,7 @@ class AutoTime {
         this.delay = 1000
         this.stopall = false
         this.every = false
-        this.num=0
+        this.num = 0
     }
     /**
      * @description: 增加事件
@@ -99,22 +99,22 @@ class AutoTime {
         })
 
         if (this.every) {
-                this.Timer = setInterval(() => {
-                    if (this.stopall) {
-                        this.stopall = false
-                        this.Stop()
-                    } else {
-                        if(this.num>this.queue_array.length){
-                            this.num=0
-                        }
-                        this.is_run = true
-                        if(!this.queue_array[this.num]==undefined){
-                            this.queue_array[this.num]()
-                        }
-                        this.index += 1
-                        this.num++
+            this.Timer = setInterval(() => {
+                if (this.stopall) {
+                    this.stopall = false
+                    this.Stop()
+                } else {
+                    if (this.num > this.queue_array.length) {
+                        this.num = 0
                     }
-                }, this.delay)
+                    this.is_run = true
+                    if (!this.queue_array[this.num] == undefined) {
+                        this.queue_array[this.num]()
+                    }
+                    this.index += 1
+                    this.num++
+                }
+            }, this.delay)
         } else {
             for (var i = 0; i < this.queue_array.length; i++) {
                 if (this.index == i) {
@@ -137,15 +137,15 @@ class AutoTime {
 
     Stop() {
         if (!this.is_run) { return }
-        if(this.every){clearInterval(this.Timer)}
+        if (this.every) { clearInterval(this.Timer) }
         clearTimeout(this.Timer)
-        this.is_run=false
+        this.is_run = false
     }
     StopAll() {
         if (!this.is_run) { return }
-        if(this.every){clearInterval(this.Timer)}
+        if (this.every) { clearInterval(this.Timer) }
         this.stopall = true
-        this.is_run=false
+        this.is_run = false
     }
     is_running() {
         if (!this.is_run) { return }
@@ -162,9 +162,103 @@ class AutoTime {
         this.is_run = false
         this.index = 0
         this.delay = 1000
-        this.every=false
+        this.every = false
     }
 }
+
+
+
+
+
+
+/**
+ * @description: 查找标题栏指定标题
+ * @param {String} node_name 标题内容
+ * @return {Void} 
+ */
+function FindBarNode(node_name) {
+    for (let i = 0; i < navObj[0].childElementCount; i++) {
+        let cnode = navObj[0].childNodes[i * 2 + 1]
+        if (String(cnode.innerText) == String(node_name)) {
+            return cnode
+        }
+    }
+    return false
+}
+
+
+
+/**
+ * @description: 开启标题栏下拉事件
+ * @param {String} nnode 标题标识
+ * @param {Function} func 扩展事件
+ * @return {Void}
+ */
+function EnableOption(nnode, func) {
+    let node_obj = FindBarNode(nnode)
+    for (let i in document.getElementsByClassName("bar")[0].children) {
+        if (document.getElementsByClassName("bar")[0].children[i] instanceof HTMLElement) {
+            let node = document.getElementsByClassName("bar")[0].children[i]
+            let node_text = node.childNodes[0].innerText
+            let dropdown_node = node.childNodes[2] instanceof HTMLElement ? node.childNodes[2] : null
+            if (node_text == nnode && dropdown_node) {
+                node_obj.childNodes[0].onmouseenter = function (event) {
+                        dropdown_node.style.display = "block"
+                }
+                node_obj.childNodes[0].onmouseleave = function (event) {
+                        if (interval) { clearInterval(interval); interval = null }
+                        interval = setInterval(() => {
+                            if (!mouse_fouce) {
+                                dropdown_node.style.display = "none"
+                            }
+                        }, 1000)
+                }
+                dropdown_node.onmouseover = function (event) {
+                    if (event.fromElement === document.getElementsByClassName("dropdown")[0]) {
+                        mouse_fouce = true
+                        if (interval) {
+                            clearInterval(interval);interval = null
+                        }
+                    }
+                }
+                dropdown_node.onmouseleave = function (event) {
+                    if (event.fromElement === document.getElementsByClassName("dropdown")[0]) {
+                        dropdown_node.style.display = "none"
+                        mouse_fouce = false
+                        if (interval) {
+                            clearInterval(interval);interval = null
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+
+
+/**
+ * @description: 初始化选项
+ * @param {JSON} show 初始化数组
+ * @return {Void}
+ */
+function StartOption(show_arr) {
+    for (let i in show_arr) {
+        let nav_node = FindBarNode(i)
+        let content = document.createElement("div")
+        content.className = "dropdown"
+        for (var ik in show_arr[i]) {
+            let item = document.createElement(show_arr[i][ik].type)
+            item.className = show_arr[i][ik].className
+            item.innerHTML = show_arr[i][ik].innerHTML
+            content.appendChild(item)
+        }
+        nav_node.appendChild(content)
+    }
+}
+
+
 
 
 // 定义全局数据存储
@@ -184,20 +278,50 @@ var color_selected = "background-color: rgba(150, 150, 150, 0.9);"
 // 当前轮番索引
 var index_lunfan = 0
 
+// 当前导航栏对象
+var navObj
+var mouse_fouce = false
+var interval
+
 // 类实例化
 var ani = new AnimationD()
 var atimer = new AutoTime()
 
+
+
+// 页面加载
 window.addEventListener("load", () => {
     var left = document.getElementsByClassName("left-view")
     var right = document.getElementsByClassName("right-view")
     var point_view = document.getElementsByClassName("point")
 
+    navObj = document.getElementsByClassName("bar")
+    // 动态创建下拉菜单
+    StartOption({
+        "宣传": [
+            {
+                type: "div",
+                className: "",
+                innerHTML: "宣传1"
+            },
+            {
+                type: "div",
+                className: "",
+                innerHTML: "宣传2"
+            },
+            {
+                type: "div",
+                className: "",
+                innerHTML: "宣传3"
+            },
+        ]
+    })
+
     // 设定轮番动画类图片数组
     ani.img = ["./bj1.jpg", "./bj2.jpg", "./bj3.jpg"]
     // 设定自动轮番
     atimer.delay = 3000
-    atimer.every=true
+    atimer.every = true
     atimer.AddEvent(() => {
         on_page()
     })
@@ -218,14 +342,24 @@ window.addEventListener("load", () => {
     point_data.p_item[default_index].setAttribute("style", color_selected)
 
     // 卡片背景定义
-    var card_list=document.getElementsByClassName("card-view")
-    
-    for(var i in card_list){
-        if(card_list[i] instanceof HTMLElement){
+    var card_list = document.getElementsByClassName("card-view")
+
+    for (var i in card_list) {
+        if (card_list[i] instanceof HTMLElement) {
             card_list[i].setAttribute("style", "background:linear-gradient(to bottom,#40E0D0,#48D1CC) no-repeat right bottom;")
         }
     }
+
+    // 开启标题栏下拉菜单
+    EnableOption("宣传", "")
+    
+
 })
+
+
+
+
+
 
 
 /**
@@ -239,7 +373,7 @@ function select_point(index) {
         // 大于
         index = 0
     } else if (index < 0) {
-        index = point_data.point+index
+        index = point_data.point + index
     }
     // console.log("轮番点被单击，索引：" + index)
     var nodes = document.getElementsByClassName("point")[0].childNodes
@@ -262,9 +396,9 @@ function select_point(index) {
 
     // 停止轮番，过2秒后开启
     atimer.Stop()
-    setTimeout(()=>{
+    setTimeout(() => {
         atimer.Start()
-    },4000)
+    }, 4000)
 }
 
 
@@ -283,6 +417,14 @@ function on_page(direction = "right") {
             break
     }
 }
+
+
+
+
+
+
+
+
 
 
 

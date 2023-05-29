@@ -1,23 +1,24 @@
-
 /* 清除默认边距 */
-*{
-margin: 0px;
-padding: 0px;
+* {
+    margin: 0px;
+    padding: 0px;
 }
 
-.body-content{
-overflow: auto;
+.body-content {
+    overflow: auto;
 }
+
 /* 设置导航 */
-header{
+header {
     background-color: azure;
     width: 100%;
     box-shadow: 0 1px 10px #ccc;
 }
+
 /* 添加阴影（废弃） */
-header::after{
+header::after {
     content: "";
-    width:max-content;
+    width: max-content;
     height: 2px;
     display: block;
     background-color: #000;
@@ -25,66 +26,70 @@ header::after{
 }
 
 /* 标题 */
-#title{
+#title {
     text-overflow: clip;
     size: 20px;
     margin-left: 70px;
 }
 
 /* 以下是定义导航栏部分 */
-header p{
+header p {
     display: inline-block;
     margin: 20px;
     font-size: 25px;
 }
 
-header .bar{
-   list-style-type: none;
-   display: inline-block;
-   margin-left: 140px;
-}
-header .bar li{
+header .bar {
+    list-style-type: none;
     display: inline-block;
-    margin: 10px;
-    margin-left: 50px;
+    margin-left: 140px;
+}
+
+header .bar .tli {
+    display: inline-block;
+    padding-left: 50px;
+}
+header .bar .tli a{
+    padding: 10px;
 }
 
 /* 下面将li里面的a添加动画和去默认效果 */
-header .bar li a{
+header .bar .tli a {
     text-decoration: none;
     color: black;
-    background:linear-gradient(to right,#ec695c,#61c454) no-repeat right bottom;
+    background: linear-gradient(to right, #ec695c, #61c454) no-repeat right bottom;
     background-size: 0 2px;
     transition: background-size 400ms;
 }
-header .bar li a:hover{
+
+header .bar .tli a:hover {
     background-position-x: left;
     background-size: 100% 2px;
-    color:#888;
+    color: #888;
 }
 
 
 
 /* 轮番部分 */
-.content-div{
+.content-div {
     width: 100%;
 }
 
-.content-div .lunfan{
+.content-div .lunfan {
     margin: 10px;
     height: 570px;
     text-align: center;
     vertical-align: middle;
 }
 
-.lunfan-view{
+.lunfan-view {
     background-position: center;
 }
 
-.left-view{
+.left-view {
     text-decoration: none;
     color: aliceblue;
-    position:relative ;
+    position: relative;
     left: -400px;
     top: -270px;
     font-weight: bold;
@@ -93,10 +98,11 @@ header .bar li a:hover{
     padding-right: 10px;
     background-color: rgba(200, 200, 200, 0.5);
 }
-.right-view{
+
+.right-view {
     text-decoration: none;
     color: aliceblue;
-    position:relative ;
+    position: relative;
     right: -650px;
     top: -270px;
     font-weight: bold;
@@ -105,7 +111,8 @@ header .bar li a:hover{
     padding-right: 10px;
     background-color: rgba(200, 200, 200, 0.5);
 }
-.point{
+
+.point {
     background-color: rgba(150, 150, 150, 0.3);
     padding: 1px;
     display: inline-block;
@@ -116,7 +123,8 @@ header .bar li a:hover{
     text-align: center;
     vertical-align: middle;
 }
-.point-item{
+
+.point-item {
     display: inline-block;
     background-color: rgba(240, 240, 240, 0.9);
     width: 12px;
@@ -125,7 +133,8 @@ header .bar li a:hover{
     margin-left: 15px;
     margin-right: 15px;
 }
-.point-item:hover{
+
+.point-item:hover {
     display: inline-block;
     background-color: rgba(240, 240, 240, 0.9);
     width: 12px;
@@ -138,7 +147,7 @@ header .bar li a:hover{
 
 
 /* 底部 */
-.bottom-content{
+.bottom-content {
     width: 100%;
     text-align: center;
     height: 350px;
@@ -146,11 +155,11 @@ header .bar li a:hover{
 }
 
 /* 卡片布局 */
-.bottom-content .card-view{
+.bottom-content .card-view {
     margin: 20px;
     width: 350px;
     height: 250px;
-    background-color:honeydew;
+    background-color: honeydew;
     display: inline-block;
     box-shadow: 0 1px 4px #ccc;
     border-radius: 20px;
@@ -158,31 +167,82 @@ header .bar li a:hover{
     display: flexbox;
     min-height: auto;
 }
-.bottom-content .card-view .card-title{
+
+.bottom-content .card-view .card-title {
     margin: 5px;
     padding-top: 10px;
     text-align: center;
     font-weight: bold;
 }
-.bottom-content .card-view .card-content{
+
+.bottom-content .card-view .card-content {
     margin: 5px;
     height: 80%;
     text-align: center;
 }
-.bottom-content .card-view:hover{
+
+.bottom-content .card-view:hover {
     box-shadow: 0 10px 10px #ccc;
 }
 
 
+/* 新卡片 */
+.bottom-content .card-N{
+    display: inline-block;
+    position: relative;
+}
+.bottom-content .card-N  .card-N-content{
+    position: relative;
+    top: -230px;
+    left: 0px;
+    display: inline-block;
+}
 
+.aniselect{
+    color: #000;
+}
+
+
+.bottom-content .card-N{
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+.bottom-content .card-N:hover{
+    animation: leftani linear 1000ms forwards;
+}
+.bottom-content .card-N h1{
+    color: #fff;
+    transition: all 0.2s linear;
+}
+.bottom-content .card-N :hover{
+    animation: colorchange linear 1000ms forwards;
+}
+
+@keyframes leftani{
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: var(--max-opacity);
+    }
+}
+
+@keyframes colorchange{
+    0%{
+        color: #fff;
+    }
+    100%{
+        color: #000;
+    }
+}
 
 /* 版权部分 */
-.copy-bottom{
+.copy-bottom {
     text-align: center;
 
 }
 
-#l-title{
+#l-title {
     width: 200px;
     height: 200px;
     position: absolute;
@@ -194,7 +254,40 @@ header .bar li a:hover{
 }
 
 /* 颜色 */
-.f-white{
-    color:#fff;
+.f-white {
+    color: #fff;
 }
+
+
+
+.dropdown {
+    position: absolute;
+    background-color: #fff;
+    list-style-type: none;
+    padding: 5px;
+    display: none;
+    top: 70px;
+    left: 500px;
+}
+
+
+.dropdown div{
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    background: #d4d4d4;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+
+
+
+
+
+
+
+
 

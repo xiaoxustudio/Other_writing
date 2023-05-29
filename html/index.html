@@ -1,6 +1,6 @@
 <!--
  * @Author: xuran
- * @LastEditTime: 2023-03-27 11:20:31
+ * @LastEditTime: 2023-05-29 13:25:57
  * @Description: file content
 -->
 <!DOCTYPE html>
@@ -15,21 +15,19 @@
 </head>
 
 <body>
-    <!-- 这个后面我可能会写，先挂在这 -->
+    <!-- JS -->
     <script src="index.js"></script>
-    <!-- 我创建了一个大的div，目的是为了好控制内容 -->
     <div class="body-content">
-        <!-- 这个是头部标记，学过,我们将用这个来做导航栏 -->
         <header>
-            <!-- 创建一个标签,用于当作标题 -->
             <p id="title">小徐工作室</p>
-            <!-- 这个ul是无序列表,我们用来当作导航项 -->
             <ul class="bar">
-                <li><a href="#">首页</a></li>
-                <li><a href="#">宣传</a></li>
-                <li><a href="#">关于</a></li>
-                <li><a href="#">爱发电</a></li>
+                <li class="tli"><a href="#">首页</a></li>
+                <li class="tli"><a href="#">宣传</a>
+                </li>
+                <li class="tli"><a href="#">关于</a></li>
+                <li class="tli"><a href="#">爱发电</a></li>
             </ul>
+            
         </header>
         <!-- 创建一个div存轮番 -->
         <div class="content-div">
@@ -75,10 +73,21 @@
                 </div>
             </div>
         </div>
-        <!-- 和上面一样 -->
-        <div class="bottom-content">
+        <div class="bottom-content aniselect">
+            <div class="card-N" style="--max-opacity:0.5;">
+                <img src="./a.jpg" width="80%" height="400px" style="opacity: 0.6;">
+                <div class="card-N-content">
+                    <h1 >新的起点</h1>
+                </div>
+            </div>
+
+            <div class="card-N" style="--max-opacity:0.5;">
+                <img src="./a.jpg" width="80%" height="400px" style="opacity: 0.6;">
+                <div class="card-N-content">
+                    <h1 >新的起点</h1>
+                </div>
+            </div>
         </div>
-        <!-- 这个是底部控件，忘了学没学过 -->
         <footer class="copy-bottom">
             <p>Copyright © 2019-2023 小徐工作室-XiaoxuStudio </p>
         </footer>
