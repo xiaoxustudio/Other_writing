@@ -1,0 +1,263 @@
+/* 
+Mide with xuranXYS
+盗版必究
+
+——————2023.6.1
+*/
+* {
+    background-image: url("./bg.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+
+
+
+.san_but {
+    border: solid 2px white;
+    color: white;
+    font-weight: bold;
+    display: inline;
+    position: relative;
+    left: 20px;
+    top: 20px;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.left_bar {
+    width: 200px;
+    height: 100%;
+    transform: all 0.5s;
+    display: none;
+    position: absolute;
+    top: 200px;
+    left: 20px;
+}
+
+.b_list {
+    position: relative;
+    display: block;
+    animation: show_le linear 0.5s forwards;
+    white-space: nowrap;
+}
+
+@keyframes show_le {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+.b_list .but {
+    color: white;
+    border-color: white white;
+    border: solid 2px;
+    cursor: pointer;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 50%;
+    margin-top: 10%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    user-select: none;
+    z-index: 1;
+}
+
+.b_list .but:hover {
+    border-color: rgb(218, 218, 218);
+}
+
+.content .title {
+    color: white;
+    text-align: center;
+    text-shadow: 2px 3px 20px rgba(84, 84, 84, 0.7);
+    font-weight: bold;
+    font-family: "楷体";
+    font-size: 100px;
+    display: block;
+    transition: all 0.5s;
+    animation: up_down_title linear 700ms forwards;
+}
+
+
+.content .commit {
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-family: "楷体";
+    font-size: 40px;
+    display: block;
+    transition: all 0.5s;
+    animation: up_down_commit linear 800ms forwards;
+}
+
+@keyframes up_down_title {
+    0% {
+        padding-top: 0;
+        margin-top: 0;
+    }
+
+    100% {
+        padding-top: 5%;
+        margin-top: 70px;
+    }
+}
+
+@keyframes up_down_commit {
+    0% {
+        padding-top: 0;
+    }
+
+    100% {
+        padding-top: 1%;
+    }
+}
+
+
+
+
+
+
+
+
+.list_div {
+    background-color: rgba(#ccc, #ccc, #ccc, 0.5);
+    width: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: center;
+    margin-top: 5%;
+}
+
+
+.list_div ul li {
+    list-style-type: none;
+    padding: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: white;
+    margin-left: 10%;
+    position: relative;
+    left: -100px;
+    display: inline-block;
+    opacity: 0.8;
+    transition: all 1s;
+    cursor: pointer;
+    user-select: none;
+}
+
+.list_div ul li:hover {
+    animation: item_select linear 100ms forwards;
+    transition: all 1s;
+}
+
+@keyframes item_select {
+    0% {
+        opacity: 0.8;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    100% {
+        opacity: 1;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}
+
+
+.list_div ul li img {
+    width: 100px;
+    height: auto;
+    display: inline;
+}
+
+
+
+
+.line_item_left{
+    border-bottom: solid 2px;
+    border-color: white;
+    position: absolute;
+    top: 300px;
+    left: 5%;
+    z-index: 2;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 400px;
+    opacity: 0.9;
+    transition: all 0.5s linear;
+    animation: line_item_anleft linear 600ms forwards;
+}
+
+
+.line_item_right{
+    border-bottom: solid 2px;
+    border-color: white;
+    position: absolute;
+    top: 300px;
+    right: 5%;
+    z-index: 2;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 400px;
+    opacity: 0.9;
+    transition: all 0.5s linear;
+    animation: line_item_anright linear 600ms forwards;
+}
+
+@keyframes line_item_anleft {
+    0% {
+        left: -300px;
+    }
+
+    100% {
+        left: 5%;
+    }
+}
+@keyframes line_item_anright {
+    0% {
+        right : -300px;
+    }
+
+    100% {
+        right: 5%;
+    }
+}
+
+
+
+.fbottom {
+    position: absolute;
+    top: 95%;
+    display: block;
+    width: 100%;
+}
+
+.fbottom .fb_div {
+    color: #e4e4e4;
+    text-align: center;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+}
+
+
+
+
+
