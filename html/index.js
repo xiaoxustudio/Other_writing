@@ -346,7 +346,7 @@ window.addEventListener("load", () => {
 
     for (var i in card_list) {
         if (card_list[i] instanceof HTMLElement) {
-            card_list[i].setAttribute("style", "background:linear-gradient(to bottom,#40E0D0,#48D1CC) no-repeat right bottom;")
+            card_list[i].setAttribute("style", "background:linear-gradient(to bottom,#6495ED,#7B68EE) no-repeat right bottom;")
         }
     }
 

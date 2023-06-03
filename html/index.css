@@ -4,6 +4,14 @@
     padding: 0px;
 }
 
+body{
+    background-image: url(./bg.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    height: 100%;
+}
+
 .body-content {
     overflow: auto;
 }
@@ -13,6 +21,10 @@ header {
     background-color: azure;
     width: 100%;
     box-shadow: 0 1px 10px #ccc;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;/* 防止其他部件跳出标题栏 */
 }
 
 /* 添加阴影（废弃） */
@@ -239,7 +251,7 @@ header .bar .tli a:hover {
 /* 版权部分 */
 .copy-bottom {
     text-align: center;
-
+    color: #fff;
 }
 
 #l-title {
@@ -251,6 +263,8 @@ header .bar .tli a:hover {
     right: 0;
     top: 0;
     bottom: 0;
+    font-weight: bold;
+    font-family: "楷体";
 }
 
 /* 颜色 */
