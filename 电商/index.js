@@ -1,10 +1,12 @@
 /*
  * @Author: xuranXYS
- * @LastEditTime: 2023-06-17 15:07:06
+ * @LastEditTime: 2023-06-17 21:59:23
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
  */
+
+
 /* 
 定义轮番动画类：
 实现动画轮番
@@ -362,6 +364,17 @@ function on_page(direction = "right") {
     }
 }
 
+/**
+ * @description: 检测是否为IE
+ * @return {Void}
+ */
+function isIEcore() {
+    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 
 
@@ -398,8 +411,36 @@ var atimer = new AutoTime()
 
 // 页面加载
 window.addEventListener("load", () => {
+    // 浏览器强制处理
+    let isEdge = navigator.userAgent.indexOf("Edg") > -1 ||navigator.userAgent.indexOf("Edge")>-1; //判断是否IE的Edge浏览器
+    if (isIEcore()) {
+        alert('该浏览器不支持，请换其他浏览器！');
+        document.body.innerHTML="<h1>该浏览器不支持，请换其他浏览器！</h1>"
+        return false
+    }else if(!isEdge){
+        alert('由于未作WebKit兼容处理，所以将会强制用Edge浏览器打开');
+        document.body.innerHTML="<h1>该浏览器不支持，请换其他浏览器！</h1>"
+        return false
+    }
     switch (mode) {
         case "index":
+            // 隐藏
+            let hidden_but = document.getElementById("hidden-but")
+
+            hidden_but.addEventListener("mouseover", (e) => {
+                let sub_node = document.getElementsByClassName("hidden-pannel")[0]
+                sub_node.classList.add("hidden-pannel-animation-h")
+                sub_node.classList.remove("hidden-pannel-animation-d-s")
+                if (sub_node.classList.contains("hidden-pannel-animation-d")) {
+                    sub_node.classList.remove("hidden-pannel-animation-d")
+                }
+            })
+            hidden_but.addEventListener("mouseout", (e) => {
+                let sub_node = document.getElementsByClassName("hidden-pannel")[0]
+                sub_node.classList.add("hidden-pannel-animation-d-s")
+                sub_node.classList.remove("hidden-pannel-animation-h")
+            })
+
             // 秒杀左右滚动按钮
             let ms_but_left = document.getElementById("miaosha-scroll-left")
             let ms_but_right = document.getElementById("miaosha-scroll-right")
@@ -462,7 +503,7 @@ window.addEventListener("load", () => {
                 })
             }
 
-            
+
             // 动画列表栏
             let ani_parent = document.getElementById("animation-card-layer")
             for (let i = 0; i < ani_parent.children.length; i++) {
@@ -470,7 +511,7 @@ window.addEventListener("load", () => {
                 node_card.addEventListener("mouseover", (e) => {
                     node_card.classList.remove("ani-card-default")
                     node_card.classList.add("ani-card-hover")
-                    
+
                     node_card.getElementsByClassName("ani-img")[0].classList.remove("ani-card-img-default")
                     node_card.getElementsByClassName("ani-img")[0].classList.add("ani-card-img-hover")
                 })
@@ -483,6 +524,8 @@ window.addEventListener("load", () => {
                 })
                 node_card.classList.add("ani-card-default")
             }
+
+
             // 关闭广告按钮
             let x_but = document.getElementsByClassName("div-close-but")
             for (let i = 0; i < x_but.length; i++) {

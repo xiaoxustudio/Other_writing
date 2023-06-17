@@ -39,7 +39,7 @@ tbody {
     text-align: center;
 }
 
-.login-content form table tr td input {
+.login-content table tr td input {
     width: 300px;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -48,6 +48,14 @@ tbody {
     outline: none;
 }
 
+.login-content div{
+   padding: 20px;
+}
+
+.login-content div p{
+    font-size: 15px;
+    font-family: "宋体";
+ }
 
 .login-b {
     background-color: #fefefe;

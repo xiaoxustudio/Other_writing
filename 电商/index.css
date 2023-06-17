@@ -12,15 +12,17 @@ WebSite:www.xiaoxustudio
 }
 
 body {
-    background-image: url(https://img.alicdn.com/imgextra/i1/O1CN015eXRGy1gfS2y96E6F_!!6000000004169-2-tps-360-799.png);
+    background-image: none;
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-attachment: fixed;
     height: 100%;
+    overflow-x: hidden;
 }
 
 .body-content {
     overflow: auto;
+    overflow-x: hidden;
 }
 
 /* 设置导航 */
@@ -148,10 +150,18 @@ header .bar .tli a:hover {
     left: -400px;
     top: -270px;
     font-weight: bold;
-    font-size: 30px;
+    font-size: 25px;
     padding-left: 10px;
     padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     background-color: rgba(200, 200, 200, 0.5);
+    border-radius: 3px;
+    transition: all .2s linear;
+}
+
+.left-view:hover {
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .right-view {
@@ -161,10 +171,18 @@ header .bar .tli a:hover {
     right: -650px;
     top: -270px;
     font-weight: bold;
-    font-size: 30px;
+    font-size: 25px;
     padding-left: 10px;
     padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     background-color: rgba(200, 200, 200, 0.5);
+    border-radius: 3px;
+    transition: all .2s linear;
+}
+
+.right-view:hover {
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .point {
@@ -187,6 +205,7 @@ header .bar .tli a:hover {
     border-radius: 50%;
     margin-left: 15px;
     margin-right: 15px;
+    transition: all .3s linear;
 }
 
 .point-item:hover {
@@ -204,8 +223,6 @@ header .bar .tli a:hover {
 
 
 /* 新banner栏 */
-
-
 .banner-root {
     background-color: white;
     text-align: center;
@@ -279,6 +296,82 @@ header .bar .tli a:hover {
 
 .banner-root .banner-layer .banner-style-select li a:hover {
     color: #7a7a7a;
+}
+
+/* 隐藏 */
+.hidden-root {
+    background: white;
+    box-shadow: 2px 5px 5px rgba(200, 200, 200, 0.5);
+    position: fixed;
+    top: 80%;
+    left: 3%;
+    padding: 10px;
+    z-index: 1;
+    border-radius: 10px;
+    user-select: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-family: "宋体";
+    transition: all 0.3s linear;
+    text-align: center;
+}
+
+
+.hidden-pannel {
+    background: white;
+    position: fixed;
+    padding: 20px;
+    box-shadow: 5px 5px 30px rgba(37, 37, 37, 0.3);
+    user-select: none;
+    cursor: pointer;
+    z-index: 1;
+    left: 12%;
+    top: 70%;
+    transition: all 0.3s linear;
+    text-align: center;
+    border-radius: 10px;
+}
+.hidden-pannel a{
+    text-align: center;
+    background: none;
+}
+.hidden-pannel a img{
+    text-align: center;
+    vertical-align: middle;
+    background: none;
+}
+.hidden-pannel *{
+    font-size: 15px;
+    font-family: "宋体";
+}
+/* pannel动画 */
+.hidden-pannel-animation-h {
+    display: block;
+    animation: hidden-show linear 0.3s forwards;
+}
+.hidden-pannel-animation-d {
+    display: none;
+}
+.hidden-pannel-animation-d-s {
+    animation: hidden-hiddening linear 0.3s forwards;
+}
+
+@keyframes hidden-show{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@keyframes hidden-hiddening{
+    0%{
+        opacity: 1;
+    }
+    100%{
+        display: none;
+        opacity: 0;
+    }
 }
 
 /* 秒杀 */
@@ -803,12 +896,14 @@ center {
     cursor: pointer;
     text-align: center;
     display: inline;
+    user-select: none;
     color: white;
 }
 
 .copy-bottom-icon {
     cursor: pointer;
     background: none;
+    user-select: none;
 }
 
 .copy-bottom-icon li img {
@@ -834,7 +929,7 @@ center {
     padding: 10px;
     color: #b8b8b8;
     cursor: pointer;
-
+    user-select: none;
 }
 
 .copy-left div p:hover {
@@ -848,6 +943,7 @@ center {
     display: block;
     background-color: #000;
     padding: 20px;
+    user-select: none;
 }
 
 
@@ -874,27 +970,27 @@ center {
 #topbut {
     background-color: #ffffff;
     position: fixed;
-    top: 80%;
-    right: 5%;
+    top:75%;
+    right: 3%;
     display: none;
     text-align: center;
-    padding: 10px;
+    padding: 15px;
     user-select: none;
     cursor: pointer;
-    box-shadow: 0 1px 4px #ccc;
+    box-shadow: 0 1px 5px rgba(150, 150, 150, 0.3);
 }
 
 #bottombut {
     background-color: #ffffff;
     position: fixed;
-    top: 88%;
-    right: 5%;
+    top: 85%;
+    right: 3%;
     display: none;
     text-align: center;
-    padding: 10px;
+    padding: 15px;
     user-select: none;
     cursor: pointer;
-    box-shadow: 0 1px 4px #ccc;
+    box-shadow: 0 1px 5px rgba(150, 150, 150, 0.3);
 }
 
 
@@ -930,12 +1026,14 @@ center {
 .right-bar {
     position: fixed;
     top: 30%;
-    right: 2%;
+    right: 1%;
     background: none;
     z-index: 1;
 }
 
-
+.right-bar .right-bar-ul{
+    background: none;
+}
 .right-bar .right-bar-ul li:nth-child(1n) {
     list-style-type: none;
     padding: 20px;
@@ -943,6 +1041,7 @@ center {
     user-select: none;
     cursor: pointer;
     background-color: #ffffff;
+    border: solid 1px rgba(150, 150, 150, 0.1);
 }
 
 
@@ -987,3 +1086,4 @@ center {
 footer {
     margin-top: 100px;
 }
+
