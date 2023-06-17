@@ -1,0 +1,82 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    height: 100%;
+    overflow: auto;
+}
+
+
+.login-content {
+    width: 600px;
+    display: block;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+
+.login-content {
+    display: block;
+    box-shadow: 20px 20px 60px #e0e0e0,
+        -20px -20px 60px #ffffff;
+}
+
+table,
+tr,
+td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+table,
+tbody {
+    text-align: center;
+}
+
+.login-content form table tr td input {
+    width: 300px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: solid 1px #d4d4d4;
+    padding: 5px;
+    outline: none;
+}
+
+
+.login-b {
+    background-color: #fefefe;
+    border: none;
+    width: 200px;
+    height: 40px;
+    margin-top: 30px;
+    cursor: pointer;
+}
+
+.login-b:hover {
+    background-color: #f0f0f0;
+}
+
+.remove-input{
+    background-color: #ffffff;
+    border: none;
+    visibility:hidden;
+}
+.remove-input:hover {
+    background-color: #f0f0f0;
+}
+
+.error-message{
+    background-color: red;
+    color: white;
+    padding-left:100px ;
+    padding-right:100px ;
+    display: none;
+}
+
+

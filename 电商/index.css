@@ -1,0 +1,989 @@
+/*
+Made with xuranXYS
+GitHub:www.github.com/xiaoxustudio
+WebSite:www.xiaoxustudio
+*/
+
+/* 清除默认边距 */
+* {
+    margin: 0px;
+    padding: 0px;
+    background-color: #f8f8f8;
+}
+
+body {
+    background-image: url(https://img.alicdn.com/imgextra/i1/O1CN015eXRGy1gfS2y96E6F_!!6000000004169-2-tps-360-799.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    height: 100%;
+}
+
+.body-content {
+    overflow: auto;
+}
+
+/* 设置导航 */
+header {
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    box-shadow: 0 1px 10px #ccc;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    /* 防止其他部件跳出标题栏 */
+}
+
+/* 添加阴影（废弃） */
+header::after {
+    content: "";
+    width: max-content;
+    height: 2px;
+    display: block;
+    background-color: #000;
+    text-shadow: 5px 5px 5px #000;
+}
+
+/* 搜索 */
+.search-div {
+    display: inline;
+}
+
+.search-div .search {
+    width: 300px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    position: absolute;
+    right: 10%;
+    margin-top: 20px;
+    outline: none;
+    border: solid 2px #d4d4d4;
+    padding: 5px;
+}
+
+.search-div .search-but {
+    width: 300px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    position: absolute;
+    right: -100px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-weight: normal;
+    user-select: none;
+    background: none;
+    font-size: 15px;
+}
+
+/* 标题 */
+#title {
+    text-overflow: clip;
+    size: 20px;
+    margin-left: 70px;
+}
+
+/* 以下是定义导航栏部分 */
+header p {
+    display: inline-block;
+    margin: 20px;
+    font-size: 25px;
+}
+
+header .bar {
+    list-style-type: none;
+    display: inline-block;
+    margin-left: 140px;
+    background: none;
+}
+
+header .bar .tli {
+    display: inline-block;
+    padding-left: 50px;
+    background: none;
+}
+
+header .bar .tli a {
+    padding: 10px;
+}
+
+/* 下面将li里面的a添加动画和去默认效果 */
+header .bar .tli a {
+    text-decoration: none;
+    color: black;
+    background: linear-gradient(to right, #ec695c, #61c454) no-repeat right bottom;
+    background-size: 0 2px;
+    transition: background-size 400ms;
+}
+
+header .bar .tli a:hover {
+    background-position-x: left;
+    background-size: 100% 2px;
+    color: #888;
+}
+
+
+
+/* 轮番部分 */
+.content-div {
+    width: 100%;
+    margin-top: 8%;
+}
+
+.content-div .lunfan {
+    margin: 10px;
+    height: 570px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.lunfan-view {
+    background-position: center;
+}
+
+.left-view {
+    text-decoration: none;
+    color: aliceblue;
+    position: relative;
+    left: -400px;
+    top: -270px;
+    font-weight: bold;
+    font-size: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: rgba(200, 200, 200, 0.5);
+}
+
+.right-view {
+    text-decoration: none;
+    color: aliceblue;
+    position: relative;
+    right: -650px;
+    top: -270px;
+    font-weight: bold;
+    font-size: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: rgba(200, 200, 200, 0.5);
+}
+
+.point {
+    background-color: rgba(150, 150, 150, 0.3);
+    padding: 1px;
+    display: inline-block;
+    position: relative;
+    top: -50px;
+    width: 250px;
+    left: -35px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.point-item {
+    display: inline-block;
+    background-color: rgba(240, 240, 240, 0.9);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.point-item:hover {
+    display: inline-block;
+    background-color: rgba(240, 240, 240, 0.9);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-left: 15px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+
+
+
+/* 新banner栏 */
+
+
+.banner-root {
+    background-color: white;
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+}
+
+.banner-root div {
+    background-color: white;
+}
+
+.banner-root .banner-layer {
+    background: white;
+    text-align: center;
+    display: inline-block;
+    justify-content: center;
+    align-self: center;
+}
+
+.banner-root .banner-layer .banner-layer-sub .banner-left {
+    opacity: 1;
+    transition: all linear .5s forwards;
+    cursor: pointer;
+}
+
+.banner-root .banner-layer .banner-layer-sub .banner-left:hover {
+    animation: orchange linear 300ms forwards;
+}
+
+@keyframes orchange {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.7;
+    }
+}
+
+.banner-root .banner-layer .banner-layer-sub .banner-user img {
+    background: none;
+    border: solid 1px #888;
+    border-radius: 50%;
+}
+
+
+.banner-root .banner-layer .banner-style-select {
+    background: none;
+}
+
+.banner-root .banner-layer .banner-style-select li {
+    text-align: left;
+    list-style-type: none;
+    background: none;
+}
+
+.banner-root .banner-layer .banner-style-select li a {
+    background: none;
+    text-decoration: none;
+    color: #424242;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: "宋体";
+    transition: all .5s forwards;
+}
+
+.banner-root .banner-layer .banner-style-select li a:hover {
+    color: #7a7a7a;
+}
+
+/* 秒杀 */
+.miaosha-root {
+    margin-top: 20px;
+    padding: 50px 150px 50px 150px;
+    background-color: white;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.miaosha-root .miaosha-tag {
+    background-color: red;
+    display: inline-block;
+    padding: 50px 20px 50px 20px;
+    width: 150px;
+    text-align: center;
+}
+
+.miaosha-root .miaosha-tag a {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.miaosha-root .miaosha-scroll {
+    background: none;
+    display: inline-block;
+    height: max-content;
+}
+
+.miaosha-root .miaosha-scroll ul {
+    background: none;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 75%;
+    scroll-behavior: smooth;
+    margin-left: 20px;
+    margin-right: -80px;
+}
+
+.miaosha-root .miaosha-scroll ul li {
+    list-style-type: none;
+    background: white;
+    display: inline-block;
+    text-align: center;
+    transition: all .5s forwards linear;
+    white-space: nowrap;
+    margin-left: 20px;
+    margin-right: 20px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.miaosha-root .miaosha-scroll ul li:hover {
+    background: #f4f4f4;
+}
+
+.miaosha-root .miaosha-scroll ul li img {
+    background-color: transparent;
+}
+
+.miaosha-root .miaosha-scroll ul li .commit {
+    background: none;
+    font-weight: bold;
+}
+
+.miaosha-root .miaosha-scroll ul li .price {
+    background: none;
+    color: red;
+    font-weight: bold;
+}
+
+/* 左右滚动按钮 */
+#miaosha-scroll-left {
+    position: relative;
+    padding: 10px;
+    border-radius: 30%;
+    background-color: rgb(97, 97, 97, 0.3);
+    top: -100px;
+    user-select: none;
+    cursor: pointer;
+}
+
+#miaosha-scroll-right {
+    position: relative;
+    padding: 10px;
+    border-radius: 30%;
+    background-color: rgb(97, 97, 97, 0.3);
+    top: -100px;
+    right: -870px;
+    user-select: none;
+    cursor: pointer;
+}
+
+/* 动画列表栏 */
+
+.animation-item-root {
+    margin-top: 20px;
+    padding: 20px 100px 20px 100px;
+    /* background-color: rgb(245, 245, 245); */
+    background: white;
+    text-align: center;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+}
+
+
+.animation-item-root .ani-card {
+    padding: 30px;
+    display: inline-block;
+    height: 270px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.ani-card-hover {
+    width: 300px;
+    background: #ecf2ff;
+    box-shadow: 1px 1px 5px rgba(150, 150, 150, 0.3);
+}
+
+.ani-card-default {
+    width: 170px;
+    background: #ffffff;
+    box-shadow: none;
+}
+
+.ani-card-img-hover {
+    scale: 1.6;
+}
+
+.ani-card-img-default {
+    scale: 1;
+}
+
+.animation-item-root .ani-card * {
+    user-select: none;
+}
+
+.animation-item-root .ani-card .ani-title {
+    position: relative;
+    top: -5%;
+    left: -22%;
+    font-weight: bold;
+    background: none;
+    font-size: 17px;
+}
+
+.animation-item-root .ani-card .ani-commit {
+    position: relative;
+    top: 1%;
+    left: -22%;
+    font-weight: bold;
+    background: none;
+    font-size: 8px;
+}
+
+.animation-item-root .ani-card .ani-but {
+    position: relative;
+    top: 10%;
+    padding: 5px 10px 5px 10px;
+    left: -22%;
+    font-weight: bold;
+    background: #4682B4;
+    border-radius: 20px;
+    color: white;
+    user-select: none;
+}
+
+.animation-item-root .ani-card .ani-img {
+    background: none;
+    position: relative;
+    top: 30%;
+    left: 20%;
+    transition: all .3s linear;
+}
+
+.animation-item-root .ani-card .ani-img img {
+    background: none;
+}
+
+/* 横向滚动 */
+
+.hor-root {
+    margin-top: 20px;
+    padding: 50px 150px 50px 150px;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+.hor-root .hor-left-div {
+    height: 100%;
+    text-align: center;
+    background: none;
+}
+
+.hor-root .hor-left-div p {
+    background: none;
+    padding: 5px 10px 5px 10px;
+    margin: 5px;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    font-family: "楷体";
+    font-size: 25px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.hor-root .hor-left-div .hor-grid {
+    background-color: white;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.hor-root .hor-left-div .hor-grid div {
+    background: none;
+    display: inline-block;
+}
+
+.hor-root .hor-left-div .hor-grid div ul {
+    background: none;
+    width: 150px;
+}
+
+.hor-root .hor-left-div .hor-grid div ul li {
+    background: none;
+    list-style-type: none;
+    text-align: center;
+    margin: 10px 20px 10px 20px;
+    color: red;
+    border: solid 1px red;
+    border-radius: 5px;
+    padding: 2px 10px 2px 10px;
+    font-size: 15px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.hor-root .hor-left-div .hor-grid div ul li:hover {
+    color: white;
+    background: #ec695c;
+}
+
+.hor-root .hor-right-div {
+    scroll-behavior: smooth;
+    background: none;
+    grid-template-columns: 4;
+}
+
+.hor-card-root {
+    background-color: white;
+    text-align: center;
+    display: inline-block;
+    padding: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.hor-card-root:hover {
+    background-color: #f8f8f8;
+}
+
+.hor-card-root .hor-card-img {
+    background: none;
+}
+
+.hor-card-root .hor-card-content {
+    background: none;
+}
+
+.hor-card-root .hor-card-content p {
+    background: none;
+    padding: 5px;
+}
+
+.hor-card-root .hor-card-content .price {
+    color: red;
+    font-weight: bold;
+    user-select: none;
+}
+
+.hor-card-root .hor-card-content .title {
+    color: #7a7a7a;
+    user-select: none;
+}
+
+/* 商品列表栏 */
+.show-root {
+    margin-top: 20px;
+    padding: 50px 150px 50px 150px;
+    background-color: white;
+}
+
+.show-root .title-div {
+    background: none;
+    text-align: center;
+}
+
+.show-root .title-div ul {
+    background: none;
+}
+
+.show-root .title-div ul li {
+    background: none;
+    list-style-type: none;
+    text-align: center;
+    display: inline-block;
+    width: 100px;
+    border: solid 1px red;
+    /* border-radius: 5px; */
+    padding: 15px 40px 15px 40px;
+    cursor: pointer;
+    color: red;
+    user-select: none;
+}
+
+.show-root .title-div ul li:hover {
+    color: white;
+    background: #ec695c;
+}
+
+
+.show-li-hover {
+    color: white;
+    background: #ec695c;
+}
+
+.show-li-default {
+    color: red;
+    background: none;
+}
+
+/* 商品子栏 */
+.show-root .show-list-div {
+    background: none;
+    text-align: center;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
+
+.aniselect {
+    color: #000;
+}
+
+center {
+    display: inline-block;
+    background: none;
+}
+
+
+.bottom-content .card-N img {
+    display: inline;
+    position: relative;
+    width: 50%;
+    height: 30%;
+    text-align: center;
+}
+
+
+
+/* .bottom-content .card-N:hover {
+    animation: leftani linear 1000ms forwards;
+} */
+
+.bottom-content .card-N h1 {
+    color: #505050;
+    transition: all 0.2s linear;
+    position: relative;
+    background: none;
+}
+
+/* .bottom-content .card-N :hover {
+    animation: colorchange linear 1000ms forwards;
+} */
+
+
+.witem-bar {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.witem-c li {
+    list-style-type: none;
+    display: inline;
+    padding-left: 20px;
+    padding-right: 20px;
+    cursor: pointer;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #dfdfdf;
+    transition: all linear .5s;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.witem-c li:hover {
+    background-color: red;
+    color: #fff;
+}
+
+
+@keyframes leftani {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: var(--max-opacity);
+    }
+}
+
+@keyframes colorchange {
+    0% {
+        color: #fff;
+    }
+
+    100% {
+        color: #000;
+    }
+}
+
+
+#l-title {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    font-weight: bold;
+    font-family: "楷体";
+}
+
+/* 颜色 */
+.f-white {
+    color: #fff;
+}
+
+.f-black {
+    color: #000;
+}
+
+.f-brown {
+    color: #d4d4d4;
+}
+
+.dropdown {
+    position: absolute;
+    background-color: #fff;
+    list-style-type: none;
+    padding: 10px;
+    display: none;
+    top: 70px;
+    left: 500px;
+}
+
+
+.dropdown div {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    background: white;
+    transition: all .3s;
+}
+
+.dropdown div:hover {
+    background: rgb(255, 228, 228)
+}
+
+
+
+
+/* 版权部分 */
+.copy-bottom {
+    text-align: center;
+    background-color: #000;
+}
+
+.copy-bottom div {
+    display: block;
+}
+
+.copy-left {
+    background-color: #000;
+    text-align: center;
+}
+
+.copy-left .copy-left-div {
+    background: none;
+}
+
+.copy-left .copy-left-div div {
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #000;
+}
+
+/* .copy-left .copy-left-div div p {
+} */
+
+.bottom-logo {
+    position: relative;
+    top: -100px;
+    left: -500px;
+    background: none;
+    font-size: 60px;
+    font-family: "宋体";
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    display: inline;
+    color: white;
+}
+
+.copy-bottom-icon {
+    cursor: pointer;
+    background: none;
+}
+
+.copy-bottom-icon li img {
+    filter: invert(100%);
+    background: none;
+    transition: all 400ms;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.copy-bottom-icon li:hover {
+    background: linear-gradient(to top, #888, rgba(0, 0, 0, 0)) no-repeat;
+}
+
+.table-th {
+    font-weight: bold;
+    font-size: 28px;
+    color: white;
+}
+
+.copy-left div p {
+    background-color: #000;
+    padding: 10px;
+    color: #b8b8b8;
+    cursor: pointer;
+
+}
+
+.copy-left div p:hover {
+    color: white;
+}
+
+
+.copy-bottom-child {
+    color: whitesmoke;
+    cursor: pointer;
+    display: block;
+    background-color: #000;
+    padding: 20px;
+}
+
+
+
+.copy-left div ul {
+    background: none;
+    display: inline-block;
+}
+
+.copy-left div ul li {
+    background: none;
+    list-style-type: none;
+    display: inline;
+    padding: 5px;
+}
+
+.copy-left div ul li img {
+    background: none;
+    background-color: transparent;
+}
+
+
+/* 顶部按钮 */
+#topbut {
+    background-color: #ffffff;
+    position: fixed;
+    top: 80%;
+    right: 5%;
+    display: none;
+    text-align: center;
+    padding: 10px;
+    user-select: none;
+    cursor: pointer;
+    box-shadow: 0 1px 4px #ccc;
+}
+
+#bottombut {
+    background-color: #ffffff;
+    position: fixed;
+    top: 88%;
+    right: 5%;
+    display: none;
+    text-align: center;
+    padding: 10px;
+    user-select: none;
+    cursor: pointer;
+    box-shadow: 0 1px 4px #ccc;
+}
+
+
+/* 两边 */
+.div-both {
+    position: fixed;
+    top: 30%;
+    left: var(--direction);
+    display: inline-block;
+    text-align: center;
+    padding: 10px;
+    user-select: none;
+    cursor: pointer;
+    z-index: 1;
+    background: none;
+}
+
+.div-both .div-close-but {
+    display: inline;
+    position: absolute;
+    padding: 5px;
+    cursor: pointer;
+    background: none;
+}
+
+.div-both .div-close-but:hover {
+    color: #fff;
+}
+
+
+/* 侧边栏 */
+
+.right-bar {
+    position: fixed;
+    top: 30%;
+    right: 2%;
+    background: none;
+    z-index: 1;
+}
+
+
+.right-bar .right-bar-ul li:nth-child(1n) {
+    list-style-type: none;
+    padding: 20px;
+    margin-top: 2px;
+    user-select: none;
+    cursor: pointer;
+    background-color: #ffffff;
+}
+
+
+
+
+.right-bar-ul-sub {
+    position: fixed;
+    top: var(--sub-li-top);
+    right: 7%;
+    background: none;
+    transition: all linear 1s;
+    margin: 0;
+    padding: 20px;
+    font-size: 0;
+}
+
+@keyframes show_sub_list {
+    0% {
+        display: none;
+        right: 0;
+    }
+
+    100% {
+        right: var(--posli);
+        display: inline-block;
+    }
+}
+
+.right-bar-ul-sub li {
+    display: none;
+    position: absolute;
+    right: 0px;
+    top: 0;
+    animation: show_sub_list linear 500ms forwards;
+    text-align: center;
+    white-space: nowrap;
+    margin: -2;
+    font-size: 16px;
+    ;
+}
+
+footer {
+    margin-top: 100px;
+}

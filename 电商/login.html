@@ -1,0 +1,61 @@
+<!--
+ * @Author: xuranXYS
+ * @LastEditTime: 2023-06-12 12:42:59
+ * @GitHub: www.github.com/xiaoxustudio
+ * @WebSite: www.xiaoxustudio.top
+ * @Description: By xuranXYS
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./index.css">
+    <link rel="stylesheet" type="text/css" href="./login.css">
+    <title>电商登录</title>
+</head>
+
+<body>
+    <script>var mode = "login"</script>
+    <script src="index.js"></script>
+    <div class="body-content">
+        <header>
+            <p id="title">电商页面</p>
+            <ul class="bar">
+                <li class="tli"><a href="./index.html">首页</a></li>
+                <li class="tli"><a href="#">商品</a>
+                </li>
+                <li class="tli"><a href="./login.html">我的</a></li>
+                <li class="tli"><a href="#">关于</a></li>
+            </ul>
+            <div class="search-div"><input class="search" placeholder="请输入搜索内容"><b class="search-but">搜索</b></div>
+        </header>
+    </div>
+    <!-- 登录 -->
+    <div class="login-content">
+        <form action="#" method="get">
+            <center>
+            <table>
+                <tr>
+                    <td>用户名：</td>
+                    <td><input type="text"><button class="remove-input">清空</button></td>
+                </tr>
+                <tr>
+                    <td>密码：</td>
+                    <td><input type="password"><button class="remove-input">清空</button></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button class="login-b">Login</button></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><span class="error-message">未知错误</span></td>
+                </tr>
+            </table>
+        </form>
+    </center>
+    </div>
+</body>
+
+</html>

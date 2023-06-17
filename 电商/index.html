@@ -1,0 +1,524 @@
+<!--
+ * @Author: xuranXYS
+ * @LastEditTime: 2023-06-17 15:18:38
+ * @GitHub: www.github.com/xiaoxustudio
+ * @WebSite: www.xiaoxustudio.top
+ * @Description: By xuranXYS
+-->
+
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./index.css">
+    <title>电商页面</title>
+</head>
+
+<body>
+    <!-- JS -->
+
+    <script>var mode = "index"</script>
+    <div class="body-content">
+        <header id="header">
+            <p id="title">电商页面</p>
+            <ul class="bar">
+                <li class="tli"><a href="./index.html">首页</a></li>
+                <li class="tli"><a href="#">商品</a>
+                </li>
+                <li class="tli"><a href="./login.html">我的</a></li>
+                <li class="tli"><a href="#">关于</a></li>
+            </ul>
+            <div class="search-div"><input class="search" placeholder="请输入搜索内容"><b class="search-but">搜索</b></div>
+        </header>
+        <!-- 创建一个div存轮番 -->
+        <div class="content-div">
+            <div class="lunfan">
+                <ul class="lunfan-view">
+                    <li><a href="#"><img src="./lunfan/bj1.jpg" alt=""></a></li>
+                </ul>
+                <a href="javascript:;" class="left-view"> &lt;</a>
+                <a href="javascript:;" class="right-view"> &gt;</a>
+                <ul class="point">
+                    <!-- 我打算使用动态生成这个-->
+                    <!-- <li class="point-item" onclick="testpoint()"></li>
+                    <li class="point-item" onclick="testpoint()"></li>
+                    <li class="point-item" onclick="testpoint()"></li> -->
+                </ul>
+            </div>
+        </div>
+        <!-- 新banner 栏 -->
+        <div class="banner-root">
+            <div class="banner-layer" style="margin-left:150px;">
+                <center>
+                    <ul class="banner-style-select">
+                        <li style="color:red;padding:10px;font-weight:bold;">主题市场</li>
+                        <li><a href="#">女装</a>/<a href="#">内衣</a></li>
+                        <li><a href="#">男装</a>/<a href="#">运动户外</a></li>
+                        <li><a href="#">女鞋</a>/<a href="#">男鞋</a>/<a href="#">箱包</a></li>
+                        <li><a href="#">美妆</a>/<a href="#">个人护理</a></li>
+                        <li><a href="#">腕表</a>/<a href="#">眼镜</a>/<a href="#">珠宝饰品</a></li>
+                        <li><a href="#">手机</a>/<a href="#">数码</a>/<a href="#">电脑办公</a></li>
+                        <li><a href="#">母婴玩具</a></li>
+                        <li><a href="#">零食</a>/<a href="#">茶酒</a>/<a href="#">进口食品</a></li>
+                        <li><a href="#">生鲜水果</a></li>
+                        <li><a href="#">大家电</a>/<a href="#">生活电器</a></li>
+                        <li><a href="#">家具</a>/<a href="#">灯具</a>/<a href="#">卫浴</a></li>
+                        <li><a href="#">汽车</a>/<a href="#">配件</a>/<a href="#">用品</a></li>
+                        <li><a href="#">家纺</a>/<a href="#">家饰</a>/<a href="#">鲜花</a></li>
+                        <li><a href="#">医药保健</a></li>
+                        <li><a href="#">厨具</a>/<a href="#">收纳</a>/<a href="#">宠物</a></li>
+                        <li><a href="#">图书音像</a></li>
+                    </ul>
+                </center>
+            </div>
+            <div class="banner-layer">
+                <div class="banner-layer-sub">
+                    <div class="banner-user">
+                        <img src="./other/touxiang.jpeg" width="48px">
+                        <p style="background: none;font-size:12px;padding:20px;">用户：admin</p>
+                        <p style="background: none;font-size:16px;padding:20px;display: inline-block;font-weight:bold;">
+                            公告
+                        <p style="display: inline;background: none;font-size:12px;padding:20px;">新鲜事儿都在这里～</p>
+                        </p>
+                    </div>
+                    <img src="./other/a.webp" width="400px">
+                </div>
+            </div>
+            <div class="banner-layer">
+                <div class="banner-layer-sub">
+                    <img class="banner-left" src="./other/left.webp" width="300px">
+                </div>
+                <div class="banner-layer-sub">
+                    <img class="banner-left" src="./other/left1.webp" width="300px">
+                </div>
+            </div>
+        </div>
+
+        <!-- 秒杀 -->
+        <div class="miaosha-root">
+            <div class="miaosha-tag" style="font-family:'隶书';">
+                <p style="color:white;font-size:50px;background:none;margin-bottom:10px;">秒杀</p>
+                <p class="miaosha-clock" style="background:none;margin-top:10px;">
+                    <a id="countdown1" style="padding:5px;color:white;background-color: rgb(65, 65, 65);">22</a>:
+                    <a id="countdown2" style="padding:5px;color:white;background-color: rgb(65, 65, 65);">22</a>:
+                    <a id="countdown3" style="padding:5px;color:white;background-color: rgb(65, 65, 65);">22</a>
+                </p>
+            </div>
+            <div class="miaosha-scroll">
+                <ul>
+                    <li><img src="./miaosha_scorll_item/item1.webp" width="160px">
+                        <p class="commit">垃圾书</p>
+                        <p class="price">¥9.99</p>
+                    </li>
+                    <li><img src="./miaosha_scorll_item/item2.webp" width="160px">
+                        <p class="commit">垃圾书</p>
+                        <p class="price">¥9.99</p>
+                    </li>
+                    <li><img src="./miaosha_scorll_item/item3.webp" width="160px">
+                        <p class="commit">垃圾书</p>
+                        <p class="price">¥9.99</p>
+                    </li>
+                    <li><img src="./miaosha_scorll_item/item4.webp" width="160px">
+                        <p class="commit">垃圾书</p>
+                        <p class="price">¥9.99</p>
+                    </li>
+                    <li><img src="./miaosha_scorll_item/item5.webp" width="160px">
+                        <p class="commit">垃圾书</p>
+                        <p class="price">¥9.99</p>
+                    </li>
+                    <li><img src="./miaosha_scorll_item/item6.webp" width="160px">
+                        <p class="commit">垃圾书</p>
+                        <p class="price">¥9.99</p>
+                    </li>
+                </ul>
+                <!-- 左右滚动按钮 -->
+                <a id="miaosha-scroll-left" style="text-decoration: none;color:white;"><</a>
+                <a id="miaosha-scroll-right" style="text-decoration: none;color:white;">></a>
+            </div>
+        </div>
+
+        <!-- 两边广告 -->
+        <div class="div-both" style="--direction:1%">
+            <div class="div-close-but">X</div>
+            <img src="./other/bg.png" width="100px" height="300px" alt="手动广告哈哈哈">
+        </div>
+        <!-- <div class="div-both" style="--direction:93%">
+            <div class="div-close-but">X</div>
+            <img src="./other/bg.png" width="100px" height="300px">
+        </div> -->
+        <div class="right-bar">
+            <ul class="right-bar-ul">
+                <li>选项1
+                    <ul class="right-bar-ul-sub" style="--sub-li-top:30%;">
+                        <li style="--posli:0px;">选项2</li>
+                        <li style="--posli:85px;">选项2</li>
+                        <li style="--posli:170px;">选项2</li>
+                        <li style="--posli:255px;">选项2</li>
+                    </ul>
+                </li>
+                <li>选项1
+                    <ul class="right-bar-ul-sub" style="--sub-li-top:39%;">
+                        <li style="--posli:0px;">选项2</li>
+                        <li style="--posli:85px;">选项2</li>
+                        <li style="--posli:170px;">选项2</li>
+                        <li style="--posli:255px;">选项2</li>
+                    </ul>
+                </li>
+                <li>选项1
+                    <ul class="right-bar-ul-sub" style="--sub-li-top:48%;">
+                        <li style="--posli:0px;">选项2</li>
+                        <li style="--posli:85px;">选项2</li>
+                        <li style="--posli:170px;">选项2</li>
+                        <li style="--posli:255px;">选项2</li>
+                    </ul>
+                </li>
+                <li>选项1
+                    <ul class="right-bar-ul-sub" style="--sub-li-top:57%;">
+                        <li style="--posli:0px;">选项2</li>
+                        <li style="--posli:85px;">选项2</li>
+                        <li style="--posli:170px;">选项2</li>
+                        <li style="--posli:255px;">选项2</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- 返回顶部按钮 -->
+        <div id="topbut">∧</div>
+        <div id="bottombut">∨</div>
+
+
+        <!-- 动画横向栏 -->
+        <div id="animation-card-layer" class="animation-item-root">
+            <div  class="ani-card">
+                <p class="ani-title">物流运输仓库</p>
+                <p class="ani-commit">物流运输仓库</p>
+                <a class="ani-but">GO</a>
+                <p class="ani-img">
+                    <img src="./animation_hor_img/item1.png" width="100px">
+                </p>
+            </div>
+            <div class="ani-card">
+                <p class="ani-title">工地/医院个人防护</p>
+                <p class="ani-commit">守护生命安全，为健康护航</p>
+                <a class="ani-but">GO</a>
+                <p class="ani-img">
+                    <img src="./animation_hor_img/item2.png" width="100px">
+                </p>
+            </div>
+            <div class="ani-card">
+                <p class="ani-title">家庭/企业安防监控</p>
+                <p class="ani-commit">科技防控，助力企业安全</p>
+                <a class="ani-but">GO</a>
+                <p class="ani-img">
+                    <img src="./animation_hor_img/item3.png" width="100px">
+                </p>
+            </div>
+            <div class="ani-card">
+                <p class="ani-title">校园化学实验室</p>
+                <p class="ani-commit">化学用品，实验用品，一应俱全</p>
+                <a class="ani-but">GO</a>
+                <p class="ani-img">
+                    <img src="./animation_hor_img/item4.png" width="100px">
+                </p>
+            </div>
+            <div class="ani-card">
+                <p class="ani-title">物业保洁清扫</p>
+                <p class="ani-commit">洁净生活，由此开启</p>
+                <a class="ani-but">GO</a>
+                <p class="ani-img">
+                    <img src="./animation_hor_img/item5.png" width="100px">
+                </p>
+            </div>
+        </div>
+
+        <!-- 横向商品栏 -->
+        <div class="hor-root">
+            <div class="hor-left-div">
+                <p>精彩热点</p>
+                <div class="hor-grid">
+                    <div>
+                        <ul>
+                            <li>笔记本</li>
+                            <li>声卡</li>
+                            <li>车载</li>
+                            <li>收音机</li>
+                            <li>开关插座</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul>
+                            <li>厨房碗柜</li>
+                            <li>保温壶</li>
+                            <li>电脑桌</li>
+                            <li>燃气壁挂炉</li>
+                            <li>毛巾</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="hor-right-div">
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="130px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">小米手机</p>
+                        <p class="price">¥ 500.99</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="130px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">小米手机</p>
+                        <p class="price">¥ 500.99</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="130px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">小米手机</p>
+                        <p class="price">¥ 500.99</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="130px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">小米手机</p>
+                        <p class="price">¥ 500.99</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 商品列表栏 -->
+        <div class="show-root">
+            <div class="title-div">
+                <ul>
+                    <li selected>笔记本</li>
+                    <li>声卡</li>
+                    <li>车载</li>
+                    <li>收音机</li>
+                    <li>开关插座</li>
+                </ul>
+            </div>
+            <div class="show-list-div">
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">超级螺丝刀</p>
+                        <p class="price">¥ 998.55</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">超级螺丝刀</p>
+                        <p class="price">¥ 998.55</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">超级螺丝刀</p>
+                        <p class="price">¥ 998.55</p>
+                    </div>
+                </div>
+
+                <!-- 第二行 -->
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">超级螺丝刀</p>
+                        <p class="price">¥ 998.55</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">超级螺丝刀</p>
+                        <p class="price">¥ 998.55</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">超级螺丝刀</p>
+                        <p class="price">¥ 998.55</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">超级螺丝刀</p>
+                        <p class="price">¥ 998.55</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">超级螺丝刀</p>
+                        <p class="price">¥ 998.55</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 列表 -->
+        <div class="show-root">
+            <div class="title-div"></div>
+            <div class="show-list-div">
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">小米手机</p>
+                        <p class="price">¥ 500.99</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">小米手机</p>
+                        <p class="price">¥ 500.99</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">小米手机</p>
+                        <p class="price">¥ 500.99</p>
+                    </div>
+                </div>
+
+                <!-- 第二行 -->
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">小米手机</p>
+                        <p class="price">¥ 500.99</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">小米手机</p>
+                        <p class="price">¥ 500.99</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">小米手机</p>
+                        <p class="price">¥ 500.99</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">小米手机</p>
+                        <p class="price">¥ 500.99</p>
+                    </div>
+                </div>
+                <div class="hor-card-root">
+                    <div class="hor-card-img">
+                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                    </div>
+                    <div class="hor-card-content">
+                        <p class="title">小米手机</p>
+                        <p class="price">¥ 500.99</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- 底部 -->
+        <footer class="copy-bottom">
+            <div class="copy-left">
+                <div class="copy-left-div">
+                    <div>
+                        <p class="table-th" style="color: white;">今日商品 </p>
+                        <p>特别推荐 </p>
+                        <p>公司简介 </p>
+                        <p>公司地址 </p>
+                    </div>
+                    <div>
+                        <p class="table-th" style="color: white;">商家入驻 </p>
+                        <p>广告入驻 </p>
+                        <p>公司邮编 </p>
+                        <p>联系我们 </p>
+                    </div>
+                    <div>
+                        <p class="table-th" style="color: white;">商家入驻 </p>
+                        <p>广告入驻 </p>
+                        <p>公司邮编 </p>
+                        <p>联系我们 </p>
+                    </div>
+                    <div>
+                        <p class="table-th" style="color: white;">商家入驻 </p>
+                        <p>广告入驻 </p>
+                        <p>公司邮编 </p>
+                        <p>联系我们 </p>
+                    </div>
+                </div>
+                <!-- logo标签 -->
+                <h1 class="bottom-logo">Logo</h1>
+                <div class="copy-bottom-icon">
+                    <ul>
+                        <li><img src="./icon/li.png"></li>
+                        <li><img src="./icon/li1.png"></li>
+                        <li><img src="./icon/li2.png"></li>
+                        <li><img src="./icon/li3.png"></li>
+                    </ul>
+                </div>
+                <div class="copy-bottom-child">Copyright © 2019-2023 小徐工作室-XiaoxuStudio</div>
+                <div class="copy-bottom-child">阿里巴巴集团 | 阿里巴巴国际站 | 阿里巴巴中国站 | 全球速卖通 | 淘宝网 | 天猫 | 聚划算 | 一淘 | 阿里旅行 · 去啊 |
+                    阿里妈妈 | 虾米 |
+                    阿里云计算 | YunOS | 阿里通信 | 万网 | UC </div>
+        </footer>
+    </div>
+    <!-- 页面加载 -->
+    <script src="index.js"></script>
+    </div>
+</body>
+</html>
