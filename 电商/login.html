@@ -1,6 +1,6 @@
 <!--
  * @Author: xuranXYS
- * @LastEditTime: 2023-06-17 21:31:39
+ * @LastEditTime: 2023-06-19 16:57:17
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -21,35 +21,51 @@
     <script>var mode = "login"</script>
     <script src="index.js"></script>
     <div class="body-content">
-        <header>
+        <header id="header">
             <p id="title">电商页面</p>
             <ul class="bar">
                 <li class="tli"><a href="./index.html">首页</a></li>
-                <li class="tli"><a href="#">商品</a>
+                <li class="tli"><a>商品</a>
                 </li>
                 <li class="tli"><a href="./login.html">我的</a></li>
-                <li class="tli"><a href="#">关于</a></li>
+                <li class="tli" id="about-show"><a>关于</a></li>
             </ul>
             <div class="search-div"><input class="search" placeholder="请输入搜索内容"><b class="search-but">搜索</b></div>
         </header>
     </div>
+    <!-- 背景 -->
+    <div class="login-bk"></div>
     <!-- 登录 -->
     <div class="login-content">
+        <div class="message">我们不会以任何理由要求您转账汇款，谨防诈骗。</div>
+        <div class="select-item">
+            <ul>
+                <li id="saoma">扫码登录</li>
+                <li id="denglu">账户登录</li>
+            </ul>
+        </div>
+        <span class="line"></span>
         <center>
-            <table>
+            <div id="c-item2">
+                <img src="./images/other/ewm1.png">
+            </div>
+            <table id="c-item1">
                 <tr>
-                    <td>用户名：</td>
-                    <td><input type="text" placeholder="请输入账号"><button class="remove-input">清空</button></td>
+                    <td></td>
+                    <td class="user"><div><p>用户名：</p><input type="text" placeholder="请输入账号"><button class="remove-input">清空</button></div></td>
                 </tr>
                 <tr>
-                    <td>密码：</td>
-                    <td><input type="password" placeholder="请输入密码"><button class="remove-input">清空</button></td>
+                    <td></td>
+                    <td class="pass"><div><p>密码：</p><input type="password" placeholder="请输入密码"><button class="remove-input">清空</button></div></td>
                 </tr>
                 <tr>
                     <td colspan="2"><button class="login-b">Login</button></td>
                 </tr>
                 <tr>
                     <td colspan="2"><span class="error-message">未知错误</span></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><span class="success-message">成功</span></td>
                 </tr>
             </table>
             <div>
@@ -58,7 +74,41 @@
             </div>
         </center>
     </div>
-    
+
+    <div class="about-dialog">
+        <div class="about-title">
+            关于页面
+        </div>
+        <div class="about-content">
+            Mide with XYS
+        </div>
+        <div class="about-content">
+            WebSite:www.xiaoxustudio.top
+        </div>
+        <div class="about-content">
+            GitHub:www.gitbub.com/xiaoxustudio
+        </div>
+        <div class="about-content">
+            盗版必究，Copyright &copy; xuranXYS
+        </div>
+        <button id="about-close" type="button">关闭</button>
+    </div>
+
+    <!-- 底部信息 -->
+    <div id="footer">
+        <p><a href="#">关于我们</a> | 
+            <a href="#">联系我们</a> | 
+            <a href="#">人才招聘</a> | 
+            <a href="#">商家入驻</a> | 
+            <a href="#">广告服务</a> | 
+            <a href="#">手机京东</a> | 
+            <a href="#">友情链接</a> | 
+            <a href="#">销售联盟</a> | 
+            <a href="#">京东社区</a> | 
+            <a href="#">京东公益</a>
+            </p>
+        <p style="user-select: none;">Copyright © 2004-2023 京东JD.com 版权所有</p>
+    </div>
 </body>
 
 </html>

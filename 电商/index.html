@@ -1,6 +1,6 @@
 <!--
  * @Author: xuranXYS
- * @LastEditTime: 2023-06-17 21:06:32
+ * @LastEditTime: 2023-06-19 16:49:11
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -25,10 +25,10 @@
             <p id="title">电商页面</p>
             <ul class="bar">
                 <li class="tli"><a href="./index.html">首页</a></li>
-                <li class="tli"><a href="#">商品</a>
+                <li class="tli"><a>商品</a>
                 </li>
                 <li class="tli"><a href="./login.html">我的</a></li>
-                <li class="tli"><a href="#">关于</a></li>
+                <li class="tli" id="about-show"><a>关于</a></li>
             </ul>
             <div class="search-div"><input class="search" placeholder="请输入搜索内容"><b class="search-but">搜索</b></div>
         </header>
@@ -36,7 +36,7 @@
         <div class="content-div">
             <div class="lunfan">
                 <ul class="lunfan-view">
-                    <li><a href="#"><img src="./lunfan/bj1.jpg" alt=""></a></li>
+                    <li><a href="#"><img src="./images/lunfan/bj1.jpg" alt=""></a></li>
                 </ul>
                 <a href="javascript:;" class="left-view"> &lt;</a>
                 <a href="javascript:;" class="right-view"> &gt;</a>
@@ -48,6 +48,27 @@
                 </ul>
             </div>
         </div>
+
+        <!-- 关于弹窗 -->
+        <div class="about-dialog">
+            <div class="about-title">
+                关于页面
+            </div>
+            <div class="about-content">
+                Mide with XYS
+            </div>
+            <div class="about-content">
+                WebSite:www.xiaoxustudio.top
+            </div>
+            <div class="about-content">
+                GitHub:www.gitbub.com/xiaoxustudio
+            </div>
+            <div class="about-content">
+                盗版必究，Copyright &copy; xuranXYS
+            </div>
+            <button id="about-close" type="button">关闭</button>
+        </div>
+
         <!-- 新banner 栏 -->
         <div class="banner-root">
             <div class="banner-layer" style="margin-left:150px;">
@@ -76,33 +97,47 @@
             <div class="banner-layer">
                 <div class="banner-layer-sub">
                     <div class="banner-user">
-                        <img src="./other/touxiang.jpeg" width="48px">
-                        <p style="background: none;font-size:12px;padding:20px;">用户：admin</p>
+                        <img src="./images/other/touxiang.jpeg" width="48px">
+                        <p id="userName" style="background: none;font-size:12px;padding:20px;">用户：admin</p>
                         <p style="background: none;font-size:16px;padding:20px;display: inline-block;font-weight:bold;">
                             公告
                         <p style="display: inline;background: none;font-size:12px;padding:20px;">新鲜事儿都在这里～</p>
                         </p>
                     </div>
-                    <img src="./other/a.webp" width="400px">
+                    <img src="./images/other/a.webp" width="400px">
                 </div>
             </div>
             <div class="banner-layer">
                 <div class="banner-layer-sub">
-                    <img class="banner-left" src="./other/left.webp" width="300px">
+                    <img class="banner-left" src="./images/other/left.webp" width="300px">
                 </div>
                 <div class="banner-layer-sub">
-                    <img class="banner-left" src="./other/left1.webp" width="300px">
+                    <img class="banner-left" src="./images/other/left1.webp" width="300px">
                 </div>
             </div>
         </div>
-
-        <!-- 隐藏滚动按钮 -->
+        
+        <!-- 动画展开按钮 -->
+        <div>
+        <div class="ani-show-root">
+            <span class="ani-show-line1" style="--dir:-1;"></span>
+            <span class="ani-show-line2" style="--dir:1;"></span>
+            <ul class="ani-show-ul-root">
+                <li>X</li>
+                <li>Y</li>
+                <li>S</li>
+                <li>N</li>
+                <li>B</li>
+            </ul>
+        </div>
+        
+        <!-- 隐藏面板按钮 -->
         <div id="hidden-but" class="hidden-root">
-            <a style="text-align: center;"><img src="./other/menu.png" width="32px"></a>
+            <img style="background: none;" src="./images/other/menu.png" width="32px">
         </div>
         <div class="hidden-pannel hidden-pannel-animation-d">
             <div style="background: none;">
-                <img src="./other/ewm.png" width="100px">
+                <img src="./images/other/ewm.png" width="100px">
                 <p>立即扫码，体验移动端</p>
                 <p>专业法拍、金融服务，助您无忧参拍</p>
             </div>
@@ -119,27 +154,27 @@
             </div>
             <div class="miaosha-scroll">
                 <ul>
-                    <li><img src="./miaosha_scorll_item/item1.webp" width="160px">
+                    <li><img src="./images/miaosha_scorll_item/item1.webp" width="160px">
                         <p class="commit">垃圾书</p>
                         <p class="price">¥9.99</p>
                     </li>
-                    <li><img src="./miaosha_scorll_item/item2.webp" width="160px">
+                    <li><img src="./images/miaosha_scorll_item/item2.webp" width="160px">
                         <p class="commit">垃圾书</p>
                         <p class="price">¥9.99</p>
                     </li>
-                    <li><img src="./miaosha_scorll_item/item3.webp" width="160px">
+                    <li><img src="./images/miaosha_scorll_item/item3.webp" width="160px">
                         <p class="commit">垃圾书</p>
                         <p class="price">¥9.99</p>
                     </li>
-                    <li><img src="./miaosha_scorll_item/item4.webp" width="160px">
+                    <li><img src="./images/miaosha_scorll_item/item4.webp" width="160px">
                         <p class="commit">垃圾书</p>
                         <p class="price">¥9.99</p>
                     </li>
-                    <li><img src="./miaosha_scorll_item/item5.webp" width="160px">
+                    <li><img src="./images/miaosha_scorll_item/item5.webp" width="160px">
                         <p class="commit">垃圾书</p>
                         <p class="price">¥9.99</p>
                     </li>
-                    <li><img src="./miaosha_scorll_item/item6.webp" width="160px">
+                    <li><img src="./images/miaosha_scorll_item/item6.webp" width="160px">
                         <p class="commit">垃圾书</p>
                         <p class="price">¥9.99</p>
                     </li>
@@ -153,12 +188,13 @@
         <!-- 两边广告 -->
         <div class="div-both" style="--direction:1%">
             <div class="div-close-but">X</div>
-            <img src="./other/bg.png" width="100px" height="300px" alt="手动广告哈哈哈">
+            <img src="./images/other/bg.png" width="100px" height="300px" alt="手动广告哈哈哈">
+            <div class="arrow_box">
+                这个是广告，你可以关掉
+            </div>
         </div>
-        <!-- <div class="div-both" style="--direction:93%">
-            <div class="div-close-but">X</div>
-            <img src="./other/bg.png" width="100px" height="300px">
-        </div> -->
+        
+
         <div class="right-bar">
             <ul class="right-bar-ul">
                 <li>选项1
@@ -202,12 +238,12 @@
 
         <!-- 动画横向栏 -->
         <div id="animation-card-layer" class="animation-item-root">
-            <div  class="ani-card">
+            <div class="ani-card">
                 <p class="ani-title">物流运输仓库</p>
                 <p class="ani-commit">物流运输仓库</p>
                 <a class="ani-but">GO</a>
                 <p class="ani-img">
-                    <img src="./animation_hor_img/item1.png" width="100px">
+                    <img src="./images/animation_hor_img/item1.png" width="100px">
                 </p>
             </div>
             <div class="ani-card">
@@ -215,7 +251,7 @@
                 <p class="ani-commit">守护生命安全，为健康护航</p>
                 <a class="ani-but">GO</a>
                 <p class="ani-img">
-                    <img src="./animation_hor_img/item2.png" width="100px">
+                    <img src="./images/animation_hor_img/item2.png" width="100px">
                 </p>
             </div>
             <div class="ani-card">
@@ -223,7 +259,7 @@
                 <p class="ani-commit">科技防控，助力企业安全</p>
                 <a class="ani-but">GO</a>
                 <p class="ani-img">
-                    <img src="./animation_hor_img/item3.png" width="100px">
+                    <img src="./images/animation_hor_img/item3.png" width="100px">
                 </p>
             </div>
             <div class="ani-card">
@@ -231,7 +267,7 @@
                 <p class="ani-commit">化学用品，实验用品，一应俱全</p>
                 <a class="ani-but">GO</a>
                 <p class="ani-img">
-                    <img src="./animation_hor_img/item4.png" width="100px">
+                    <img src="./images/animation_hor_img/item4.png" width="100px">
                 </p>
             </div>
             <div class="ani-card">
@@ -239,7 +275,7 @@
                 <p class="ani-commit">洁净生活，由此开启</p>
                 <a class="ani-but">GO</a>
                 <p class="ani-img">
-                    <img src="./animation_hor_img/item5.png" width="100px">
+                    <img src="./images/animation_hor_img/item5.png" width="100px">
                 </p>
             </div>
         </div>
@@ -272,7 +308,7 @@
             <div class="hor-right-div">
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="130px"></center>
+                        <center><img src="./images/other/big_item1.png" style="opacity: 0.6;" width="130px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">小米手机</p>
@@ -281,7 +317,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="130px"></center>
+                        <center><img src="./images/other/big_item1.png" style="opacity: 0.6;" width="130px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">小米手机</p>
@@ -290,7 +326,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="130px"></center>
+                        <center><img src="./images/other/big_item1.png" style="opacity: 0.6;" width="130px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">小米手机</p>
@@ -299,7 +335,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="130px"></center>
+                        <center><img src="./images/other/big_item1.png" style="opacity: 0.6;" width="130px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">小米手机</p>
@@ -324,7 +360,7 @@
             <div class="show-list-div">
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                        <center><img src="./images/other/item1.png" style="opacity: 0.8;" width="200px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">超级螺丝刀</p>
@@ -333,7 +369,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                        <center><img src="./images/other/item1.png"" style="opacity: 0.8;" width="200px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">超级螺丝刀</p>
@@ -342,7 +378,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                        <center><img src="./images/other/item1.png"" style="opacity: 0.8;" width="200px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">超级螺丝刀</p>
@@ -353,7 +389,7 @@
                 <!-- 第二行 -->
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                        <center><img src="./images/other/item1.png"" style="opacity: 0.8;" width="200px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">超级螺丝刀</p>
@@ -362,7 +398,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                        <center><img src="./images/other/item1.png"" style="opacity: 0.8;" width="200px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">超级螺丝刀</p>
@@ -371,7 +407,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                        <center><img src="./images/other/item1.png"" style="opacity: 0.8;" width="200px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">超级螺丝刀</p>
@@ -380,7 +416,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                        <center><img src="./images/other/item1.png"" style="opacity: 0.8;" width="200px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">超级螺丝刀</p>
@@ -389,7 +425,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/item1.png" style="opacity: 0.8;" width="200px"></center>
+                        <center><img src="./images/other/item1.png"" style="opacity: 0.8;" width="200px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">超级螺丝刀</p>
@@ -407,7 +443,7 @@
             <div class="show-list-div">
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                        <center><img src="./images/other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">小米手机</p>
@@ -416,7 +452,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                        <center><img src="./images/other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">小米手机</p>
@@ -425,7 +461,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                        <center><img src="./images/other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">小米手机</p>
@@ -436,7 +472,7 @@
                 <!-- 第二行 -->
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                        <center><img src="./images/other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">小米手机</p>
@@ -445,7 +481,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                        <center><img src="./images/other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">小米手机</p>
@@ -454,7 +490,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                        <center><img src="./images/other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">小米手机</p>
@@ -463,7 +499,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                        <center><img src="./images/other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">小米手机</p>
@@ -472,7 +508,7 @@
                 </div>
                 <div class="hor-card-root">
                     <div class="hor-card-img">
-                        <center><img src="./other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
+                        <center><img src="./images/other/big_item1.png" style="opacity: 0.6;" width="150px"></center>
                     </div>
                     <div class="hor-card-content">
                         <p class="title">小米手机</p>
@@ -515,10 +551,10 @@
                 <h1 class="bottom-logo">Logo</h1>
                 <div class="copy-bottom-icon">
                     <ul>
-                        <li><img src="./icon/li.png"></li>
-                        <li><img src="./icon/li1.png"></li>
-                        <li><img src="./icon/li2.png"></li>
-                        <li><img src="./icon/li3.png"></li>
+                        <li><img src="./images/icon/li.png"></li>
+                        <li><img src="./images/icon/li1.png"></li>
+                        <li><img src="./images/icon/li2.png"></li>
+                        <li><img src="./images/icon/li3.png"></li>
                     </ul>
                 </div>
                 <div class="copy-bottom-child">Copyright © 2019-2023 小徐工作室-XiaoxuStudio</div>
@@ -531,4 +567,5 @@
     <script src="index.js"></script>
     </div>
 </body>
+
 </html>

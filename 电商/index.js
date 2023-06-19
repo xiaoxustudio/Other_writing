@@ -1,6 +1,6 @@
 /*
  * @Author: xuranXYS
- * @LastEditTime: 2023-06-17 21:59:23
+ * @LastEditTime: 2023-06-19 16:56:19
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -170,10 +170,6 @@ class AutoTime {
 }
 
 
-
-
-
-
 /**
  * @description: 查找标题栏指定标题
  * @param {String} node_name 标题内容
@@ -207,8 +203,7 @@ function EnableOption(nnode, func) {
             if (node_text == nnode && dropdown_node) {
                 node_obj.childNodes[0].onmouseenter = function (event) {
                     dropdown_node.style.display = "block"
-                    dropdown_node.style.left = (node_obj.offsetLeft + 30) + "px"
-                    console.log(dropdown_node)
+                    dropdown_node.style.left = (node_obj.offsetLeft) + 15 + "px"
                 }
                 node_obj.childNodes[0].onmouseleave = function (event) {
                     if (interval) { clearInterval(interval); interval = null }
@@ -257,8 +252,6 @@ function StartOption(show_arr) {
             let item = document.createElement(show_arr[i][ik].type)
             item.className = show_arr[i][ik].className
             item.innerHTML = show_arr[i][ik].innerHTML
-            item.style.paddingLeft = "20px"
-            item.style.paddingRight = "20px"
             content.appendChild(item)
         }
         nav_node.appendChild(content)
@@ -279,7 +272,15 @@ function show_error(text) {
         show_node.style.display = "none"
     }, 800);
 }
-
+function show_success(text) {
+    let show_node = document.getElementsByClassName("success-message")[0]
+    show_node.style.display = "block"
+    show_node.innerText = text
+    clearInterval(message_o)
+    message_o = setInterval(() => {
+        show_node.style.display = "none"
+    }, 800);
+}
 
 /**
  * @description: 计算时间
@@ -401,25 +402,25 @@ var index_lunfan = 0
 // 当前导航栏对象
 var navObj
 var mouse_fouce = false
-var interval
+var intervalinnerHTML
 
 // 类实例化
 var ani = new AnimationD()
 var atimer = new AutoTime()
 
-
+let interval
 
 // 页面加载
 window.addEventListener("load", () => {
     // 浏览器强制处理
-    let isEdge = navigator.userAgent.indexOf("Edg") > -1 ||navigator.userAgent.indexOf("Edge")>-1; //判断是否IE的Edge浏览器
+    let isEdge = navigator.userAgent.indexOf("Edg") > -1 || navigator.userAgent.indexOf("Edge") > -1; //判断是否IE的Edge浏览器
     if (isIEcore()) {
         alert('该浏览器不支持，请换其他浏览器！');
-        document.body.innerHTML="<h1>该浏览器不支持，请换其他浏览器！</h1>"
+        document.body.innerHTML = "<h1>该浏览器不支持，请换其他浏览器！</h1>"
         return false
-    }else if(!isEdge){
+    } else if (!isEdge) {
         alert('由于未作WebKit兼容处理，所以将会强制用Edge浏览器打开');
-        document.body.innerHTML="<h1>该浏览器不支持，请换其他浏览器！</h1>"
+        document.body.innerHTML = "<h1>该浏览器不支持，请换其他浏览器！</h1>"
         return false
     }
     switch (mode) {
@@ -584,30 +585,8 @@ window.addEventListener("load", () => {
             var right = document.getElementsByClassName("right-view")
             var point_view = document.getElementsByClassName("point")
 
-            navObj = document.getElementsByClassName("bar")
-            // 动态创建下拉菜单
-            StartOption({
-                "商品": [
-                    {
-                        type: "div",
-                        className: "",
-                        innerHTML: "宣传1"
-                    },
-                    {
-                        type: "div",
-                        className: "",
-                        innerHTML: "宣传2"
-                    },
-                    {
-                        type: "div",
-                        className: "",
-                        innerHTML: "宣传3"
-                    },
-                ]
-            })
-
             // 设定轮番动画类图片数组
-            ani.img = ["./lunfan/bj1.jpg", "./lunfan/bj2.jpg", "./lunfan/bj3.jpg"]
+            ani.img = ["./images/lunfan/bj1.jpg", "./images/lunfan/bj2.jpg", "./images/lunfan/bj3.jpg"]
             // 设定自动轮番
             atimer.delay = 3000
             atimer.every = true
@@ -641,34 +620,8 @@ window.addEventListener("load", () => {
                 }
             }
 
-            // 开启标题栏下拉菜单
-            EnableOption("商品", "")
             break;
         case "login":
-            navObj = document.getElementsByClassName("bar")
-            // 动态创建下拉菜单
-            StartOption({
-                "商品": [
-                    {
-                        type: "div",
-                        className: "",
-                        innerHTML: "宣传1"
-                    },
-                    {
-                        type: "div",
-                        className: "",
-                        innerHTML: "宣传2"
-                    },
-                    {
-                        type: "div",
-                        className: "",
-                        innerHTML: "宣传3"
-                    },
-                ]
-            })
-            // 开启标题栏下拉菜单
-            EnableOption("商品", "")
-
             // 清空按钮
             let input_1 = document.querySelectorAll("input")
 
@@ -692,6 +645,20 @@ window.addEventListener("load", () => {
                 }
             })
 
+            // 扫码
+            let sm_but = document.getElementById("saoma")
+            let dl_but = document.getElementById("denglu")
+            let item1_layer = document.getElementById("c-item1")
+            let item2_layer = document.getElementById("c-item2")
+            sm_but.addEventListener("click", () => {
+                item1_layer.style.display = "none"
+                item2_layer.style.display = "block"
+            })
+            dl_but.addEventListener("click", () => {
+                item1_layer.style.display = "block"
+                item2_layer.style.display = "none"
+            })
+
 
             // 登录
             let login_button = document.getElementsByClassName("login-b")[0]
@@ -704,13 +671,19 @@ window.addEventListener("load", () => {
                     case input_1[1].value.length > 15 || input_1[2].value.length > 15:
                         show_error("用户名或密码长度超出")
                         break;
+                    case input_1[1].value.length < 5 || input_1[2].value.length < 5:
+                        show_error("用户名或密码长度太小")
+                        break;
                     case m.exec(input_1[2].value) == null:
                         show_error("密码没包含字母")
                         break;
                     case input_1[2].value == "admin" && input_1[2].value == "admin":
-                        alert("登录成功，欢迎用户admin！")
+                        show_success("登录成功，欢迎用户admin！")
                         // 跳转
                         // window.open("./index.html")
+                        break;
+                    default:
+                        show_error("用户名或密码错误，请重试")
                         break;
                 }
 
@@ -718,4 +691,84 @@ window.addEventListener("load", () => {
             break;
     }
 
+    /* 禁止缩放（引用）
+    CSDN：https://blog.csdn.net/jbj6568839z/article/details/103665222
+    */
+    const keyCodeMap = {
+        // 91: true, // command
+        61: true,
+        107: true, // 数字键盘 +
+        109: true, // 数字键盘 -
+        173: true, // 火狐 - 号
+        187: true, // +
+        189: true, // -
+    };
+    // 覆盖ctrl||command + ‘+’/‘-’
+    document.onkeydown = function (event) {
+        const e = event || window.event;
+        const ctrlKey = e.ctrlKey || e.metaKey;
+        if (ctrlKey && keyCodeMap[e.keyCode]) {
+            e.preventDefault();
+        } else if (e.detail) { // Firefox
+            event.returnValue = false;
+        }
+    };
+    // 覆盖鼠标滑动
+    document.body.addEventListener('wheel', (e) => {
+        if (e.ctrlKey) {
+            if (e.deltaY < 0) {
+                e.preventDefault();
+                return false;
+            }
+            if (e.deltaY > 0) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    }, { passive: false });
+
+
+    navObj = document.getElementsByClassName("bar")
+    // 动态创建下拉菜单
+    StartOption({
+        "商品": [
+            {
+                type: "div",
+                className: "show-option",
+                innerHTML: "宣传1"
+            },
+            {
+                type: "div",
+                className: "show-option",
+                innerHTML: "宣传2"
+            },
+            {
+                type: "div",
+                className: "show-option",
+                innerHTML: "宣传3"
+            },
+        ]
+    })
+    // 开启标题栏下拉菜单
+    EnableOption("商品", "")
+
+
+    // 关于
+    let about_button = document.getElementById("about-show")
+    let about_dialog = document.getElementsByClassName("about-dialog")[0]
+    console.log(about_button)
+    about_button.addEventListener("click", () => {
+        if (!about_dialog.classList.contains("about-dialog-show")) {
+            about_dialog.classList.add("about-dialog-show")
+        } else {
+            about_dialog.classList.remove("about-dialog-show")
+        }
+    })
+    document.getElementById("about-close").addEventListener("click", () => {
+        if (!about_dialog.classList.contains("about-dialog-show")) {
+            about_dialog.classList.add("about-dialog-show")
+        } else {
+            about_dialog.classList.remove("about-dialog-show")
+        }
+    })
 })

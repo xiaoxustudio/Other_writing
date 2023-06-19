@@ -8,23 +8,154 @@ body {
     overflow: auto;
 }
 
+.login-bk{
+    background: url(./images/other/background.png) no-repeat;
+    position: absolute;
+    background-attachment: fixed;
+    width: 100%;
+    height: 600px;
+    background-size: 100% 100%;
+}
 
 .login-content {
-    width: 600px;
+    width: 500px;
     display: block;
     position: absolute;
     top: 30%;
-    left: 30%;
+    left: 50%;
     text-align: center;
-    padding-top: 50px;
     padding-bottom: 50px;
+    display: block;
+    /* box-shadow: 20px 20px 60px #e0e0e0,
+        -20px -20px 60px #ffffff; */
+}
+/* 消息框 */
+.login-content .message{
+    background-color: #fff8f0;
+    color: #999;
+    font-family: "宋体";
+    font-size: 12px;
+    margin: 0;
+    user-select: none;
+    padding: 20px;
+}
+/* 选项 */
+.login-content .select-item ul li{
+    display: inline-block;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-family: "黑体";
+    user-select: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.login-content .select-item ul li:hover{
+    color:#e4393c;
+    font-weight: bold;
+}
+/* 分割线 */
+.login-content .line{
+    width: 100%;
+    background: rgba(200, 200, 200, 0.3);
+    height: 1px;
+    margin-top: 1px;
+    margin-bottom: 10px;
+    display: block;
 }
 
 
-.login-content {
+/* 关于弹窗 */
+.about-dialog{
+    padding: 20px;
+    background-color: rgba(255, 255, 255,0.9);
+    position: fixed;
+    top: 30%;
+    left: 40%;
+    width: 300px;
+    height: 250px;
+    border:solid 1px rgba(150, 150, 150, 0.3);
+    box-shadow: 1px 0 5px rgba(150, 150, 150, 0.3);
+    z-index: 9999;
+    border-radius: 5px;
+    display: none;
+    overflow: hidden;
+    transition: all linear .5s;
+    opacity: 0;
+}
+
+@keyframes about-ani{
+    form{
+        margin-top: auto;
+    }
+    to{
+        opacity: 1;
+        margin-top: -30px;
+    }
+}
+
+.about-dialog-show{
+    animation: about-ani linear .2s forwards;
     display: block;
-    box-shadow: 20px 20px 60px #e0e0e0,
-        -20px -20px 60px #ffffff;
+}
+
+
+.about-dialog *{
+    background: none;
+}
+
+.about-dialog .about-title{
+    font-weight: bold;
+    font-size: 20px;
+    padding: 5px;
+    user-select: none;
+}
+.about-dialog .about-content{
+    font-family: "宋体";
+    font-size: 16px;
+    padding: 5px;
+    user-select: none;
+    width: 100%;
+}
+.about-dialog button{
+    background-color: #ec695c;
+    color: white;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    left: 50%;
+    margin-top: 15%;
+    user-select: none;
+    cursor: pointer;
+}
+.about-dialog button:hover{
+    background-color: #c9584e;
+    color: white;
+}
+
+
+/* 二维码 */
+#c-item2 img{
+    transition: all linear .3s;
+}
+
+#c-item2 img:hover{
+    animation:show_k .3s linear forwards;
+}
+
+@keyframes show_k{
+    form{
+        margin-right: 0px;
+    }
+    to{
+        margin-right: 50px;
+    }
 }
 
 table,
@@ -32,25 +163,42 @@ tr,
 td {
     text-align: center;
     vertical-align: middle;
+    background: none;
 }
+
 
 table,
 tbody {
     text-align: center;
 }
 
+table{
+    display: none;
+}
+
+.login-content table tr .user,.login-content table tr .pass{
+    text-align: right;
+}
+.login-content table tr td div{
+    border: solid 1px #d4d4d4; 
+    margin-top: 5px;
+}
 .login-content table tr td input {
     width: 300px;
     padding-top: 5px;
     padding-bottom: 5px;
-    border: solid 1px #d4d4d4;
+    border: none;
     padding: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     outline: none;
 }
 
-.login-content div{
-   padding: 20px;
+.login-content table tr td div p{
+    display: inline-block;
+    padding: 5px;
 }
+
 
 .login-content div p{
     font-size: 15px;
@@ -58,16 +206,16 @@ tbody {
  }
 
 .login-b {
-    background-color: #fefefe;
+    background-color: #e4393c;
     border: none;
     width: 200px;
     height: 40px;
     margin-top: 30px;
     cursor: pointer;
+    color: white;
 }
-
-.login-b:hover {
-    background-color: #f0f0f0;
+.login-b:active {
+    background-color: #cb3538;
 }
 
 .remove-input{
@@ -86,5 +234,35 @@ tbody {
     padding-right:100px ;
     display: none;
 }
+.success-message{
+    background-color: green;
+    color: white;
+    padding-left:100px ;
+    padding-right:100px ;
+    white-space: nowrap;
+    display: none;
+}
 
+#footer{
+    position: absolute;
+    top: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+#footer p{
+    text-align: center;
+}
+#footer a{
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+}
+#footer a:hover{
+    color: red;
+}
+#footer *{
+    color: darkgrey;
+    font-family: "宋体";
+}
 
