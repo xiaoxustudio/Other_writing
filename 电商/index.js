@@ -1,6 +1,6 @@
 /*
  * @Author: xuranXYS
- * @LastEditTime: 2023-06-19 16:56:19
+ * @LastEditTime: 2023-06-24 23:49:29
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -378,6 +378,37 @@ function isIEcore() {
 }
 
 
+function load_page(){
+    let div_proot=document.createElement("div")
+    div_proot.className="progress-root-root"
+    let div_p=document.createElement("div")
+    div_p.className="progress-root"
+    let div_p1=document.createElement("div")
+    div_p1.className="progress-sub"
+    let div_p2=document.createElement("p")
+    div_p2.className="progress-text"
+    div_p2.innerHTML="100%"
+    div_p1.appendChild(div_p2)
+    div_p.appendChild(div_p1)
+    div_proot.appendChild(div_p)
+    document.body.appendChild(div_proot)
+    document.getElementsByClassName("progress-root-root")[0].setAttribute("style", "--width-vir:"+400+"px;")
+    document.body.style.overflow='hidden'
+
+    let progress_value=0
+    let progress_jincheng =setInterval((e)=>{
+        div_p2.innerHTML=progress_value++ +"%"
+        div_p1.style.width=((div_p1.style.width=="" ? 0 :parseInt(div_p1.style.width))+parseInt(div_proot.style.getPropertyValue("--width-vir"))*0.01)+"px"
+
+        if(progress_value>100){
+            clearInterval(progress_jincheng)
+            div_p1.style.width=div_proot.style.getPropertyValue("--width-vir")
+            div_proot.style.display="none"
+            document.body.style.overflow='scroll'
+        }
+    },10)
+}
+
 
 // 获取倒计时结束时间点（当前时间点 + 24小时）
 const targetTime = new Date().getTime() + 24 * 60 * 60 * 1000;
@@ -410,8 +441,9 @@ var atimer = new AutoTime()
 
 let interval
 
+
 // 页面加载
-window.addEventListener("load", () => {
+window.addEventListener("load",async function(e) {
     // 浏览器强制处理
     let isEdge = navigator.userAgent.indexOf("Edg") > -1 || navigator.userAgent.indexOf("Edge") > -1; //判断是否IE的Edge浏览器
     if (isIEcore()) {
@@ -423,6 +455,9 @@ window.addEventListener("load", () => {
         document.body.innerHTML = "<h1>该浏览器不支持，请换其他浏览器！</h1>"
         return false
     }
+
+    await load_page()
+    
     switch (mode) {
         case "index":
             // 隐藏
@@ -756,7 +791,6 @@ window.addEventListener("load", () => {
     // 关于
     let about_button = document.getElementById("about-show")
     let about_dialog = document.getElementsByClassName("about-dialog")[0]
-    console.log(about_button)
     about_button.addEventListener("click", () => {
         if (!about_dialog.classList.contains("about-dialog-show")) {
             about_dialog.classList.add("about-dialog-show")
@@ -770,5 +804,26 @@ window.addEventListener("load", () => {
         } else {
             about_dialog.classList.remove("about-dialog-show")
         }
+    })
+
+    let mouse_on = []
+    let index = 0
+
+    let str_arr=new Array("❤富强❤", "❤民主❤", "❤文明❤", "❤和谐❤", "❤自由❤", "❤平等❤", "❤公正❤", "❤法治❤", "❤爱国❤",
+    "❤敬业❤", "❤诚信❤", "❤友善❤")
+    let str_index=0
+    // 鼠标点击出现字体
+    window.addEventListener("click", (e) => {
+        let node = document.createElement("a")
+        node.innerHTML = str_arr[str_index++]
+        node.className = "mouse-text"
+        node.setAttribute("style", "--this-mouse-y:" + e.pageY + "px;--this-mouse-x:" + e.pageX + "px;--dir-offset:"+(str_index%2 ==1 ? 1 : -1)+";"+"color:rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ");")
+        document.body.appendChild(node)
+        mouse_on[index++] = setInterval(() => {
+            node.remove()
+            clearInterval(mouse_on[index])
+            mouse_on.pop()
+        }, 800);
+        if(str_index>=str_arr.length){str_index=0}
     })
 })

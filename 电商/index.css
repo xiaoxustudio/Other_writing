@@ -192,7 +192,7 @@ header .bar .tli a:hover {
 }
 
 .point {
-    background-color: rgba(150, 150, 150, 0.3);
+    background-color: rgba(50, 50, 50, 0.5);
     padding: 1px;
     display: inline-block;
     position: relative;
@@ -201,6 +201,7 @@ header .bar .tli a:hover {
     left: -35px;
     text-align: center;
     vertical-align: middle;
+    border-radius: 20px;
 }
 /* 轮番底部横点 */
 .point-item {
@@ -1307,8 +1308,82 @@ footer {
 
 
 
+/* 鼠标点击文字 */
+.mouse-text{
+    position: absolute;
+    font-size: 12px;
+    user-select: none;
+    top:var(--this-mouse-y);
+    left:calc(var(--this-mouse-x) - 10px);
+    animation: mouse_text linear 700ms forwards;
+    padding: 5px;
+    opacity: 0;
+    background: none;
+}
+
+@keyframes mouse_text{
+    0%{
+        top:var(--this-mouse-y);
+        left:calc(var(--this-mouse-x) - 10px);
+        opacity: 0;
+    }
+    50% {
+        top:calc(var(--this-mouse-y) - 70px);
+        left:calc(var(--this-mouse-x) - 10px + (calc(var(--dir-offset) * 1px)));
+        opacity: 1;
+    }
+    100% {
+        top:var(--this-mouse-y);
+        left:calc(var(--this-mouse-x) - 10px + (calc(var(--dir-offset) * 50px)));
+        opacity: 0;
+    }
+}
+
+/* 加载页 */
 
 
 
+.progress-root-root{
+    width: 100%;
+    height: calc(100% + 100px);
+    background-size: 100% 100%;
+    background-color: white;
+    user-select: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999999999;
+}
+.progress-root-root .progress-root{
+    background-color: #d4d4d4;
+    border-radius: 20px;
+    width: var(--width-vir);
+    height: 30px;
+    position: fixed;
+    top: calc(50% - 30px);
+    left: calc(50% - 200px);
+    padding: 10px;
+    text-align: center;
+}
+.progress-root-root .progress-root .progress-sub{
+    background-color: dodgerblue;
+    width: 0;
+    height: 30px;
+    text-align: center;
+    border-radius: 20px;
+}
+.progress-root-root .progress-root::after{
+    content: "加载中...";
+    position: relative;
+    top:20px;
+}
+.progress-root-root .progress-root .progress-sub .progress-text{
+    background:none;
+    color: white;
+    text-align: center;
+}
+.progress-root-root *{
+    z-index: 9999999999;
+}
 
 
