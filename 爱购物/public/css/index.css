@@ -1,0 +1,320 @@
+body {
+    background-color: whitesmoke;
+}
+
+/* 头部+导航 */
+#div1 {
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+    width: 100%;
+    height: 110px;
+}
+
+#header {
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px #cccccc solid;
+    position: relative;
+}
+
+#headerleft {
+    position: absolute;
+    left: -10px;
+}
+
+#headerleft li {
+    float: left;
+    font-size: 13px;
+    color: #8d8d8d;
+    border-right: 1px solid #cccccc;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
+#headerright a {
+    color: #8d8d8d;
+}
+
+#headerleft path {
+    fill: #8d8d8d;
+}
+
+.hli1 {
+    width: 100px;
+}
+
+#headerright {
+    position: absolute;
+    right: 10px;
+}
+
+#headerright li {
+    float: left;
+    color: #8d8d8d;
+    height: 38px;
+    padding-top: 10px;
+}
+
+#header li:hover {
+    color: black;
+}
+
+#header svg:hover path {
+    fill: black;
+}
+
+#nav {
+    border-bottom: 1px #cccccc solid;
+    height: 70px;
+    position: relative;
+    top: 40px;
+}
+
+#navbar {
+    width: 450px;
+    height: 60px;
+    position: absolute;
+    left: 520px;
+    font-size: 17px;
+    top: 8px;
+}
+
+#navbar a {
+    color: black;
+}
+
+#navbar .outli {
+    float: left;
+    width: 70px;
+    height: 62px;
+    line-height: 50px;
+    text-align: center;
+}
+
+#headerleft path {
+    fill: #8d8d8d;
+}
+
+.hli1 {
+    width: 100px;
+}
+
+#headerright {
+    position: absolute;
+    right: 10px;
+}
+
+#headerright li {
+    float: left;
+    color: #8d8d8d;
+    height: 38px;
+    padding-top: 10px;
+}
+
+#header li:hover {
+    color: black;
+}
+
+#header svg:hover path {
+    fill: black;
+}
+
+#nav {
+    border-bottom: 1px #cccccc solid;
+    height: 70px;
+    position: relative;
+    top: 40px;
+}
+
+#navbar {
+    width: 450px;
+    height: 60px;
+    position: absolute;
+    left: 520px;
+    font-size: 17px;
+    top: 8px;
+}
+
+#navbar a {
+    color: black;
+}
+
+#navbar .outli {
+    float: left;
+    width: 70px;
+    height: 62px;
+    line-height: 50px;
+    text-align: center;
+}
+
+#navbar .outli:hover {
+    border-bottom: 1.5px solid black;
+}
+
+.navdiv {
+    width: 104vw;
+    height: 220px;
+    background-color: white;
+    box-shadow: 0 2px 5px #cccccc;
+    display: none;
+}
+
+#navdivid1,#navdivid2,#navdivid3,#navdivid4 {
+    position: relative;
+    top: 13px;
+}
+
+#navdivid1 {
+    left: -630px;
+}
+
+#navdivid2 {
+    left: -700px;
+}
+
+#navdivid3 {
+    left: -770px;
+}
+
+#navdivid4 {
+    left: -840px;
+}
+
+.navdiv ul {
+    position: relative;
+    left: 240px;
+}
+
+.navdiv a {
+    color: black;
+    font-size: 12px;
+}
+
+
+#navbar .inli {
+    float: left;
+    width: 200px;
+    margin-top: 10px;
+    margin-left: 10px;
+    text-align: left;
+}
+
+.navdiv img {
+    width: 120px;
+    height: 110px;
+}
+
+.navdiv span {
+    font-size: 12px;
+    position: relative;
+    top: -25px;
+    color: orangered;
+}
+
+#outlid1:hover #navdivid1,
+#outlid2:hover #navdivid2,
+#outlid3:hover #navdivid3,
+#outlid4:hover #navdivid4 {
+    display: block;
+    animation: zoom 100ms linear;
+}
+
+@keyframes zoom {
+    0% {
+        opacity: 0;
+        transform: translatey(1);
+    }
+}
+
+/* 左边导航+商品 */
+.banner {
+    min-width: 1200px;
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 120px;
+}
+
+.banner-cen {
+    width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.banner-select {
+    position: fixed;
+    width: 252px;
+    height: 500px;
+    background-color: #e8e8e8;
+    float: left;
+}
+
+.banner-select div {
+    width: 252px;
+    height: 30px;
+    margin-top: 20px;
+    padding-left: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #4c4c4c;
+}
+
+.banner-product {
+    width: 928px;
+    height: auto;
+    float: left;
+    margin-left: 20px;
+    position: absolute;
+    top: 0px;
+    left: 205px;
+}
+
+.parta {
+    width: 928px;
+    margin-left: 100px;
+    margin-top: 0px;
+    overflow: hidden;
+}
+
+.parta div {
+    width: 250px;
+    height: 343px;
+    float: left;
+    margin-right: 55px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid #c2c2c2;
+}
+
+.parta div:hover {
+    box-shadow: 0px 0px 15px rgb(199, 198, 198);
+}
+
+.parta div img {
+    transition: all .2s;
+    width: 160px;
+    height: 130px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    -webkit-transition: all .2s;
+    -moz-transition: all .2s;
+    -ms-transition: all .2s;
+    -o-transition: all .2s;
+}
+
+.parta div p {
+    color: #4c4c4c;
+    font-size: 14px;
+    text-align: center;
+}
+
+.parta div span {
+    color: #999999;
+    font-size: 12px;
+    display: block;
+    text-align: center;
+}

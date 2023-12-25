@@ -1,0 +1,499 @@
+<!--
+ * @Author: xuranXYS
+ * @LastEditTime: 2023-12-24 00:04:01
+ * @GitHub: www.github.com/xiaoxustudio
+ * @WebSite: www.xiaoxustudio.top
+ * @Description: By xuranXYS
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+    <title use-template>{{ this.title }}</title>
+    <csspre style="display: none;">
+        //@skip 配置常规变量
+        $img_w : 30px;
+        $img_h : 30px;
+        $img_le_w : 500px;
+        $meida-limit : 980px;
+        $color : #232a3f;
+        //@skip 配置图片混合
+        @mix img-width{
+        width: $img_w;
+        height: $img_h;
+        }
+        @mix img-wdith-a{
+        width: 73px;
+        height: 53px;
+        }
+        body {
+        overflow-x : hidden;
+        }
+        * {
+            font-weight: 100;
+        }
+    </csspre>
+    <csspre style="display: none;">
+        // 滚动条
+        ::-webkit-scrollbar {
+        width: 0;
+        }
+
+        // 开始
+        .xr-card {
+        display: inline-block;
+        padding: 10px;
+        }
+
+        .xr-icon {
+        text-align: center;
+        padding: 5px;
+        }
+
+        .d-inline-block.align-text-top {
+        @include img-width;
+        }
+
+        #title-container {
+        padding: 20px;
+        }
+
+        #title-ws {
+        top: 30%;
+        }
+
+        .img-xr {
+        @include img-width;
+        padding: 5px;
+        }
+
+        .img-left-xr {
+        width: $img_le_w;
+        }
+
+        div[class=position-absolute]:has(.img-left-xr) {
+        right: 20%;
+        top: 200px;
+        text-align: right;
+        }
+
+        .btn-group-xr {
+        padding-top: 70px;
+        gap: 10px;
+        }
+
+        .btn-style-xr {
+        border: solid 1px #6a99ff;
+        color: #6a99ff;
+        border-radius: 20px;
+        font-weight: bold;
+        padding: 10px 30px 10px 30px;
+        background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-style-xr-b {
+        color: rgba(255, 255, 255, 1);
+        border-radius: 20px;
+        font-weight: bold;
+        padding: 10px 30px 10px 30px;
+        background-color: #6a99ff;
+        }
+
+        #background-svg {
+        width: 100%;
+        opacity: 0.15;
+        top: 200px;
+        position: absolute;
+        z-index: -10;
+        }
+
+        .xr-content {
+        width: 100%;
+        top: 100%;
+        }
+
+        #dynamic-last {
+        grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .xr-login-icon {
+        width: 300px;
+        }
+
+        .x-container {
+        box-shadow: 0 0 50px 5px rgba(200, 200, 200, .3);
+        }
+
+        .from-group {
+        margin: 5px;
+        padding: 1px;
+        }
+
+        .dropdown-submenu {
+            display : none;
+            position: absolute;
+            left : 100%;
+            top : calc(40%);
+            background-color: var(--bs-dropdown-bg);
+            background-clip: padding-box;
+            border: var(--bs-dropdown-border-width) solid var(--bs-dropdown-border-color);
+            border-left: 0;
+            }
+            .dropdown-submenu > a:after {
+            display: block;
+            content: " ";
+            float: right;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 5px 0 5px 5px;
+            border-left-color: #ccc;
+            margin-top: 5px;
+            margin-right: -10px;
+            }
+            .dropdown-submenu > li {
+            list-style-type : none;
+            }
+
+        @media (min-width: $meida-limit) {
+        div[class=position-absolute]:has(.img-left-xr) {
+        right: 100px;
+        top: 200px;
+        }
+
+        #background-svg {
+        width: 100%;
+        top: 300px;
+        }
+
+        #dynamic-last {
+        grid-template-columns: 1fr 1fr 1fr;
+        }
+        }
+        
+
+        @media (max-width: $meida-limit) {
+        #background-svg {
+        top: 350px;
+        }
+
+        div[class=position-absolute]:has(.img-left-xr) {
+        right: 0px;
+        top: 200px;
+        }
+
+        .img-left-xr {
+        display: none;
+        }
+
+        #dynamic-last {
+        grid-template-columns: 1fr 1fr;
+        }
+        }
+
+        @media (max-width: 700px) {
+        #background-svg {
+        top: 500px;
+        }
+
+        #dynamic-last {
+        grid-template-columns: auto;
+        }
+        }
+    </csspre>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white" title>
+        <div class="container-fluid">
+            <a class="navbar-brand px-md-5" href="#" use-template>
+                <img src="../public/img/google.png" alt="Logo" width="30" height="30"
+                    class="d-inline-block align-text-top">
+                {{ this.title }}
+            </a>
+            <div class="collapse navbar-collapse " id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./">首页</a>
+                    </li>
+                    <li class="nav-item" @x-if="this.login!=true" use-template no-replace>
+                        <a class="nav-link" href="./login">登录</a>
+                    </li>
+                    <li class="nav-item" @x-if="this.login!=true" use-template no-replace>
+                        <a class="nav-link" href="./register">注册</a>
+                    </li>
+                    <li class="nav-item dropdown" @x-if="this.login==true" use-template no-replace>
+                        <button type="button" class="btn dropdown-toggle"
+                            @click="updateBalance" use-template>欢迎您，{{
+                            this.phone }}用户</button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/userdetail">个人信息</a></li>
+                            <li><a class="dropdown-item" href="#" use-template>余额：{{this.userinfo.balance}}</a></li>
+                            <li id="other-item"><a class="dropdown-item" href="#">其他</a>
+                                <ul class="dropdown-submenu">
+                                    <li  @click="loginout" use-template><a class="dropdown-item text-muted user-select-none" style="cursor: pointer;">注销</a></li>
+                                    <li><a class="dropdown-item text-muted user-select-none" style="cursor: pointer;">暂无内容</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" @x-if="this.login==true" use-template no-replace>
+                        <a class="nav-link" href="./shopcartall" use-template>我的购物车</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link user-select-none" style="cursor: pointer;" @click="show"
+                            use-template>使用说明</a>
+                    </li>
+                </ul>
+            </div>
+    </nav>
+    <!-- 内容 -->
+    <div class="container">
+        <form>
+            <div class="d-md-flex  justify-content-center align-content-center">
+                <div class="row bg-white flex-column user-select-none x-container p-5 m-5 justify-content-center align-content-center"
+                    style="grid-template-columns: auto;">
+                    <div class="form-group text-center">
+                        <img src="../public/img/username.png" alt="..." class="img-thumbnail mx-3">
+                        <label>UID：<span id="u_id">0</span></label>
+                    </div>
+                    <div class="form-group">
+                        <label for="nickname">昵称：</label>
+                        <input type="text" class="form-control" name="nickname" id="nickname">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">用户名：</label>
+                        <input type="text" class="form-control" name="phone" id="phone" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码：</label>
+                        <input type="password" class="form-control" name="password" id="password" autocomplete="off">
+                    </div>
+                    <div class="from-group mb-3 text-nowrap flex-nowrap">
+                        <div class="input-group-text">
+                            <span class="input-group-lg" style="margin-right: 10px;">$</span>
+                            <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
+                                id="balance">
+                            <span class="input-group-lg" style="margin-left: 10px;">.00</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">注册时间：</label>
+                        <span class="input-group-lg" style="margin-left: 10px;" id="userdate">...</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">用户状态：</label>
+                        <span class="input-group-lg" style="margin-left: 10px;" id="userstatus">...</span>
+                    </div>
+                    <div class="form-group text-md-center pt-3">
+                        <button type="button" class="btn btn-primary" id="change" @click="change"
+                            use-template>修改</button>
+                        <button type="button" class="btn btn-light" id="save" @click="save" use-template
+                            disabled>保存</button>
+                    </div>
+                    <div class="form-group text-md-center pt-3">
+                        <small id="divshow" style="color: red;font-weight: bold;"></small>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- 模板 -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="../public/img/google.png" class="rounded me-2" width="32px" alt="...">
+                <strong class="me-auto">徐然提示您</strong>
+                <small>11 mins ago</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" use-template>
+                {{ this.message }} {{ this.arr[Math.floor(Math.random() * this.arr.length)] }}
+            </div>
+        </div>
+        <div id="show" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="../public/img/google.png" class="rounded me-2" width="32px" alt="...">
+                <strong class="me-auto">徐然提示您</strong>
+                <small>now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" use-template>
+                ...
+            </div>
+        </div>
+    </div>
+    <script src="../public/js/jq.js"></script>
+    <script src="../public/js/bootstrap.bundle.min.js"></script>
+    <script src="../public/js/xr.js"></script>
+    <script>
+        // 创建全局模板
+        const app = new Template({
+            data() {
+                return {
+                    title: "爱购物",
+                    message: "这将会是一个随机的内容：",
+                    arr: ["随机值1", "是随机2", "还是随机3"],
+                    userinfo: {},
+                }
+            },
+            methods: {
+                show() {
+                    // 每次显示更新文本
+                    const toastLiveExample = $('#liveToast')
+                    const toast = new bootstrap.Toast(toastLiveExample)
+                    app.update($(".toast-body")[0])
+                    toast.show()
+                },loginout() {
+                    this.phone = window.sessionStorage.removeItem("phone")
+                    this.token = window.sessionStorage.removeItem("token")
+                    this.login = false
+                    app.update($("#navbarNav")[0])
+                    window.location.hrer = "./"
+                },
+                updateUserInfo() {
+                    $.ajax({
+                        type: "data",
+                        method: "post",
+                        url: "/userdetail",
+                        data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
+                    }).then(data => {
+                        let arr = JSON.parse(data)
+                        if (arr.status == 1) {
+                            this.userinfo = arr.data[0]
+                            app.callv("update")
+                        } else { this.userinfo = {} }
+                    })
+                },
+                update() {
+                    $("#u_id").html(this.userinfo.u_id).attr("disabled", "")
+                    $("#nickname").val(this.userinfo.nickname).attr("disabled", "")
+                    $("#phone").val(this.userinfo.phone).attr("disabled", "")
+                    $("#password").val(this.userinfo.password).attr("disabled", "")
+                    $("#balance").val(this.userinfo.balance).attr("disabled", "")
+                    $("#userdate").html(this.userinfo.register_time)
+                    $("#userstatus").html(this.userinfo.status)
+                },
+                change() {
+                    $("#u_id").html(this.userinfo.u_id).removeAttr("disabled")
+                    $("#nickname").val(this.userinfo.nickname).removeAttr("disabled")
+                    $("#password").val(this.userinfo.password).removeAttr("disabled")
+                    $("#balance").val(this.userinfo.balance).removeAttr("disabled")
+                    $("#save").removeAttr("disabled")
+                },
+                save() {
+                    $("#divshow").html("")
+                    $("#save").attr("disabled", "")
+                    const toastLiveExample = $('#show')
+                    const toast = new bootstrap.Toast(toastLiveExample)
+                    $.ajax({
+                        type: "data",
+                        method: "post",
+                        url: "/changeuser",
+                        data: {
+                            phone: window.sessionStorage.getItem("phone"),
+                            token: window.sessionStorage.getItem("token"),
+                            nickname: $("#nickname").val(),
+                            password: $("#password").val(),
+                            balance: $("#balance").val(),
+                            u_id: $("#u_id").text(),
+                        },
+                    }).then(data => {
+                        let arr = JSON.parse(data)
+                        if (arr.status == 1) {
+                            $(".toast-body").html("修改成功")
+                            toast.show()
+                        } else {
+                            this.userinfo = {}
+                            $(".toast-body").html("修改失败，请检查格式是否正确")
+                            toast.show()
+                        }
+                        app.callv("updateUserInfo")
+                    })
+                },
+            }
+        })
+        function checkUser() {
+            let content = $("#nickname").val()
+            let reg = /^[0-9a-zA-Z]{2,10}$/g
+            let divs = $("#divshow")
+            divs.html("")
+            if (!reg.test(content)) {
+                divs.html("用户名必须是2-10位")
+                return false
+            }
+            return true
+        }
+        function checkPhone() {
+            let content = $("#phone").val()
+            let reg = /^[0-9a-zA-Z]{2,10}$/g
+            let divs = $("#divshow")
+            divs.html("")
+            if (!reg.test(content)) {
+                divs.html("电话必须是2-10位")
+                return false
+            }
+            return true
+        }
+        function checkPass() {
+            let content = $("#password").val()
+            let reg = /^[0-9a-zA-Z]{2,10}$/g
+            let divs = $("#divshow")
+            divs.html("")
+            if (!reg.test(content)) {
+                divs.html("密码必须是2-10位")
+                return false
+            }
+            return true
+        }
+        function checkBalance() {
+            let content = $("#balance").val()
+            let reg = /^[0-9]+$/g
+            let divs = $("#divshow")
+            divs.html("")
+            if (!reg.test(content)) {
+                divs.html("余额必须为数字")
+                return false
+            }
+            return true
+        }
+        // 首次进入
+        $(document).ready(() => {
+            $("#nickname").blur(checkUser)
+            $("#phone").blur(checkPhone)
+            $("#password").blur(checkPass)
+            $("#balance").blur(checkPass)
+            app.callv("updateUserInfo")
+            $(".dropdown").mouseover(function () {
+                app.callv("updateUserInfo")
+                $(".dropdown-menu").show()
+            })
+            $(".dropdown").mouseleave(function () {
+                app.callv("updateBalance")
+                $(".dropdown-menu").hide()
+                $(".dropdown-submenu").hide()
+            })
+            $("#other-item").mouseover(function () {
+                $(".dropdown-submenu").show()
+            })
+            $("#other-item").mouseleave(function () {
+                $(".dropdown-submenu").hide()
+            })
+            $(".dropdown-submenu").mouseleave(function () {
+                $(this).hide()
+            })
+        })
+        if (window.sessionStorage.getItem("phone") && window.sessionStorage.getItem("token")) {
+            app.data.login = true
+            app.data.phone = window.sessionStorage.getItem("phone")
+            app.data.token = window.sessionStorage.getItem("token")
+        } else { app.data.login = false }
+        console.log(app)
+    </script>
+</body>
+
+</html>

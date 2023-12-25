@@ -1,0 +1,454 @@
+<!--
+ * @Author: xuranXYS
+ * @LastEditTime: 2023-12-25 09:27:07
+ * @GitHub: www.github.com/xiaoxustudio
+ * @WebSite: www.xiaoxustudio.top
+ * @Description: By xuranXYS
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+    <title use-template>{{ this.title }}</title>
+    <csspre style="display: none;">
+        //@skip 配置常规变量
+        $img_w : 30px;
+        $img_h : 30px;
+        $img_le_w : 500px;
+        $meida-limit : 980px;
+        $color : #232a3f;
+        //@skip 配置图片混合
+        @mix img-width{
+        width: $img_w;
+        height: $img_h;
+        }
+        @mix img-wdith-a{
+        width: 73px;
+        height: 53px;
+        }
+        body {
+        overflow-x : hidden;
+        }
+        * {
+        font-weight: 100;
+        }
+    </csspre>
+    <csspre style="display: none;">
+        // 滚动条
+        ::-webkit-scrollbar {
+        width: 0;
+        }
+
+        // 开始
+        .xr-card {
+        display: inline-block;
+        padding: 10px;
+        }
+
+        .xr-icon {
+        text-align: center;
+        padding: 5px;
+        }
+
+        .d-inline-block.align-text-top {
+        @include img-width;
+        }
+
+        #title-container {
+        padding: 20px;
+        }
+
+        #title-ws {
+        top: 30%;
+        }
+
+        .img-xr {
+        @include img-width;
+        padding: 5px;
+        }
+
+        .img-left-xr {
+        width: $img_le_w;
+        }
+
+        div[class=position-absolute]:has(.img-left-xr) {
+        right: 20%;
+        top: 200px;
+        text-align: right;
+        }
+
+        .btn-group-xr {
+        padding-top: 70px;
+        gap: 10px;
+        }
+
+        .btn-style-xr {
+        border: solid 1px #6a99ff;
+        color: #6a99ff;
+        border-radius: 20px;
+        font-weight: bold;
+        padding: 10px 30px 10px 30px;
+        background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-style-xr-b {
+        color: rgba(255, 255, 255, 1);
+        border-radius: 20px;
+        font-weight: bold;
+        padding: 10px 30px 10px 30px;
+        background-color: #6a99ff;
+        }
+
+        #background-svg {
+        width: 100%;
+        opacity: 0.15;
+        top: 200px;
+        position: absolute;
+        z-index: -10;
+        }
+
+        .xr-content {
+        width: 100%;
+        top: 100%;
+        }
+
+        #dynamic-last {
+        grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .xr-login-icon {
+        width: 300px;
+        }
+
+        .login-container {
+        box-shadow: 0 0 50px 5px rgba(200, 200, 200, .3);
+        }
+
+        .dropdown-submenu {
+        display : none;
+        position: absolute;
+        left : 100%;
+        top : calc(40%);
+        background-color: var(--bs-dropdown-bg);
+        background-clip: padding-box;
+        border: var(--bs-dropdown-border-width) solid var(--bs-dropdown-border-color);
+        border-left: 0;
+        }
+        .dropdown-submenu > a:after {
+        display: block;
+        content: " ";
+        float: right;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 5px 0 5px 5px;
+        border-left-color: #ccc;
+        margin-top: 5px;
+        margin-right: -10px;
+        }
+        .dropdown-submenu > li {
+        list-style-type : none;
+        }
+
+        @media (min-width: $meida-limit) {
+        div[class=position-absolute]:has(.img-left-xr) {
+        right: 100px;
+        top: 200px;
+        }
+
+        #background-svg {
+        width: 100%;
+        top: 300px;
+        }
+
+        #dynamic-last {
+        grid-template-columns: 1fr 1fr 1fr;
+        }
+        }
+
+        @media (max-width: $meida-limit) {
+        #background-svg {
+        top: 350px;
+        }
+
+        div[class=position-absolute]:has(.img-left-xr) {
+        right: 0px;
+        top: 200px;
+        }
+
+        .img-left-xr {
+        display: none;
+        }
+
+        #dynamic-last {
+        grid-template-columns: 1fr 1fr;
+        }
+        }
+
+        @media (max-width: 700px) {
+        #background-svg {
+        top: 500px;
+        }
+
+        #dynamic-last {
+        grid-template-columns: auto;
+        }
+        }
+    </csspre>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white" title>
+        <div class="container-fluid">
+            <a class="navbar-brand px-md-5" href="#" use-template>
+                <img src="../public/img/google.png" alt="Logo" width="30" height="30"
+                    class="d-inline-block align-text-top">
+                {{ this.title }}
+            </a>
+            <div class="collapse navbar-collapse " id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./">首页</a>
+                    </li>
+                    <li class="nav-item" @x-if="this.login!=true" use-template no-replace>
+                        <a class="nav-link" href="./login">登录</a>
+                    </li>
+                    <li class="nav-item" @x-if="this.login!=true" use-template no-replace>
+                        <a class="nav-link" href="./register">注册</a>
+                    </li>
+                    <li class="nav-item dropdown" @x-if="this.login==true" use-template no-replace>
+                        <button type="button" class="btn dropdown-toggle" @click="updateBalance" use-template>欢迎您，{{
+                            this.phone }}用户</button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/userdetail">个人信息</a></li>
+                            <li><a class="dropdown-item" href="#" use-template>余额：{{this.balance}}</a></li>
+                            <li id="other-item"><a class="dropdown-item" href="#">其他</a>
+                                <ul class="dropdown-submenu">
+                                    <li @click="loginout" use-template><a
+                                            class="dropdown-item text-muted user-select-none"
+                                            style="cursor: pointer;">注销</a></li>
+                                    <li><a class="dropdown-item text-muted user-select-none"
+                                            style="cursor: pointer;">暂无内容</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" @x-if="this.login==true" use-template no-replace>
+                        <a class="nav-link" href="./shopcartall" use-template>我的购物车</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link user-select-none" style="cursor: pointer;" @click="show"
+                            use-template>使用说明</a>
+                    </li>
+                </ul>
+            </div>
+    </nav>
+    <!-- 内容 -->
+    <div class="container bg-white login-container user-select-none">
+        <div class="row p-5 m-2 mt-5">
+            <div class="col-md row align-middle justify-content-center align-content-center">
+                <img class="img-fluid img-thumbnail" src="../public/img/login_img@2x.png" alt="">
+            </div>
+            <div class="col-md-8">
+                <form action="./login" method="post">
+                    <div class="form-group">
+                        <label for="phone">电话</label>
+                        <input type="tel" class="form-control p-3 m-3" id="phone" name="phone" placeholder="请输入电话号码"
+                            required>
+                        <div id="phonev" class="text-end valid-feedback">
+                            验证区域
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pass">密码</label>
+                        <input type="password" class="form-control p-3 m-3" id="pass" name="password"
+                            placeholder="请输入密码" autocomplete="on" required>
+                        <div id="passv" class="text-end valid-feedback">
+                            验证区域
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="check">验证码</label>
+                        <input type="text" class="form-control p-3 m-3" style="width: 70%;display: inline-block;"
+                            id="check" placeholder="请输入验证码" maxlength="4" required>
+                        <div style="display: inline-block;font-weight: bold;" class="user-select-none text-center"
+                            id="showy" @click="createCheck" use-template>验证码</div>
+                        <div id="codev" class="text-end valid-feedback">
+                            验证区域
+                        </div>
+                    </div>
+                    <div class="form-group text-center ">
+                        <button type="submit" id="login" class="btn btn-primary px-md-5 ">登录</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 模板 -->
+    <template @tmp-id="line1" @x-for="item in this.list">
+        <span class="pt-md-2 pb-md-2 p-2 show-span" use-template><img class="rounded mx-auto img-xr"
+                src="../public/img/banner_icon_safe@2x.png" alt="">{{ $item.title }}</span>
+    </template>
+    <template @tmp-id="icon1">
+        <svg class="svg-icon" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+            <path stroke-width="2" stroke="#7fe0ed"
+                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
+        </svg>
+    </template>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="../public/img/google.png" class="rounded me-2 " width="32px" alt="...">
+                <strong class="me-auto">徐然提示您</strong>
+                <small>11 mins ago</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" use-template>
+                {{ this.message }} {{ this.arr[Math.floor(Math.random() * this.arr.length)] }}
+            </div>
+        </div>
+    </div>
+    <script src="../public/js/jq.js"></script>
+    <script src="../public/js/bootstrap.bundle.min.js"></script>
+    <script src="../public/js/xr.js"></script>
+    <script>
+        // 创建全局模板
+        const app = new Template({
+            data() {
+                return {
+                    title: "爱购物",
+                    message: "这将会是一个随机的内容：",
+                    arr: ["随机值1", "是随机2", "还是随机3"],
+                    code: "",
+                }
+            },
+            methods: {
+                show() {
+                    // 每次显示更新文本
+                    const toastLiveExample = $('#liveToast')
+                    const toast = new bootstrap.Toast(toastLiveExample)
+                    app.update($(".toast-body")[0])
+                    toast.show()
+                }, loginout() {
+                    this.phone = window.sessionStorage.removeItem("phone")
+                    this.token = window.sessionStorage.removeItem("token")
+                    this.login = false
+                    app.update($("#navbarNav")[0])
+                    window.location.hrer = "./"
+                },
+                createCheck() {
+                    this.code = Math.random().toString(32).padEnd(4, 0).substring(2, 6)
+                    $("#showy").html(this.code)
+                }, updateBalance() {
+                    $.ajax({
+                        type: "data",
+                        method: "post",
+                        url: "/userdetail",
+                        data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
+                    }).then(data => {
+                        let arr = JSON.parse(data)
+                        if (arr.status == 1) {
+                            this.balance = arr.data[0].balance
+                        } else { this.balance = "查询失败" }
+                    })
+                },
+            }
+        })
+        function checkPhone() {
+            let content = $("#phone").val()
+            let reg = /^1[3456789]\d{9}$/
+            let divs = $("#phonev")
+            divs.html("").show().parent().addClass("was-validated").removeClass("invalid-feedback valid-feedback")
+            if (!reg.test(content)) {
+                divs.addClass("invalid-feedback").html("电话必须以1[3456789]开头且是11位")
+                $("#phone")[0].setCustomValidity("电话必须以1[3456789]开头且是11位")
+                return false
+            }
+            $("#phone")[0].setCustomValidity("")
+            divs.addClass("valid-feedback")
+            return true
+        }
+        function checkPass() {
+            let content = $("#pass").val()
+            let reg = /^[0-9a-zA-Z]{2,10}$/g
+            let divs = $("#passv")
+            divs.html("").show().parent().addClass("was-validated").removeClass("invalid-feedback valid-feedback")
+            if (!reg.test(content)) {
+                divs.addClass("invalid-feedback").html("密码必须是2-10位")
+                $("#pass")[0].setCustomValidity("密码必须是2-10位")
+                return false
+            }
+            $("#pass")[0].setCustomValidity("")
+            divs.addClass("valid-feedback")
+            return true
+        }
+        function checkCheck() {
+            let content = $("#check").val()
+            let reg = /^[0-9a-zA-Z]{4}$/g
+            let divs = $("#codev")
+            divs.html("").show().parent().addClass("was-validated").removeClass("invalid-feedback valid-feedback")
+            if (!reg.test(content)) {
+                divs.addClass("invalid-feedback").html("验证码输入错误")
+                $("#check")[0].setCustomValidity("验证码输入错误")
+                return false
+            }
+            $("#check")[0].setCustomValidity("")
+            divs.addClass("valid-feedback")
+            return true
+        }
+        // 首次进入
+        $(document).ready(() => {
+            // 初始化
+            $("#phonev").hide()
+            $("#passv").hide()
+            $("#codev").hide()
+            //其他
+            $("#phone").blur(checkPhone)
+            $("#pass").blur(checkPass)
+            $("#check").blur(checkCheck)
+            $("#login").click((e) => {
+                if ($("#check").val() == app.data.code) {
+                    if ($("#phone").val() && $("#pass").val()) {
+                    } else {
+                        alert("信息填写错误")
+                        return false
+                    }
+                } else {
+                    alert("验证码错误")
+                    return false
+                }
+            })
+            app.callv("createCheck")
+            $(".dropdown").mouseover(function () {
+                app.callv("updateBalance")
+                $(".dropdown-menu").show()
+            })
+            $(".dropdown").mouseleave(function () {
+                app.callv("updateBalance")
+                $(".dropdown-menu").hide()
+                $(".dropdown-submenu").hide()
+            })
+            $("#other-item").mouseover(function () {
+                $(".dropdown-submenu").show()
+            })
+            $("#other-item").mouseleave(function () {
+                $(".dropdown-submenu").hide()
+            })
+            $(".dropdown-submenu").mouseleave(function () {
+                $(this).hide()
+            })
+        })
+        if (window.sessionStorage.getItem("phone") && window.sessionStorage.getItem("token")) {
+            app.data.login = true
+            app.data.phone = window.sessionStorage.getItem("phone")
+            app.data.token = window.sessionStorage.getItem("token")
+        } else { app.data.login = false }
+        console.log(app)
+    </script>
+</body>
+
+</html>

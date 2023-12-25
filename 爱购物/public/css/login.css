@@ -1,0 +1,97 @@
+input::-webkit-input-placeholder {
+    color: #cccccc;
+}
+
+body {
+    background-color: #f2f2f2;
+}
+
+.log-title {
+    font-size: 30px;
+    font-weight: 300;
+    color: #000;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 130px;
+}
+
+.log-txt {
+    font-size: 14px;
+    color: #999;
+    font-weight: 300;
+    text-align: center;
+}
+
+.container {
+    width: 375px;
+    height: 245px;
+    margin: 0 auto;
+    margin-top: 40px;
+    position: relative;
+}
+
+.cons {
+    width: 315px;
+    height: 38px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    overflow: hidden;
+    background: pink;
+    position: relative;
+    border: 1px solid #f2f2f2;
+
+}
+
+.cons input {
+    width: 315px;
+    height: 38px;
+    display: block;
+    padding-left: 38px;
+    border: 1px solid #f2f2f2;
+    background-color: #fff;
+    border-radius: 2px;
+
+}
+
+.cons span {
+    width: 18px;
+    height: 18px;
+    display: block;
+    /* background-color: blue;*/
+    position: absolute;
+    top: 11 px;
+    left: 15px;
+}
+
+a {
+    display: inline-block;
+    color: #029789 ! important;
+    font-size: 14px;
+    margin-top: 7px;
+    position: absolute;
+    top: 106px;
+    right: 29px;
+}
+
+button {
+    width: 315px;
+    height: 38px;
+    display: block;
+    background-color: #009688;
+    margin: 0 auto;
+    border: 0;
+    margin-top: 60px;
+    font-size: 14px;
+    line-height: 38px;
+    text-align: center;
+    color: #ffffff;
+}
+
+button :hover {
+    background-color: #30a89d;
+}
+.icon img {
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+}

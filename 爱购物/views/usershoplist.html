@@ -1,0 +1,657 @@
+<!--
+ * @Author: xuranXYS
+ * @LastEditTime: 2023-12-24 16:46:33
+ * @GitHub: www.github.com/xiaoxustudio
+ * @WebSite: www.xiaoxustudio.top
+ * @Description: By xuranXYS
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+    <title use-template>{{ this.title }}</title>
+    <csspre style="display: none;">
+        //@skip 声明常规变量
+        $img_w : 30px;
+        $img_h : 30px;
+        $img_le_w : 500px;
+        $meida-limit : 980px;
+        $color : #232a3f;
+        //@skip 声明图片混合
+        @mix img-width{
+        width: $img_w;
+        height: $img_h;
+        }
+        @mix img-wdith-a{
+        width: 73px;
+        height: 53px;
+        }
+        body {
+        overflow-x : hidden;
+        }
+        * {
+        font-weight: 100;
+        }
+    </csspre>
+    <csspre style="display: none;">
+        // 滚动条
+        ::-webkit-scrollbar {
+        width: 0;
+        }
+
+        .cp {
+        cursor: pointer;
+        }
+
+        * {
+        user-select: none;
+        }
+
+        // 开始
+        .xr-card {
+        display: inline-block;
+        padding: 10px;
+        }
+
+        .xr-icon {
+        text-align: center;
+        padding: 5px;
+        }
+
+        .d-inline-block.align-text-top {
+        @include img-width;
+        }
+
+        #title-container {
+        padding: 20px;
+        }
+
+        #title-ws {
+        top: 30%;
+        }
+
+        .img-xr {
+        @include img-width;
+        padding: 5px;
+        }
+
+        .img-left-xr {
+        width: $img_le_w;
+        }
+
+        div[class=position-absolute]:has(.img-left-xr) {
+        right: 20%;
+        top: 200px;
+        text-align: right;
+        }
+
+        .btn-group-xr {
+        padding-top: 70px;
+        gap: 10px;
+        }
+
+        .btn-style-xr {
+        border: solid 1px #6a99ff;
+        color: #6a99ff;
+        border-radius: 20px;
+        font-weight: bold;
+        padding: 10px 30px 10px 30px;
+        background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-style-xr-b {
+        color: rgba(255, 255, 255, 1);
+        border-radius: 20px;
+        font-weight: bold;
+        padding: 10px 30px 10px 30px;
+        background-color: #6a99ff;
+        }
+
+        #background-svg {
+        width: 100%;
+        opacity: 0.15;
+        top: 200px;
+        position: absolute;
+        z-index: -10;
+        }
+
+        .xr-content {
+        width: 100%;
+        top: 100%;
+        }
+        #dynamic-last {
+        grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .xr-login-icon {
+        width: 300px;
+        }
+
+        .login-container {
+        box-shadow: 0 0 50px 5px rgba(200, 200, 200, .3);
+        }
+
+        .dropdown-submenu {
+        display : none;
+        position: absolute;
+        left : 100%;
+        top : calc(40%);
+        background-color: var(--bs-dropdown-bg);
+        background-clip: padding-box;
+        border: var(--bs-dropdown-border-width) solid var(--bs-dropdown-border-color);
+        border-left: 0;
+        }
+        .dropdown-submenu > a:after {
+        display: block;
+        content: " ";
+        float: right;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 5px 0 5px 5px;
+        border-left-color: #ccc;
+        margin-top: 5px;
+        margin-right: -10px;
+        }
+        .dropdown-submenu > li {
+        list-style-type : none;
+        }
+
+        .top-btn {
+        position: fixed;
+        top: 75%;
+        right: .3%;
+        z-index: 999999999;
+        border: solid 1px rgba(200, 200, 200, .3);
+        padding: 1px;
+        font-weight: bold;
+        }
+        @media (min-width: $meida-limit) {
+        div[class=position-absolute]:has(.img-left-xr) {
+        right: 100px;
+        top: 200px;
+        }
+
+        #background-svg {
+        width: 100%;
+        top: 300px;
+        }
+
+        #dynamic-last {
+        grid-template-columns: 1fr 1fr 1fr;
+        }
+        }
+
+        @media (max-width: $meida-limit) {
+        #background-svg {
+        top: 350px;
+        }
+
+        div[class=position-absolute]:has(.img-left-xr) {
+        right: 0px;
+        top: 200px;
+        }
+
+        .img-left-xr {
+        display: none;
+        }
+
+        #dynamic-last {
+        grid-template-columns: 1fr 1fr;
+        }
+        }
+
+        @media (max-width: 700px) {
+        #background-svg {
+        top: 500px;
+        }
+
+        #dynamic-last {
+        grid-template-columns: auto;
+        }
+        }
+    </csspre>
+    <style>
+        .xr-list-item {
+            cursor: pointer;
+            transition: all .3s linear;
+        }
+
+        .xr-list-item:hover {
+            border-radius: calc(var(--bs-border-radius) + 5px) !important;
+            box-shadow: 0 .05rem 1rem rgba(var(--bs-body-color-rgb), .15) !important;
+        }
+
+        .xr-tag {
+            height: 18px;
+            line-height: 18px;
+            display: inline-block;
+            margin-right: 7px;
+            color: #999;
+            font-size: 12px;
+            background: #f5f5f5;
+            border-radius: 2px;
+            padding: 0 6px;
+        }
+
+        .xr-text {
+            color: #444;
+            font-size: 14px;
+            height: 48px;
+            line-height: 24px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            word-break: break-all;
+            white-space: nowrap;
+        }
+        .xr-t{
+            text-overflow: ellipsis;
+            overflow: hidden;
+            word-break: break-all;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white" title>
+        <div class="container-fluid">
+            <a class="navbar-brand px-md-5" href="#" use-template>
+                <img src="../public/img/google.png" alt="Logo" width="30" height="30"
+                    class="d-inline-block align-text-top">
+                {{ this.title }}
+            </a>
+            <div class="collapse navbar-collapse " id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./">首页</a>
+                    </li>
+                    <li class="nav-item" @x-if="this.login!=true" use-template no-replace>
+                        <a class="nav-link" href="./login">登录</a>
+                    </li>
+                    <li class="nav-item" @x-if="this.login!=true" use-template no-replace>
+                        <a class="nav-link" href="./register">注册</a>
+                    </li>
+                    <li class="nav-item dropdown" @x-if="this.login==true" use-template no-replace>
+                        <button type="button" class="btn dropdown-toggle" @click="updateBalance" use-template>欢迎您，{{
+                            this.phone }}用户</button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/userdetail">个人信息</a></li>
+                            <li><a class="dropdown-item" href="#" use-template>余额：{{this.balance}}</a></li>
+                            <li id="other-item"><a class="dropdown-item" href="#">其他</a>
+                                <ul class="dropdown-submenu">
+                                    <li @click="loginout" use-template><a
+                                            class="dropdown-item text-muted user-select-none"
+                                            style="cursor: pointer;">注销</a></li>
+                                    <li><a class="dropdown-item text-muted user-select-none"
+                                            style="cursor: pointer;">暂无内容</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" @x-if="this.login==true" use-template no-replace>
+                        <a class="nav-link" href="./shopcartall" use-template>我的购物车</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link user-select-none" style="cursor: pointer;" @click="show"
+                            use-template>使用说明</a>
+                    </li>
+                </ul>
+            </div>
+    </nav>
+    <!-- 内容 -->
+    <div class="container">
+        <div class="row p-3 m-3">
+            <div class="col-md-12">
+                <div class="list-group" @use-id="tem_item" id="item_container" use-template>
+                </div>
+            </div>
+            <div class="col-md-12 text-center justify-content-center align-content-center">
+                <span>商品共 <span use-template>{{ this.allPrice }}</span> 元</span>
+                <button type="button" class="btn btn-outline-primary p-3" id="go-pay" @click="showRun"
+                    use-template>去结算</button>
+            </div>
+        </div>
+    </div>
+    <!-- 模板 -->
+    <template @tmp-id="icon1">
+        <svg class="svg-icon" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+            <path stroke-width="2" stroke="#7fe0ed"
+                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
+        </svg>
+    </template>
+    <template @tmp-id="tem_item" @x-for="(ind,item) in this.reslist" no-run>
+        <div class="row border border-dark m-1 p-3 border-opacity-25 xr-list-item ">
+            <div class="col-md-3 row justify-content-center align-content-center">
+                <img src="../public/img/shopItem/$item.p_img1" class="card-img-top m-2" use-template>
+            </div>
+            <div class="col-md">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1 fw-bold xr-t" use-template>{{ $item.p_name }}</h5>
+                    <small>当前数量：<span use-template>{{ $item.num }}</span></small>
+                </div>
+                <div>
+                    <i class="xr-tag" use-template>{{ $item.p_version1 }}</i>
+                    <i class="xr-tag" use-template>{{ $item.p_version2 }}</i>
+                </div>
+                <div class="m-2 fw-bold" style="font-size: 13px;">
+                    <span>设备分类：</span>
+                    <a @x-if="$item.p_type==='ad-product-computer'" use-template no-replace>电脑</a>
+                    <a @x-else-if="$item.p_type==='ad-product-phone'" use-template no-replace>手机</a>
+                    <a @x-else-if="$item.p_type==='ad-product-ear'" use-template no-replace>耳机</a>
+                    <a @x-else-if="$item.p_type==='ad-product-pad'" use-template no-replace>平板</a>
+                    <br>
+                </div>
+                <div class="col-md row justify-content-between">
+                    <div class="p-2 col-md ">
+                        ￥ <a class="text-decoration-line-through" style="color: red;" use-template> {{ $item.p_price2 }}
+                        </a>
+                        <a style="font-weight: bold;color: red;" use-template>{{ $item.p_price1 }}</a> 元
+                    </div>
+
+                </div>
+                <div class="xr-text" use-template>
+                    {{ $item.p_present }}
+                </div>
+                <div class="col-md row justify-content-between">
+                    <div class="col-md"></div>
+                    <button class="col-md-2 btn btn-outline-danger" @click="Showdetail" index="$item.p_id"
+                        use-template>详情</button>
+                </div>
+            </div>
+        </div>
+    </template>
+    <!-- 模板end -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="../public/img/google.png" class="rounded me-2 " width="32px" alt="...">
+                <strong class="me-auto">徐然提示您</strong>
+                <small>11 mins ago</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" use-template>
+                {{ this.message }} {{ this.arr[Math.floor(Math.random() * this.arr.length)] }}
+            </div>
+        </div>
+        <div id="showToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="../public/img/google.png" class="rounded me-2 " width="32px" alt="...">
+                <strong class="me-auto">徐然提示您</strong>
+                <small>11 mins ago</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" use-template>
+                {{ this.res_add }}
+            </div>
+        </div>
+    </div>
+    <!-- 详细信息 -->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">详细信息</h5>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close"
+                        @click="closeDetail" use-template>关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 确认支付 -->
+    <div class="modal fade" id="verifyDialog" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">提示</h5>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close"
+                        @click="dopay" use-template>确认支付</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close"
+                        use-template>关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="top-btn">
+        <div class="flex-row">
+            <button type="button" class="btn flex-grow-0" id="go-toggle-top">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+                </svg>
+            </button>
+        </div>
+        <div class="flex-row">
+            <button type="button" class="btn flex-grow-1" id="go-toggle-bottom">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    <script src="../public/js/jq.js"></script>
+    <script src="../public/js/bootstrap.bundle.min.js"></script>
+    <script src="../public/js/xr.js"></script>
+    <script>
+        // 创建全局模板
+        const app = new Template({
+            data() {
+                return {
+                    title: "爱购物",
+                    message: "这将会是一个随机的内容：",
+                    arr: ["随机值1", "是随机2", "还是随机3"],
+                    reslist: [],
+                    resnum: {},
+                    page_num: -1,
+                    allPrice: 0,
+                    balance: 0,
+                    res_add: ""
+                }
+            },
+            methods: {
+                show() {
+                    // 每次显示更新文本
+                    const toastLiveExample = $('#liveToast')
+                    const toast = new bootstrap.Toast(toastLiveExample)
+                    app.update($(".toast-body")[0])
+                    toast.show()
+                },
+                loginout() {
+                    this.phone = window.sessionStorage.removeItem("phone")
+                    this.token = window.sessionStorage.removeItem("token")
+                    this.login = false
+                    app.update($("#navbarNav")[0])
+                    window.location.hrer = "./"
+                },
+                createCheck() {
+                    this.code = Math.random().toString(32).padEnd(4, 0).substring(2, 6)
+                    $("#showy").html(this.code)
+                },
+                Showdetail(e) {
+                    if (e.target instanceof HTMLElement) {
+                        let p_id = e.target.attributes["index"].nodeValue
+                        let arrs = Object.values(this.reslist).filter(val => val.p_id == p_id)
+                        if (arrs.length > 0) {
+                            let data = arrs[0]
+                            let mo = $('#staticBackdrop')
+                            mo.find("#staticBackdropLabel").html(data.p_name + "——详情")
+                            let str = `
+                            商品ID：${data.p_id}<br>
+                            商品名称：${data.p_name}<br>
+                            商品款式（机型）：${data.p_color} 、 ${data.p_color}<br>
+                            商品款式（物理）：${data.p_version1} 、 ${data.p_version1}<br>
+                            商品优惠价格：${data.p_price1}<br>
+                            商品原价格：${data.p_price1}<br>
+                            商品类别：${data.p_type}<br>
+                            商品描述：<br>${data.p_present}<br>
+                            已加入购物车数量：${data.num}<br>
+                            `
+                            mo.find(".modal-body").html(str)
+                            mo.modal('toggle')
+                        }
+                    }
+                },
+                closeDetail() {
+                    let mo = $('#staticBackdrop')
+                    mo.modal('toggle')
+                },
+                scrollToTop() {
+                    document.body.scrollTop = 0; // For Safari
+                    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+                },
+                scrollToBottom() {
+                    window.scrollTo(0, document.body.scrollHeight);
+                },
+                updateBalance() {
+                    $.ajax({
+                        type: "data",
+                        method: "post",
+                        url: "/userdetail",
+                        data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
+                    }).then(data => {
+                        let arr = JSON.parse(data)
+                        if (arr.status == 1) {
+                            this.balance = arr.data[0].balance
+                        } else { this.balance = "查询失败" }
+                    })
+                },
+                showRun() {
+                    let mo = $('#verifyDialog')
+                    mo.find(".modal-body").html("请再次确认您是否有足够的余额支付？")
+                    mo.modal('toggle')
+                },
+                dopay() {
+                    $.ajax({
+                        type: "data",
+                        method: "post",
+                        url: "/dopay",
+                        data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
+                    }).then(data => {
+                        let arr = JSON.parse(data)
+                        let mo = $('#staticBackdrop')
+                        mo.find("#staticBackdropLabel").html("提示")
+                        let str = null
+                        if (arr.status == 1) {
+                            str = "支付成功，3秒后自动刷新页面"
+                        } else {
+                            str = "支付失败，请检查余额是否充足后再试！"
+                        }
+                        mo.find(".modal-body").html(str)
+                        mo.modal('toggle')
+                        if (this.reslist.length > 0) {
+                            $("#go-pay").removeAttr("disabled")
+                        } else {
+                            $("#go-pay").attr("disabled", "")
+                        }
+                        setTimeout(() => { window.location.href = "/shopcartall" }, 3000)
+                    })
+                },
+            }
+        })
+        if (window.sessionStorage.getItem("phone") && window.sessionStorage.getItem("token")) {
+            app.data.login = true
+            app.data.phone = window.sessionStorage.getItem("phone")
+            app.data.token = window.sessionStorage.getItem("token")
+        } else { app.data.login = false; window.location.href = "./" }
+        $(document).ready(() => {
+            app.data.page_num = 0
+            $.ajax({
+                type: "data",
+                method: "post",
+                url: "/shopcartall",
+                data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
+            }).then(data => {
+                let res = JSON.parse(data)
+                if (res.status !== 1) {
+                    alert("信息获取出错")
+                    window.location.href = "./"
+                    return false
+                }
+                let run = []
+                let index = 0
+                for (let i of res.data) {
+                    $.ajax({
+                        type: "data",
+                        method: "post",
+                        url: "/detail",
+                        data: { id: i.p_id },
+                    }).then(rdata => {
+                        let rda = JSON.parse(rdata)
+                        if (rda.status === 1) {
+                            run.push({ ...rda.data, ...i })
+                        }
+                        index++
+                        if (index == res.data.length) {
+                            app.data.reslist = run
+                            // 信息全部加载完成
+                            // 更新视图
+                            app.repeatupdate($("#item_container")[0], true, true)
+                            let num = 0
+                            for (let i of run) {
+                                num += parseFloat(i.p_price1) * parseFloat(i.num)
+                            }
+                            // 更新总价
+                            app.data.allPrice = num
+                            if (app.data.reslist.length > 0) {
+                                $("#go-pay").removeAttr("disabled")
+                            } else {
+                                $("#go-pay").attr("disabled", "")
+                            }
+                        }
+                    })
+                }
+                if (app.data.reslist.length > 0) {
+                    $("#go-pay").removeAttr("disabled")
+                } else {
+                    $("#go-pay").attr("disabled", "")
+                }
+            })
+            $("#go-toggle-top").click(() => {
+                app.callv("scrollToTop")
+            })
+            $("#go-toggle-bottom").click(() => {
+                app.callv("scrollToBottom")
+            })
+            $(".dropdown").mouseover(function () {
+                app.callv("updateBalance")
+                $(".dropdown-menu").show()
+            })
+            $(".dropdown").mouseleave(function () {
+                app.callv("updateBalance")
+                $(".dropdown-menu").hide()
+                $(".dropdown-submenu").hide()
+            })
+            $("#other-item").mouseover(function () {
+                $(".dropdown-submenu").show()
+            })
+            $("#other-item").mouseleave(function () {
+                $(".dropdown-submenu").hide()
+            })
+            $(".dropdown-submenu").mouseleave(function () {
+                $(this).hide()
+            })
+        })
+        console.log(app)
+    </script>
+</body>
+
+</html>

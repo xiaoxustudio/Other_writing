@@ -1,0 +1,1068 @@
+<!--
+ * @Author: xuranXYS
+ * @LastEditTime: 2023-12-25 10:14:57
+ * @GitHub: www.github.com/xiaoxustudio
+ * @WebSite: www.xiaoxustudio.top
+ * @Description: By xuranXYS
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+    <title use-template>{{ this.title }}</title>
+    <csspre style="display: none;">
+        //@skip 配置常规变量
+        $img_w : 30px;
+        $img_h : 30px;
+        $img_le_w : 500px;
+        $meida-limit : 980px;
+        $color : #232a3f;
+        //@skip 配置图片混合
+        @mix img-width{
+        width: $img_w;
+        height: $img_h;
+        }
+        @mix img-wdith-a{
+        width: 73px;
+        height: 53px;
+        }
+        body {
+        overflow-x : hidden;
+        }
+        * {
+        font-weight: 100;
+        }
+    </csspre>
+    <csspre style="display: none;">
+        // 滚动条
+        ::-webkit-scrollbar {
+        width: 0;
+        }
+
+        // 开始
+        .xr-card {
+        display: inline-block;
+        padding: 10px;
+        }
+
+        .xr-icon {
+        text-align: center;
+        padding: 5px;
+        }
+
+        .d-inline-block.align-text-top {
+        @include img-width;
+        }
+
+        #title-container {
+        padding: 20px;
+        }
+
+        #title-ws {
+        top: 30%;
+        }
+
+        .img-xr {
+        @include img-width;
+        padding: 5px;
+        }
+
+        .img-left-xr {
+        width: $img_le_w;
+        }
+
+        div[class=position-absolute]:has(.img-left-xr) {
+        right: 20%;
+        top: 200px;
+        text-align: right;
+        }
+
+        .btn-group-xr {
+        padding-top: 70px;
+        gap: 10px;
+        }
+
+        .btn-style-xr {
+        border: solid 1px #6a99ff;
+        color: #6a99ff;
+        border-radius: 20px;
+        font-weight: bold;
+        padding: 10px 30px 10px 30px;
+        background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-style-xr-b {
+        color: rgba(255, 255, 255, 1);
+        border-radius: 20px;
+        font-weight: bold;
+        padding: 10px 30px 10px 30px;
+        background-color: #6a99ff;
+        }
+
+        #background-svg {
+        width: 100%;
+        opacity: 0.15;
+        top: 200px;
+        position: absolute;
+        z-index: -10;
+        }
+
+        .xr-content {
+        width: 100%;
+        top: 100%;
+        }
+
+        #dynamic-last {
+        grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .xr-login-icon {
+        width: 300px;
+        }
+
+        .login-container {
+        box-shadow: 0 0 50px 5px rgba(200, 200, 200, .3);
+        }
+
+        .dropdown-submenu {
+        display : none;
+        position: absolute;
+        left : 100%;
+        top : calc(40%);
+        background-color: var(--bs-dropdown-bg);
+        background-clip: padding-box;
+        border: var(--bs-dropdown-border-width) solid var(--bs-dropdown-border-color);
+        border-left: 0;
+        }
+        .dropdown-submenu > a:after {
+        display: block;
+        content: " ";
+        float: right;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 5px 0 5px 5px;
+        border-left-color: #ccc;
+        margin-top: 5px;
+        margin-right: -10px;
+        }
+        .dropdown-submenu > li {
+        list-style-type : none;
+        }
+
+        @media (min-width: $meida-limit) {
+        div[class=position-absolute]:has(.img-left-xr) {
+        right: 100px;
+        top: 200px;
+        }
+
+        #background-svg {
+        width: 100%;
+        top: 300px;
+        }
+
+        #dynamic-last {
+        grid-template-columns: 1fr 1fr 1fr;
+        }
+        }
+
+        @media (max-width: $meida-limit) {
+        #background-svg {
+        top: 350px;
+        }
+
+        div[class=position-absolute]:has(.img-left-xr) {
+        right: 0px;
+        top: 200px;
+        }
+
+        .img-left-xr {
+        display: none;
+        }
+
+        #dynamic-last {
+        grid-template-columns: 1fr 1fr;
+        }
+        }
+
+        @media (max-width: 700px) {
+        #background-svg {
+        top: 500px;
+        }
+
+        #dynamic-last {
+        grid-template-columns: auto;
+        }
+        }
+    </csspre>
+    <style>
+        .xr-btn {
+            box-shadow: 0 2px 5px 0 rgba(230, 40, 40, .3);
+            background-color: red;
+            color: white;
+            border: none;
+            text-decoration: none;
+        }
+        .xr-big-screen {
+            transition: all .15s linear;
+        }
+
+        .xr-big-screen:hover {
+            color: darkgrey;
+        }
+
+        .card-new-xr {
+            border: solid 1px rgba(200, 200, 200, .3);
+        }
+
+        #card-xr-ani {
+            animation: show .8s linear;
+            transition: all .8s linear;
+        }
+
+        .card-img-top.m-4 {
+            transition: all .3s linear;
+        }
+
+        .card-img-top.m-4:hover {
+            scale: 1.1;
+        }
+
+        .xr-bg-div {
+            background: #fff url(../public/img/share-bg.png) no-repeat;
+            position: static;
+            background-size: 100%;
+            height: 330px;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .num-line {
+            height: 32px;
+            width: 100%;
+            text-align: center;
+            padding-top: 11px;
+        }
+
+        .num-line>span {
+            width: 28px;
+            height: 32px;
+            line-height: 34px;
+            margin: 0 3px 0 4px;
+            display: inline-block;
+            background: #feecec;
+            color: #e62828;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            border-radius: 2px;
+        }
+
+        .num-line>em {
+            width: 7px;
+            height: 32px;
+            display: inline-block;
+            color: #ccc;
+            text-align: center;
+            vertical-align: bottom;
+            background: url(../public/img/separator.png) no-repeat 0 bottom;
+            background-size: 150% 35%;
+        }
+
+        #hjkb-panel>ul>li {
+            list-style-type: none;
+            user-select: none;
+            cursor: pointer;
+            padding: 10px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        #left-panel>ul {
+            padding-left: 0;
+        }
+
+        #left-panel>ul>li {
+            list-style-type: none;
+            user-select: none;
+            cursor: pointer;
+            padding: 8px 20px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            transition: all .3s linear;
+        }
+
+        #left-panel>ul>li:hover {
+            background-color: rgba(205, 40, 40, .1);
+            color: darkgray;
+        }
+
+        #float-panel {
+            display: none;
+            position: absolute;
+            top: auto;
+            left: 400px;
+            z-index: 99999999;
+            background-color: white;
+            max-width: 50%;
+            box-shadow: 5px 0 10px 0 rgba(38, 38, 38, .1);
+        }
+
+        .col-md-3.user-select-none.m-1.mx-5 {
+            transition: all .2s linear;
+            box-shadow: none;
+        }
+
+        .col-md-3.user-select-none.m-1.mx-5:hover {
+            box-shadow: 0 1rem 3rem rgba(var(--bs-body-color-rgb), .175) !important;
+        }
+
+        .footer {
+            box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, .06);
+            text-align: center;
+        }
+
+        .footer>ul {
+            padding: 5px;
+        }
+
+        .footer>ul>li {
+            list-style-type: none;
+            display: inline-block;
+            user-select: none;
+            cursor: pointer;
+            padding: 0 20px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            font-weight: inherit;
+            transition: all .3s linear;
+            text-shadow: none;
+        }
+
+        .footer>ul>li:hover {
+            text-shadow: rgba(200, 40, 40, .5) 0 2px 5px;
+        }
+    </style>
+</head>
+
+<body style="background-color: rgba(245, 245, 245, .5);">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white" title>
+        <a class="navbar-brand px-md-5" href="#" use-template>
+            <img src="../public/img/google.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+            {{ this.title }}
+        </a>
+        <div class="collapse navbar-collapse " id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="./">首页</a>
+                </li>
+                <li class="nav-item" @x-if="this.login!=true" use-template no-replace>
+                    <a class="nav-link" href="./login">登录</a>
+                </li>
+                <li class="nav-item" @x-if="this.login!=true" use-template no-replace>
+                    <a class="nav-link" href="./register">注册</a>
+                </li>
+                <li class="nav-item dropdown" @x-if="this.login==true" use-template no-replace>
+                    <button type="button" class="btn dropdown-toggle" @click="updateBalance" use-template>欢迎您，{{
+                        this.phone }}用户</button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/userdetail">个人信息</a></li>
+                        <li><a class="dropdown-item" href="#" use-template>余额：{{this.balance}}</a></li>
+                        <li id="other-item"><a class="dropdown-item" href="#">其他</a>
+                            <ul class="dropdown-submenu">
+                                <li @click="loginout" use-template><a class="dropdown-item text-muted user-select-none"
+                                        style="cursor: pointer;">注销</a></li>
+                                <li><a class="dropdown-item text-muted user-select-none"
+                                        style="cursor: pointer;">暂无内容</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item" @x-if="this.login==true" use-template no-replace>
+                    <a class="nav-link" href="./shopcartall" use-template>我的购物车</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link user-select-none" style="cursor: pointer;" @click="show" use-template>使用说明</a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+            <form class="form-inline my-2 my-lg-0 d-grid" style="grid-template-columns: auto 1fr;" method="get"
+                action="/shoplist">
+                <input class="form-control mr-sm-2" name="s_word" type="search" placeholder="请输入商品名称"
+                    aria-label="Search">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">搜索</button>
+            </form>
+        </div>
+    </nav>
+    <!-- 内容 -->
+    <div class="container-fluid">
+        <div class="row flex-md-row p-5 m-2">
+            <!-- 左面板 -->
+            <div class="col-md-3 bg-white p-3" id="left-panel">
+                <!-- 悬浮面板 -->
+                <div id="float-panel" class=" p-5 gap-5 row">
+                    <div class="row flex-nowrap py-4">
+                        <h5 class="d-inline w-25" style="font-weight: bold;text-wrap: nowrap;" use-template> 第{{
+                            this.index }}项测试内容</h5>
+                        <span>时尚 潮流 家用 电器 电脑 数码 母婴 育儿 美酒 佳酿 大健康 旅游 出行</span>
+                    </div>
+                    <div class="row flex-nowrap py-4">
+                        <h5 class="d-inline w-25" style="font-weight: bold;text-wrap: nowrap;" use-template> 第{{
+                            this.index }}项测试内容</h5>
+                        <span>时尚 潮流 家用 电器 电脑 数码 母婴 育儿 美酒 佳酿 大健康 旅游 出行</span>
+                    </div>
+                    <div class="row flex-nowrap py-4">
+                        <h5 class="d-inline w-25" style="font-weight: bold;text-wrap: nowrap;" use-template> 第{{
+                            this.index }}项测试内容</h5>
+                        <span>时尚 潮流 家用 电器 电脑 数码 母婴 育儿 美酒 佳酿 大健康 旅游 出行</span>
+                    </div>
+                    <div class="row flex-nowrap py-4">
+                        <h5 class="d-inline w-25" style="font-weight: bold;text-wrap: nowrap;" use-template> 第{{
+                            this.index }}项测试内容</h5>
+                        <span>时尚 潮流 家用 电器 电脑 数码 母婴 育儿 美酒 佳酿 大健康 旅游 出行</span>
+                    </div>
+                </div>
+                <ul>
+                    <li><i style="margin-right: 5px;" @use-id="icon-list" use-template></i>
+                        热门推荐
+                        <i style="margin-right: 5px;" @use-id="icon-list-right" use-template></i>
+                    </li>
+                    <li><i style="margin-right: 5px;" @use-id="icon-list" use-template></i>
+                        热门品牌
+                        <i style="margin-right: 5px;" @use-id="icon-list-right" use-template></i>
+                    </li>
+                    <li><i style="margin-right: 5px;" @use-id="icon-list" use-template></i>
+                        电脑 手机 办公
+                        <i style="margin-right: 5px;" @use-id="icon-list-right" use-template></i>
+                    </li>
+                    <li><i style="margin-right: 5px;" @use-id="icon-list" use-template></i>
+                        大家电 生活 电器
+                        <i style="margin-right: 5px;" @use-id="icon-list-right" use-template></i>
+                    </li>
+                    <li><i style="margin-right: 5px;" @use-id="icon-list" use-template></i>
+                        床垫家 纺厨具 宠物
+                        <i style="margin-right: 5px;" @use-id="icon-list-right" use-template></i>
+                    </li>
+                    <li><i style="margin-right: 5px;" @use-id="icon-list" use-template></i>
+                        服饰 运动
+                        <i style="margin-right: 5px;" @use-id="icon-list-right" use-template></i>
+                    </li>
+                    <li><i style="margin-right: 5px;" @use-id="icon-list" use-template></i>
+                        户女配饰腕表
+                        <i style="margin-right: 5px;" @use-id="icon-list-right" use-template></i>
+                    </li>
+                    <li><i style="margin-right: 5px;" @use-id="icon-list" use-template></i>
+                        奶粉 尿裤 玩模乐器
+                        <i style="margin-right: 5px;" @use-id="icon-list-right" use-template></i>
+                    </li>
+                    <li><i style="margin-right: 5px;" @use-id="icon-list" use-template></i>
+                        生鲜 酒水 粮油
+                        <i style="margin-right: 5px;" @use-id="icon-list-right" use-template></i>
+                    </li>
+                    <li><i style="margin-right: 5px;" @use-id="icon-list" use-template></i>
+                        图书 文娱 游戏 艺术
+                        <i style="margin-right: 5px;" @use-id="icon-list-right" use-template></i>
+                    </li>
+                </ul>
+            </div>
+            <!-- 轮番 -->
+            <div class="col-md-6 bg-white p-3">
+                <div id="carouselExampleIndicators" class="carousel slide">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                            class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="../public/img/w1.webp" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../public/img/w2.webp" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../public/img/w3.png" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <!-- 登录面板 -->
+            <div class="col-md-3 bg-white p-3">
+                <div class="text-center mb-2">
+                    <img class="img-fluid rounded m-1" style="width: 70px;" src="../public/img/username.png" alt="">
+                </div>
+                <div class="text-center  mb-2">
+                    <span class="user-select-none" @x-if="this.login !== true" use-template>Hi~ 登录发现更多精彩</span>
+                    <span class="user-select-none" @x-if="this.login === true" use-template>欢迎您，{{
+                        this.phone }}</span>
+                </div>
+                <div class="col-md text-md-center  mb-2">
+                    <button class="xr-btn px-5 pt-1 pb-1" @x-if="this.login !== true"
+                        @click="window.location.href='./login'" use-template>签到领奖</button>
+                    <button class="xr-btn px-5 pt-1 pb-1" @x-if="this.login === true"
+                        @click="window.location.href='./userdetail'" use-template>个人信息</button>
+                </div>
+                <div class="col-md mt-2">
+                    <img class="img-fluid rounded m-3 ms-5" style="width: 70px;" src="../public/img/hjkb.webp" alt="">
+                    <div class="col-md m-3" id="hjkb-panel">
+                        <ul>
+                            <li>京东饮水/茶吧机优惠券 满299-30、满499-50</li>
+                            <li>14点开始：京东 新品礼遇会场 定点抢24期白条免息券</li>
+                            <li>京东金融 天天领红包 最高可得5元红包</li>
+                            <li>支付宝 99积分兑换 兑麦当劳0元4块麦乐鸡</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 动态 -->
+        <div class="row m-5 bg-white p-5">
+            <div class="bg-white container">
+                <div class="row">
+                    <div class="col-md">
+                        <div class="xr-bg-div text-center row">
+                            <span>秒杀倒计时</span>
+                            <div class="num-line user-select-none">
+                                <span id="countdown1">0</span>
+                                <span class="text-center">:</span>
+                                <span id="countdown2">0</span>
+                                <span id="countdown3">0</span>
+                            </div>
+                            <span>剩余产品数量</span>
+                            <div class="num-line user-select-none">
+                                <span use-template>{{ String(Math.random())[2] }}</span>
+                                <span use-template>{{ String(Math.random())[2] }}</span>
+                                <em></em>
+                                <span use-template>{{ String(Math.random())[2] }}</span>
+                                <span use-template>{{ String(Math.random())[2] }}</span>
+                                <span use-template>{{ String(Math.random())[2] }}</span>
+                            </div>
+                            <div>
+                                <a class="xr-btn px-5 pt-1 pb-1" href="#shoplist_panel">立即购买</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="xr-bg-div text-center row">
+                            <div class="col-md text-center">
+                                <div class="fs-3 fw-bold">商品</div>
+                                <div class="fs-5">你可以分享你用过、见过或听说过的值的推荐的商品。</div>
+                                <div><button class="xr-btn px-5 pt-1 pb-1 m-2">立即分享</button></div>
+                            </div>
+                            <div class="col-md text-center">
+                                <div class="fs-3 fw-bold">品牌</div>
+                                <div class="fs-5">你可以完善已有品牌内容，也可以提报未被收录的品牌。</div>
+                                <div><button class="xr-btn px-5 pt-1 pb-1 m-2">我要提报</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 大屏面 -->
+        <div class="row m-5 bg-white p-5">
+            <div class="col-md-12 row"><img src="../public/img/xmad_s.jpg" alt=""></div>
+            <div class="col-md-12 row pt-5 user-select-none" style="cursor: pointer;" @use-id="big_item" use-template>
+            </div>
+        </div>
+        <!-- 文章 -->
+        <div class="row m-5 bg-white p-5">
+            <p class="fs-3">热门评论</p>
+            <div class="container">
+                <div class="row justify-content-center align-content-center" @use-id="a_item" use-template>
+                </div>
+            </div>
+        </div>
+        <!-- 商品列表 -->
+        <div class="row m-5 bg-white flex-column ">
+            <div class="col-md px-5">
+                <div class="p-3 flex-row">
+                    <a name="shoplist_panel"></a>
+                    <span class="fs-3">商品列表</span>
+                    <span class="">&nbsp;</span>
+                    <span class="btn text-end user-select-none" @click="console.log(123)" use-template>刷新</span>
+                    <div class="btn-group float-end">
+                        <a class="btn dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                            use-template>
+                            {{ this.select }}
+                        </a>
+                        <ul class="dropdown-menu" style="min-width: 75px;">
+                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem(全部)" use-template>全部
+                            </li>
+                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem(电脑)" use-template>电脑
+                            </li>
+                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem(手机)" use-template>手机
+                            </li>
+                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem(平板)" use-template>平板
+                            </li>
+                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem(耳机)" use-template>耳机
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="container text-center m-2" @use-id="tem_item" id="item_container" use-template>
+                </div>
+            </div>
+        </div>
+        <!-- 底部 -->
+        <div class="bg-white footer row fixed-bottom text-center justify-content-center align-content-center">
+            <ul>
+                <li type="button" class="btn" data-bs-toggle="modal" data-bs-target="#toast-m" @click="showToast"
+                    use-template>关于我们</li>
+                <li type="button" class="btn" data-bs-toggle="modal" data-bs-target="#toast-m" @click="showToast"
+                    use-template>联系我们</li>
+                <li type="button" class="btn" data-bs-toggle="modal" data-bs-target="#toast-m" @click="showToast"
+                    use-template>隐私政策</li>
+                <li type="button" class="btn" id="zfb">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-alipay" viewBox="0 0 16 16">
+                        <path
+                            d="M2.541 0H  13.5a2.551 2.551 0 0 1 2.54 2.563v8.297c-.006 0-.531-.046-2.978-.813-.412-.14-.916-.327-1.479-.536-.303-.113-.624-.232-.957-.353a12.98 12.98 0 0 0 1.325-3.373H8.822V4.649h3.831v-.634h-3.83V2.121H7.26c-.274 0-.274.273-.274.273v1.621H3.11v.634h3.875v1.136h-3.2v.634H9.99c-.227.789-.532 1.53-.894 2.202-2.013-.67-4.161-1.212-5.51-.878-.864.214-1.42.597-1.746.998-1.499 1.84-.424 4.633 2.741 4.633 1.872 0 3.675-1.053 5.072-2.787 2.08 1.008 6.37 2.738 6.387 2.745v.105A2.551 2.551 0 0 1 13.5 16H2.541A2.552 2.552 0 0 1 0 13.437V2.563A2.552 2.552 0 0 1 2.541 0Z" />
+                        <path
+                            d="M2.309 9.27c-1.22 1.073-.49 3.034 1.978 3.034 1.434 0 2.868-.925 3.994-2.406-1.602-.789-2.959-1.353-4.425-1.207-.397.04-1.14.217-1.547.58Z" />
+                    </svg>
+                    <img style="position: absolute;top: -100px;right: 41.5%;display: none;" width="100px"
+                        src="../public/img/ewm1.png">
+                </li>
+                <li type="button" class="btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-cup-hot-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M.5 6a.5.5 0 0 0-.488.608l1.652 7.434A2.5 2.5 0 0 0 4.104 16h5.792a2.5 2.5 0 0 0 2.44-1.958l.131-.59a3 3 0 0 0 1.3-5.854l.221-.99A.5.5 0 0 0 13.5 6H.5ZM13 12.5a2.01 2.01 0 0 1-.316-.025l.867-3.898A2.001 2.001 0 0 1 13 12.5Z" />
+                        <path
+                            d="m4.4.8-.003.004-.014.019a4.167 4.167 0 0 0-.204.31 2.327 2.327 0 0 0-.141.267c-.026.06-.034.092-.037.103v.004a.593.593 0 0 0 .091.248c.075.133.178.272.308.445l.01.012c.118.158.26.347.37.543.112.2.22.455.22.745 0 .188-.065.368-.119.494a3.31 3.31 0 0 1-.202.388 5.444 5.444 0 0 1-.253.382l-.018.025-.005.008-.002.002A.5.5 0 0 1 3.6 4.2l.003-.004.014-.019a4.149 4.149 0 0 0 .204-.31 2.06 2.06 0 0 0 .141-.267c.026-.06.034-.092.037-.103a.593.593 0 0 0-.09-.252A4.334 4.334 0 0 0 3.6 2.8l-.01-.012a5.099 5.099 0 0 1-.37-.543A1.53 1.53 0 0 1 3 1.5c0-.188.065-.368.119-.494.059-.138.134-.274.202-.388a5.446 5.446 0 0 1 .253-.382l.025-.035A.5.5 0 0 1 4.4.8Zm3 0-.003.004-.014.019a4.167 4.167 0 0 0-.204.31 2.327 2.327 0 0 0-.141.267c-.026.06-.034.092-.037.103v.004a.593.593 0 0 0 .091.248c.075.133.178.272.308.445l.01.012c.118.158.26.347.37.543.112.2.22.455.22.745 0 .188-.065.368-.119.494a3.31 3.31 0 0 1-.202.388 5.444 5.444 0 0 1-.253.382l-.018.025-.005.008-.002.002A.5.5 0 0 1 6.6 4.2l.003-.004.014-.019a4.149 4.149 0 0 0 .204-.31 2.06 2.06 0 0 0 .141-.267c.026-.06.034-.092.037-.103a.593.593 0 0 0-.09-.252A4.334 4.334 0 0 0 6.6 2.8l-.01-.012a5.099 5.099 0 0 1-.37-.543A1.53 1.53 0 0 1 6 1.5c0-.188.065-.368.119-.494.059-.138.134-.274.202-.388a5.446 5.446 0 0 1 .253-.382l.025-.035A.5.5 0 0 1 7.4.8Zm3 0-.003.004-.014.019a4.077 4.077 0 0 0-.204.31 2.337 2.337 0 0 0-.141.267c-.026.06-.034.092-.037.103v.004a.593.593 0 0 0 .091.248c.075.133.178.272.308.445l.01.012c.118.158.26.347.37.543.112.2.22.455.22.745 0 .188-.065.368-.119.494a3.198 3.198 0 0 1-.202.388 5.385 5.385 0 0 1-.252.382l-.019.025-.005.008-.002.002A.5.5 0 0 1 9.6 4.2l.003-.004.014-.019a4.149 4.149 0 0 0 .204-.31 2.06 2.06 0 0 0 .141-.267c.026-.06.034-.092.037-.103a.593.593 0 0 0-.09-.252A4.334 4.334 0 0 0 9.6 2.8l-.01-.012a5.099 5.099 0 0 1-.37-.543A1.53 1.53 0 0 1 9 1.5c0-.188.065-.368.119-.494.059-.138.134-.274.202-.388a5.446 5.446 0 0 1 .253-.382l.025-.035A.5.5 0 0 1 10.4.8Z" />
+                    </svg>
+                </li>
+                <li type="button" class="btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-envelope-check-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.026A2 2 0 0 0 2 14h6.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586l-1.239-.757ZM16 4.697v4.974A4.491 4.491 0 0 0 12.5 8a4.49 4.49 0 0 0-1.965.45l-.338-.207L16 4.697Z" />
+                        <path
+                            d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />
+                    </svg>
+                </li>
+                <li type="button" class="btn">
+                    <img class="img-thumbnail" style="position: absolute;top: -60px;right: 15%;" width="80px"
+                        src="../public/img/ewm.png">
+                    <span style="position: absolute;right: 14.4%;">扫描下载APP</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 模板 -->
+    <template @tmp-id="icon-list">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-alexa"
+            viewBox="0 0 16 16">
+            <path
+                d="M7.996 0A7.998 7.998 0 0 0 0 8a8 8 0 0 0 6.93 7.93v-1.613a1.06 1.06 0 0 0-.717-1.008A5.602 5.602 0 0 1 2.4 7.865 5.579 5.579 0 0 1 8.054 2.4a5.599 5.599 0 0 1 5.535 5.81l-.002.046a6.116 6.116 0 0 1-.012.192l-.005.061a4.85 4.85 0 0 1-.033.284l-.01.068c-.685 4.516-6.564 7.054-6.596 7.068A7.998 7.998 0 0 0 15.992 8 7.998 7.998 0 0 0 7.996.001Z" />
+        </svg>
+    </template>
+    <template @tmp-id="icon-list-right">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+        </svg>
+    </template>
+    <template @tmp-id="icon1">
+        <svg class="svg-icon" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+            <path stroke-width="2" stroke="#7fe0ed"
+                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
+        </svg>
+    </template>
+    <template @tmp-id="tem_item" @x-for="item in this.reslist" no-run>
+        <div class="col-md-3 xr-card" style="cursor: pointer;" id="card-xr-ani">
+            <div class="card card-new-xr">
+                <div class="flex-column justify-content-center align-items-center text-center">
+                    <img src="../public/img/shopItem/$item.p_img1" class="card-img-top m-4"
+                        style="width: 150px;height: 150px;" use-template>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" use-template> {{ $item.p_name}} </h5>
+                    <p class="card-text" style="line-height: 20px;max-height: 100px;min-height: 100px;" use-template>{{
+                        $item.p_present }}
+                    </p>
+                    <div>
+                        <span>设备分类：</span>
+                        <a @x-if="$item.p_type==='ad-product-computer'" use-template no-replace>电脑</a>
+                        <a @x-else-if="$item.p_type==='ad-product-phone'" use-template no-replace>手机</a>
+                        <a @x-else-if="$item.p_type==='ad-product-ear'" use-template no-replace>耳机</a>
+                        <a @x-else-if="$item.p_type==='ad-product-pad'" use-template no-replace>平板</a>
+                        <br>
+                        <a @x-if="this.login===true" use-template no-replace> 已加入购物车数量： {{ this.resnum[$item.p_id] || 0
+                            }}</a>
+                    </div>
+                    <div class="p-4">
+                        ￥ <a class="text-decoration-line-through" style="color: red;" use-template> {{ $item.p_price2 }}
+                        </a>
+                        <a style="font-weight: bold;color: red;" use-template>{{ $item.p_price1 }}</a> 元
+                    </div>
+                    <a class="btn mt-3 px-3 border-dark-subtle" @x-if="this.login===true" index="$item.p_id"
+                        @click="add_shopcart" use-template>加入购物车</a>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template @tmp-id="a_item" @x-for="item in this.a_item">
+        <div class="col-md-3 user-select-none m-1 mx-5 p-5" style="cursor: pointer;">
+            <div class="col-md">
+                <div><img class="img-thumbnail rounded border" src="$item.img" use-template></div>
+            </div>
+            <span class="col-md w-50" style="font-size: 14px;" use-template>
+                {{$item.desc}}</span>
+            <div class="col-md text-secondary my-3" style="font-size: 10px;" use-template>{{$item.with}}</div>
+            <div class="col-md"><span use-template>{{$item.name}}</span><i class="text-secondary"> | </i><span
+                    class="fw-bold" style="color:darkorange;" use-template>{{$item.price}}</span></div>
+        </div>
+    </template>
+    <template @tmp-id="big_item" @x-for="(index,item) in this.big_item">
+        <span class="col-md-3 xr-big-screen" use-template>
+            <svg class="mx-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-credit-card-2-front" viewBox="0 0 16 16" @x-if="$index == 0" use-template>
+                <path
+                    d="M14 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z" />
+                <path
+                    d="M2 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z" />
+            </svg>
+            <svg class="mx-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope"
+                viewBox="0 0 16 16" @x-if="$index == 1" use-template>
+                <path
+                    d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+            </svg>
+            <svg class="mx-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder"
+                viewBox="0 0 16 16" @x-if="$index == 2" use-template>
+                <path
+                    d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z" />
+            </svg>
+            <svg class="mx-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house"
+                viewBox="0 0 16 16"  @x-if="$index == 3" use-template>
+                <path fill-rule="evenodd"
+                    d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207l-5-5-5 5V13.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7.207Z" />
+            </svg>
+            {{$item}}
+        </span>
+    </template>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="../public/img/google.png" class="rounded me-2 " width="32px" alt="...">
+                <strong class="me-auto">徐然提示您</strong>
+                <small>11 mins ago</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" use-template>
+                {{ this.message }} {{ this.arr[Math.floor(Math.random() * this.arr.length)] }}
+            </div>
+        </div>
+        <div id="showToast" class="toast bg-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="../public/img/google.png" class="rounded me-2 " width="32px" alt="...">
+                <strong class="me-auto">徐然提示您</strong>
+                <small>now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" use-template>
+                {{ this.res_add }}
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade " id="toast-m" tabindex="-100000000" aria-labelledby="title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../public/js/jq.js"></script>
+    <script src="../public/js/bootstrap.bundle.min.js"></script>
+    <script src="../public/js/xr.js"></script>
+    <script>
+        // 获取倒计时结束时间点（当前时间点 + 24小时）
+        const targetTime = new Date().getTime() + 24 * 60 * 60 * 1000;
+        function calc_time() {
+            // 获取距离倒计时结束还剩余的毫秒数
+            const remainingTime = targetTime - new Date().getTime();
+            // 计算剩余时间的小时、分钟和秒数
+            const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
+            const seconds = Math.floor((remainingTime / 1000) % 60);
+            // 将计算结果显示在页面上
+            document.getElementById('countdown1').innerHTML = `${hours}`;
+            document.getElementById('countdown2').innerHTML = `${minutes}`;
+            document.getElementById('countdown3').innerHTML = ` ${seconds}`;
+        }
+        calc_time()
+        setInterval(function () {
+            calc_time()
+        }, 1000);
+    </script>
+    <script>
+        // 创建全局模板
+        const app = new Template({
+            data() {
+                return {
+                    title: "爱购物",
+                    index: 0,
+                    balance: 0,
+                    message: "这将会是一个随机的内容：",
+                    arr: ["随机值1", "是随机2", "还是随机3"],
+                    a_item: [
+                        {
+                            img: "../public/img/xmad_15603254311846_Kxrnd.jpg",
+                            desc: "比想象中还有质感，体验了一下，非常非常满意，支持小米，越来越棒了！！！",
+                            with: "来自于 我的六个木 的评价",
+                            name: "米家走步机",
+                            price: "1999元"
+                        },
+                        {
+                            img: "../public/img/xmad_15603256677764_hqIlu.jpg",
+                            desc: "收到净水机后，马上就安排了安装，实在是难以表达内心的激动。首先作为一个米粉看到家里又添置一件小米的设...",
+                            with: "来自于 DEVIL 的评价",
+                            name: "小米净水器600G",
+                            price: "1999元"
+                        },
+                        {
+                            img: "../public/img/xmad_15603259571867_NGpLV.jpg",
+                            desc: "准确率很高，很轻巧，非常不错的充气泵，值得拥有!",
+                            with: "来自于 陆林楠 的评价",
+                            name: "米家充气宝",
+                            price: "199元"
+                        },
+                    ],
+                    big_item: ["百强企业品质保证", "7 天退货 15 天换货", "48 元起免运费", "2000 家服务店全国联保"],
+                    reslist: {},
+                    select: "全部",
+                    resnum: {},
+                }
+            },
+            methods: {
+                show() {
+                    // 每次显示更新文本
+                    const toastLiveExample = $('#liveToast')
+                    const toast = new bootstrap.Toast(toastLiveExample)
+                    app.update($(".toast-body")[0])
+                    toast.show()
+                }, loginout() {
+                    this.phone = window.sessionStorage.removeItem("phone")
+                    this.token = window.sessionStorage.removeItem("token")
+                    this.login = false
+                    app.update($("#navbarNav")[0])
+                    window.location.hrer = "./"
+                },
+                showToast(e) {
+                    let elem = e.target
+                    if (elem instanceof HTMLElement) {
+                        switch ($(elem).text()) {
+                            case "关于我们": {
+                                $(".modal-dialog.modal-dialog-centered").find(".modal-title.fs-5").text("关于我们")
+                                $(".modal-dialog.modal-dialog-centered").find(".modal-body").html("版本：2.0<br>徐然制作——2023.12.23")
+                                $(".modal-dialog.modal-dialog-centered").find(".btn.btn-primary").text("确定")
+                                break
+                            }
+                            case "联系我们": {
+                                $(".modal-dialog.modal-dialog-centered").find(".modal-title.fs-5").text("联系我们")
+                                $(".modal-dialog.modal-dialog-centered").find(".modal-body").html("徐然制作<br>QQ：1783558957")
+                                $(".modal-dialog.modal-dialog-centered").find(".btn.btn-primary").text("确定")
+                                break
+                            }
+                            case "隐私政策": {
+                                $(".modal-dialog.modal-dialog-centered").find(".modal-title.fs-5").text("隐私政策")
+                                $(".modal-dialog.modal-dialog-centered").find(".modal-body").html(`<div data-v-ad817de0="" class="v-card__title text-h4 my-4 mx-2">爱购物 隐私政策</div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 欢迎您访问我们的产品。 <strong data-v-ad817de0=""> 爱购物 </strong>（包括App等产品提供的服务，以下简称“产品和服务”）是由 <strong data-v-ad817de0=""> 徐然 </strong>（以下简称“我们”）开发并运营的。 确保用户的数据安全和隐私保护是我们的首要任务， 本隐私政策载明了您访问和使用我们的产品和服务时所收集的数据及其处理方式。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 请您在继续使用我们的产品前务必认真仔细阅读并确认充分理解本隐私政策全部规则和要点， 一旦您选择使用，即视为您同意本隐私政策的全部内容，同意我们按其收集和使用您的相关信息。 如您在在阅读过程中，对本政策有任何疑问，可联系我们的客服咨询， 请通过 <strong data-v-ad817de0=""> QQ1783558957 </strong>或产品中的反馈方式与我们取得联系。 如您不同意相关协议或其中的任何条款的，您应停止使用我们的产品和服务。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 本隐私政策帮助您了解以下内容： <div data-v-ad817de0="" class="mt-2">一、我们如何收集和使用您的个人信息；</div><div data-v-ad817de0="">二、我们如何存储和保护您的个人信息；</div><div data-v-ad817de0="">三、我们如何共享、转让、公开披露您的个人信息；</div><div data-v-ad817de0=""> 四、我们如何使用 Cookie 和其他追踪技术； </div><!----></div><div data-v-ad817de0="" class="ml-6 mr-2  text-h6 mb-4"> 一、我们如何收集和使用您的个人信息 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 个人信息是指以电子或者其他方式记录的能够单独或者与其他信息， 结合识别特定自然人身份或者反映特定自然人活动情况的各种信息。 我们根据《中华人民共和国网络安全法》和《信息安全技术个人信息安全规范》（GB/T 35273-2017） 以及其它相关法律法规的要求，并严格遵循正当、合法、必要的原则， 出于您使用我们提供的服务和/或产品等过程中而收集和使用您的个人信息，包括但不限于电话号码、电子邮箱地址等。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 为接受我们全面的产品服务，您应首先注册一个用户账号，我们将通过它记录相关的数据。 您所提供的所有信息均来自于您本人在注册时提供，以及我们从第三方合作伙伴获取的数据。 您准备使用的账户名、密码、您本人的联系方式， 我们可能通过发短信或者邮件的方式来验证您的身份是否有效。 </div><!----><div data-v-ad817de0="" class="ml-6 mr-2  text-h6 mb-4"> 二、我们如何存储和保护您的个人信息 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 作为一般规则，我们仅在实现信息收集目的所需的时间内保留您的个人信息。 我们会在对于管理与您之间的关系严格必要的时间内保留您的个人信息 （例如，当您开立帐户，从我们的产品获取服务时）。 出于遵守法律义务或为证明某项权利或合同满足适用的诉讼时效要求的目的， 我们可能需要在上述期限到期后保留您存档的个人信息，并且无法按您的要求删除。 <span data-v-ad817de0=""> 当您的个人信息对于我们的法定义务或法定时效对应的目的或档案不再必要时， 我们确保将其完全删除或匿名化。 </span><span data-v-ad817de0=""> 如果您确认不再使用我们的产品和服务，并按照要求主动注销了您的账户，所有信息将被完全删除。 </span></div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 我们使用符合业界标准的安全防护措施保护您提供的个人信息，并加密其中的关键数据， 防止其遭到未经授权访问、公开披露、使用、修改、损坏或丢失。我们会采取一切合理可行的措施，保护您的个人信息。 我们会使用加密技术确保数据的保密性；我们会使用受信赖的保护机制防止数据遭到恶意攻击。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 值得一提的是，为了加强对隐私数据的保护，我们在收集时就已对其进行了脱敏处理， 即使在我们自己的数据库中，也不会储存具有关联性的、明文的隐私数据。 </div><div data-v-ad817de0="" class="ml-6 mr-2  text-h6 mb-4"> 三、我们如何共享、转让、公开披露您的个人信息 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 在管理我们的日常业务活动所需要时，为追求合法利益以更好地服务客户， 我们将合规且恰当的使用您的个人信息。出于对业务和各个方面的综合考虑， 我们仅自身使用这些数据，不与任何第三方分享。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 我们可能会根据法律法规规定，或按政府主管部门的强制性要求，对外共享您的个人信息。 在符合法律法规的前提下，当我们收到上述披露信息的请求时，我们会要求必须出具与之相应的法律文件，如传票或调查函。 我们坚信，对于要求我们提供的信息，应该在法律允许的范围内尽可能保持透明。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 在以下情形中，共享、转让、公开披露您的个人信息无需事先征得您的授权同意： <div data-v-ad817de0="" class="mt-2">1、与国家安全、国防安全直接相关的；</div><div data-v-ad817de0="">2、与犯罪侦查、起诉、审判和判决执行等直接相关的；</div><div data-v-ad817de0=""> 3、出于维护您或其他个人的生命、财产等重大合法权益但又很难得到本人同意的； </div><div data-v-ad817de0="">4、您自行向社会公众公开的个人信息；</div><div data-v-ad817de0=""> 5、从合法公开披露的信息中收集个人信息的，如合法的新闻报道、政府信息公开等渠道。 </div><div data-v-ad817de0="">6、根据个人信息主体要求签订和履行合同所必需的；</div><div data-v-ad817de0=""> 7、用于维护所提供的产品或服务的安全稳定运行所必需的，例如发现、处置产品或服务的故障； </div><div data-v-ad817de0="">8、法律法规规定的其他情形。</div></div><div data-v-ad817de0="" class="ml-6 mr-2  text-h6 mb-4"> 四、我们如何使用 Cookie 和其他追踪技术 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 为确保产品正常运转，我们会在您的计算机或移动设备上存储名为 Cookie 的小数据文件。 Cookie 通常包含标识符、产品名称以及一些号码和字符。 借助于 Cookie，我们能够存储您的偏好或商品等数据，并用以判断注册用户是否已经登录， 提升服务和产品质量及优化用户体验。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 我们出于不同的目的使用各种Cookie，包括：严格必要型Cookie、性能Cookie、营销Cookie和功能Cookie。 某些Cookie可能由外部第三方提供，以向我们的产品提供其它功能。 我们不会将 Cookie 用于本政策所述目的之外的任何用途。您可根据自己的偏好管理或删除 Cookie。 您可以清除计算机上或手机中保存的所有 Cookie，大部分网络浏览器都设有阻止或禁用 Cookie 的功能， 您可对浏览器进行配置。阻止或禁用 Cookie 功能后，可能影响您使用或不能充分使用我们的产品和服务。 </div>`)
+                                $(".modal-dialog.modal-dialog-centered").find(".btn.btn-primary").text("确定")
+                                break
+                            }
+                        }
+                    }
+                }, updateBalance() {
+                    $.ajax({
+                        type: "data",
+                        method: "post",
+                        url: "/userdetail",
+                        data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
+                    }).then(data => {
+                        let arr = JSON.parse(data)
+                        if (arr.status == 1) {
+                            this.balance = arr.data[0].balance
+                        } else { this.balance = "查询失败" }
+                    })
+                },
+                update_view() {
+                    new Promise((res, rev) => { res("") }).then(async e => {
+                        return await app.callv("updatenum")
+                    }).then(e => {
+                        app.repeatupdate($("#item_container")[0], true, true)
+                        // 动画
+                        $(".card").hover(function () {
+                            $(this).find("img").css("border", "solid 1px red")
+                            // $(this).css("color","rgba(0,0,0,0.55)")
+                        }, function () {
+                            $(this).find("img").css("border", "")
+                            // $(this).css("color", "")
+                        })
+                        // 使用mouseover和out（其实用hover就可以）
+                        $(".card").mouseover(function () {
+                            $(this).css("color", "rgba(0,0,0,0.55)")
+                        })
+                        $(".card").mouseout(function () {
+                            $(this).css("color", "")
+                        })
+                    })
+                },
+                updatenum() {
+                    if (!this.login) { return }
+                    let index = 0
+                    let data = this.reslist
+                    let num_arr = {}
+                    // 获取当页购物车的数量
+                    for (let i of data) {
+                        $.ajax({
+                            type: "data",
+                            method: "post",
+                            url: "/shopcartnum",
+                            data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token"), id: i.p_id },
+                        }).then(data => {
+                            let res = JSON.parse(data)
+                            if (res.status != 0) {
+                                num_arr[i.p_id] = res.num
+                            }
+                            index++
+                        }).then(() => {
+                            if (index == data.length) {
+                                this.resnum = num_arr
+                            }
+                        })
+                    }
+                }, add_shopcart(e) {
+                    $.ajax({
+                        type: "data",
+                        method: "post",
+                        url: "/addshopcart",
+                        data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token"), id: e.srcElement.attributes["index"].nodeValue },
+                    }).then(data => {
+                        let res = JSON.parse(data)
+                        app.data.res_add = res.msg
+                        app.callv("updatenum")
+                        const toastLiveExample = $('#showToast')
+                        const toast = new bootstrap.Toast(toastLiveExample)
+                        app.update($("#showToast .toast-body")[0])
+                        toast.show()
+                    })
+                }, changeItem(type) {
+                    this.select = type || "全部"
+                    $.ajax({
+                        type: "data",
+                        method: "post",
+                        url: "/shoplist",
+                    }).then(data => {
+                        let res = JSON.parse(data)
+                        switch (this.select) {
+                            case "电脑": {
+                                app.data.reslist = res.data[0]
+                                break
+                            }
+                            case "手机": {
+                                app.data.reslist = res.data[1]
+                                break
+                            }
+                            case "平板": {
+                                app.data.reslist = res.data[2]
+                                break
+                            }
+                            case "耳机": {
+                                app.data.reslist = res.data[3]
+                                break
+                            }
+                            default: {
+                                app.data.reslist = res.all
+                                break
+                            }
+                        }
+                        app.callv("update_view")
+                    })
+                }
+            }
+        })
+        // 首次进入
+        $(document).ready(() => {
+            app.callv("changeItem")
+            $(".dropdown").mouseover(function () {
+                app.callv("updateBalance")
+                $(".dropdown-menu").show()
+            })
+            $(".dropdown").mouseleave(function () {
+                app.callv("updateBalance")
+                $(".dropdown-menu").hide()
+                $(".dropdown-submenu").hide()
+            })
+            $("#other-item").mouseover(function () {
+                $(".dropdown-submenu").show()
+            })
+            $("#other-item").mouseleave(function () {
+                $(".dropdown-submenu").hide()
+            })
+            $(".dropdown-submenu").mouseleave(function () {
+                $(this).hide()
+            })
+            // 悬浮显示
+            $("#left-panel:last").find("li").mouseover(function () {
+                $("#float-panel").show()
+                app.data.index = $(this).index()
+            })
+            $("#left-panel:last").mouseleave(function () {
+                $("#float-panel").slideUp()
+            })
+            $("#float-panel").mouseleave(function () {
+                $(this).slideUp()
+            })
+            // 底部悬浮
+            $("#zfb").hover(() => {
+                $("#zfb").find("img").show()
+            }, () => {
+                $("#zfb").find("img").hide()
+            })
+        })
+        if (window.sessionStorage.getItem("phone") && window.sessionStorage.getItem("token")) {
+            app.data.login = true
+            app.data.phone = window.sessionStorage.getItem("phone")
+            app.data.token = window.sessionStorage.getItem("token")
+        } else { app.data.login = false }
+        console.log(app)
+    </script>
+</body>
+
+</html>
