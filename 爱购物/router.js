@@ -1,6 +1,6 @@
 /*
  * @Author: xuranXYS
- * @LastEditTime: 2023-12-24 14:33:04
+ * @LastEditTime: 2023-12-29 14:29:06
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -11,10 +11,11 @@ var path = require('path');
 var fs = require('fs');
 var model = require("./model")
 var _ = require("underscore")
-var formidable = require("formidable")
+var formidable = require("formidable");
+const { XPreprocessor } = require("./cssprocesser");
 
 module.exports = function (req, res) {
-    var urlObj = url.parse(req.url)
+    var urlObj = url.parse(req.url, true)
     var pathname = urlObj.pathname
     var method = req.method.toLowerCase()
     // 展示首页
@@ -31,6 +32,21 @@ module.exports = function (req, res) {
         fs.readFile(path.join(__dirname, pathname), function (err, data) {
             if (err) {
                 return res.end(err.message)
+            }
+            // 解析css
+            if (pathname.endsWith("css")) {
+                let sdata = data.toString()
+                if ((/s*(:xr)\s*\n*/.test(sdata))) {
+                    sdata = sdata.replace(/s*(:xr)\s*\n*/, "")
+                    // 开始处理
+                    const beforetime = new Date().getTime()
+                    const preprocessor = new XPreprocessor()
+                    let _data = preprocessor.process(sdata)
+                    const aftertime = new Date().getTime() - beforetime
+                    let ss = `/*\n 时间：${new Date().toLocaleDateString()} \n 预编译时间:  ${aftertime} ms  \n*/\n`
+                    // 将全部编译的内容添加
+                    data = ss + _data
+                }
             }
             res.end(data)
         })
@@ -54,19 +70,19 @@ module.exports = function (req, res) {
             if (err) { return res.end(err.message) }
             var phone = fileds.phone
             var password = fileds.password
-            // 测试数据
-            // console.log(phone + "——" + password)
             model.findPhone(phone, function (err, results) {
                 // 接受到以数组-(数组(不同的查询结果)>对象形式)的数据类型序列 
-                // console.log(results);
-                if (err) { console.error(err); return }
+                let obj = { status: 0 }
+                if (err) { obj.msg = err; return res.end(JSON.stringify(obj)) }
                 if (results.length == 0) {
-                    res.writeHead(200, { 'Content-Type': 'text/html;charset=utf8' })
-                    res.end("<script>alert('电话号码未注册');window.location.href='/login'</script>");
+                    obj.msg = "电话号码未注册"
+                    obj.target = "/login"
+                    res.end(JSON.stringify(obj));
                 } else {
                     if (results[0].password != password) {
-                        res.writeHead(200, { 'Content-Type': 'text/html;charset=utf8' })
-                        res.end("<script>alert('密码不正确，请重新输入！');window.location.href='/login'</script>");
+                        obj.msg = "密码不正确，请重新输入！"
+                        obj.target = "/login"
+                        res.end(JSON.stringify(obj));
                     } else {
                         let d_key = model.crypto.randomBytes(32) // 创建动态key
                         model.query("select * from token_list where phone ='" + fileds.phone + "';", (err, keys) => {
@@ -86,8 +102,12 @@ module.exports = function (req, res) {
                                 let sql = `insert into token_list(phone,token,\`key\`,s_key,expire) values ${str_concat}`
                                 model.query(sql)
                             }
-                            res.writeHead(200, { 'Content-Type': 'text/html;charset=utf8' })
-                            res.end(`<script>window.sessionStorage.setItem("phone",'${phone}');window.sessionStorage.setItem("token",'${token}');alert('登录成功！');window.location.href='/'</script>`);
+                            obj.status = 1
+                            obj.msg = "登录成功！"
+                            obj.target = "/"
+                            obj.token = token
+                            obj.phone = phone[0]
+                            res.end(JSON.stringify(obj));
                             return
                         })
                     }
@@ -105,28 +125,28 @@ module.exports = function (req, res) {
         var form = new formidable.IncomingForm()
         form.parse(req, function (err, fileds, files) {
             if (err) { return res.end(err.message) }
-            var phone = fileds.phone
-            var password = fileds.password
-            var nickname = fileds.nickname
-            // 测试数据
-            //打印结果：电话： 135H112222 ；用户名：哈哈；密码： 123456
-            // console.log('电话：' + phone + ' ；用户名：' + nickname + ' 密码：' + password)
+            var phone = fileds.phone || 0
+            var password = fileds.password || 0
+            var nickname = fileds.nickname || 0
             // 检测电话唯一
             model.findPhone(phone, function (err, results) {
                 // 接受到以数组-(数组(不同的查询结果)>对象形式)的数据类型序列 
-                // console.log(results);
-                if (err) { console.error(err); return res.end(err) }
+                let obj = { status: 0 }
+                if (err) { console.error(err); obj.msg = err; return res.end(JSON.stringify(obj)) }
                 if (results.length == 0) {
                     // 提交
                     model.doReg(phone, nickname, password, function (err, results2) {
-                        if (err) { console.error(err); return res.end(err) }
-                        res.writeHead(200, { 'Content-Type': 'text/html;charset=utf8' })
-                        res.end("<script>alert('注册成功，前去登录！');window.location.href='/login'</script>");
+                        if (err) { console.error(err); obj.msg = err; return res.end(JSON.stringify(obj)) }
+                        obj.status = 1
+                        obj.msg = "注册成功，前去登录！"
+                        obj.target = "/login"
+                        res.end(JSON.stringify(obj));
                     })
                     return
                 }
-                res.writeHead(200, { 'Content-Type': 'text/html;charset=utf8' })
-                res.end("<script>alert('此电话号码已经注册了，请重新输入！');window.location.href='/register'</script>");
+                obj.msg = "此电话号码已经注册了，请重新输入！"
+                obj.target = "/register"
+                res.end(JSON.stringify(obj));
                 // endPhone
             })
             // endParse
@@ -373,10 +393,28 @@ module.exports = function (req, res) {
             })
         })
     } else {
-        console.warn("此资源文件不确定：",pathname,method)
         fs.readFile(path.join(__dirname, pathname), function (err, data) {
             if (err) {
+                console.warn("此资源文件未知（可能不存在）：", pathname, method)
                 return res.end(err.message)
+            }
+            // 解析css
+            if (pathname.endsWith("css")) {
+                let sdata = data.toString()
+                if ((/s*(:xr)\s*\n*/.test(sdata))) {
+                    sdata = sdata.replace(/s*(:xr)\s*\n*/, "")
+                    // 开始处理
+                    const beforetime = new Date().getTime()
+                    const preprocessor = new XPreprocessor()
+                    let _data = preprocessor.process(sdata)
+                    const aftertime = new Date().getTime() - beforetime
+                    let ss = `/*\n 时间：${new Date().toLocaleDateString()} \n 预编译时间:  ${aftertime} ms  \n*/\n`
+                    // 将全部编译的内容添加
+                    data = ss + _data
+                }
+            }
+            if (data?.byteLength > 0) {
+                console.warn("此资源文件不确定：", pathname, method)
             }
             res.end(data)
         })

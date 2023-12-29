@@ -1,6 +1,6 @@
 <!--
  * @Author: xuranXYS
- * @LastEditTime: 2023-12-25 09:28:31
+ * @LastEditTime: 2023-12-29 08:57:16
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -13,186 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <title use-template>{{ this.title }}</title>
-    <csspre style="display: none;">
-        //@skip 配置常规变量
-        $img_w : 30px;
-        $img_h : 30px;
-        $img_le_w : 500px;
-        $meida-limit : 980px;
-        $color : #232a3f;
-        //@skip 配置图片混合
-        @mix img-width{
-        width: $img_w;
-        height: $img_h;
-        }
-        @mix img-wdith-a{
-        width: 73px;
-        height: 53px;
-        }
-        body {
-        overflow-x : hidden;
-        }
-        * {
-        font-weight: 100;
-        }
-    </csspre>
-    <csspre style="display: none;">
-        // 滚动条
-        ::-webkit-scrollbar {
-        width: 0;
-        }
-
-        // 开始
-        .xr-card {
-        display: inline-block;
-        padding: 10px;
-        }
-
-        .xr-icon {
-        text-align: center;
-        padding: 5px;
-        }
-
-        .d-inline-block.align-text-top {
-        @include img-width;
-        }
-
-        #title-container {
-        padding: 20px;
-        }
-
-        #title-ws {
-        top: 30%;
-        }
-
-        .img-xr {
-        @include img-width;
-        padding: 5px;
-        }
-
-        .img-left-xr {
-        width: $img_le_w;
-        }
-
-        div[class=position-absolute]:has(.img-left-xr) {
-        right: 20%;
-        top: 200px;
-        text-align: right;
-        }
-
-        .btn-group-xr {
-        padding-top: 70px;
-        gap: 10px;
-        }
-
-        .btn-style-xr {
-        border: solid 1px #6a99ff;
-        color: #6a99ff;
-        border-radius: 20px;
-        font-weight: bold;
-        padding: 10px 30px 10px 30px;
-        background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-style-xr-b {
-        color: rgba(255, 255, 255, 1);
-        border-radius: 20px;
-        font-weight: bold;
-        padding: 10px 30px 10px 30px;
-        background-color: #6a99ff;
-        }
-
-        #background-svg {
-        width: 100%;
-        opacity: 0.15;
-        top: 200px;
-        position: absolute;
-        z-index: -10;
-        }
-        #dynamic-last {
-        grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        .xr-login-icon {
-        width: 300px;
-        }
-
-        .login-container {
-        box-shadow: 0 0 50px 5px rgba(200, 200, 200, .3);
-        }
-
-        .dropdown-submenu {
-        display : none;
-        position: absolute;
-        left : 100%;
-        top : calc(40%);
-        background-color: var(--bs-dropdown-bg);
-        background-clip: padding-box;
-        border: var(--bs-dropdown-border-width) solid var(--bs-dropdown-border-color);
-        border-left: 0;
-        }
-        .dropdown-submenu > a:after {
-        display: block;
-        content: " ";
-        float: right;
-        width: 0;
-        height: 0;
-        border-color: transparent;
-        border-style: solid;
-        border-width: 5px 0 5px 5px;
-        border-left-color: #ccc;
-        margin-top: 5px;
-        margin-right: -10px;
-        }
-        .dropdown-submenu > li {
-        list-style-type : none;
-        }
-
-        @media (min-width: $meida-limit) {
-        div[class=position-absolute]:has(.img-left-xr) {
-        right: 100px;
-        top: 200px;
-        }
-
-        #background-svg {
-        width: 100%;
-        top: 300px;
-        }
-
-        #dynamic-last {
-        grid-template-columns: 1fr 1fr 1fr;
-        }
-        }
-
-        @media (max-width: $meida-limit) {
-        #background-svg {
-        top: 350px;
-        }
-
-        div[class=position-absolute]:has(.img-left-xr) {
-        right: 0px;
-        top: 200px;
-        }
-
-        .img-left-xr {
-        display: none;
-        }
-
-        #dynamic-last {
-        grid-template-columns: 1fr 1fr;
-        }
-        }
-
-        @media (max-width: 700px) {
-        #background-svg {
-        top: 500px;
-        }
-
-        #dynamic-last {
-        grid-template-columns: auto;
-        }
-        }
-    </csspre>
+    <link rel="stylesheet" href="../public/css/xr.css">
 </head>
 
 <body>
@@ -284,14 +105,21 @@
                             验证区域
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="check">验证码</label>
-                        <input type="text" class="form-control p-3 m-3" style="width: 70%;display: inline-block;"
-                            id="check" placeholder="请输入验证码" maxlength="4" required>
-                        <div style="display: inline-block;font-weight: bold;" class="user-select-none text-center"
-                            id="showy" @click="createCheck" use-template>验证码</div>
-                        <div id="codev" class="text-end valid-feedback">
-                            验证区域
+                    <div class="form-group row">
+                        <div class="col-md-2 row text-center justify-content-center align-content-center">
+                            <label for="check">验证码</label>
+                        </div>
+                        <div class="col-md ">
+                            <input type="text" class="form-control p-3 m-3"
+                                id="check" placeholder="请输入验证码" maxlength="4" required>
+                        </div>
+                        <div class="col-md-2 row  align-content-center">
+                            <canvas id="showx" width="100" height="46" @click="createCheck" use-template style="cursor: pointer;"></canvas>
+                        </div>
+                        <div class="col-md-12">
+                            <div id="codev" class="text-end valid-feedback">
+                                验证区域
+                            </div>
                         </div>
                     </div>
                     <div class="form-group text-center ">
@@ -305,27 +133,23 @@
         </div>
     </div>
     <!-- 模板 -->
-    <template @tmp-id="line1" @x-for="item in this.list">
-        <span class="pt-md-2 pb-md-2 p-2 show-span" use-template><img class="rounded mx-auto img-xr"
-                src="../public/img/banner_icon_safe@2x.png" alt="">{{ $item.title }}</span>
-    </template>
-    <template @tmp-id="icon1">
-        <svg class="svg-icon" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-            <path stroke-width="2" stroke="#7fe0ed"
-                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
-        </svg>
-    </template>
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <img src="../public/img/google.png" class="rounded me-2 " width="32px" alt="...">
-                <strong class="me-auto">徐然提示您</strong>
+                <strong class="me-auto">XYS提示您</strong>
                 <small>11 mins ago</small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body" use-template>
                 {{ this.message }} {{ this.arr[Math.floor(Math.random() * this.arr.length)] }}
             </div>
+        </div>
+    </div>
+    <div id="overlay">
+        <div class="popup">
+            <p class="popup_title"></p>
+            <p class="popup_content"></p>
         </div>
     </div>
     <script src="../public/js/jq.js"></script>
@@ -359,8 +183,48 @@
                     window.location.hrer = "./"
                 },
                 createCheck() {
+                    const randomNum = (min, max) => {
+                        return Math.floor(Math.random() * (max - min) + min)
+                    }
+                    const randomRGBColor = (minColor, maxColor, op = 1) => {
+                        return `rgba(${randomNum(minColor, maxColor)},${randomNum(minColor, maxColor)},${randomNum(minColor, maxColor)}, ${op})`
+                    }
                     this.code = Math.random().toString(32).padEnd(4, 0).substring(2, 6)
-                    $("#showy").html(this.code)
+                    let canvas = document.getElementById("showx")
+                    const width = 100
+                    const height = 46
+                    let ctx = canvas.getContext("2d")
+                    // 清空
+                    canvas.width = width
+                    canvas.height = height
+                    // 绘制背景
+                    let color = randomRGBColor(140, 240);
+                    ctx.fillStyle = color
+                    ctx.fillRect(0, 0, width, height);
+                    // 绘制验证码
+                    color = randomRGBColor(30, 140);
+                    ctx.fillStyle = color;
+                    ctx.font = "30px sans-serif"
+                    ctx.fillText(this.code, 10, height / 1.5)
+                    // 绘制点遮挡
+                    color = randomRGBColor(30, 140);
+                    ctx.fillStyle = color;
+                    ctx.font = "2px sans-serif"
+                    for (let i = 0; i < 100; i++) {
+                        let x = randomNum(0, width)
+                        let y = randomNum(0, height)
+                        ctx.fillRect(x, y, 2, 2)
+                    }
+                    // 绘制线遮挡
+                    ctx.font = "2px sans-serif"
+                    for (let i = 0; i < 30; i++) {
+                        color = randomRGBColor(30, 140, Math.random());
+                        ctx.fillStyle = color;
+                        let x = randomNum(0, width)
+                        let y = randomNum(0, height)
+                        ctx.rotate(Math.PI * 180 + randomNum(-360, 360))
+                        ctx.fillRect(0, y, width, 2)
+                    }
                 }, updateBalance() {
                     $.ajax({
                         type: "data",
@@ -423,12 +287,13 @@
             let content1 = $("#pass_re").val()
             let divs = $("#pass_rev")
             divs.html("").show().parent().addClass("was-validated").removeClass("invalid-feedback valid-feedback")
-            if (content != content1) {
+            if ((content.length == 0 || content1.length == 0) || content != content1) {
                 divs.addClass("invalid-feedback").html("两次密码不一致")
+                console.log(divs)
                 $("#pass_re")[0].setCustomValidity("两次密码不一致")
                 return false
             }
-            $("#pass_rev")[0].setCustomValidity("")
+            $("#pass_re")[0].setCustomValidity("")
             divs.addClass("valid-feedback")
             return true
         }
@@ -436,7 +301,7 @@
             let content = $("#check").val()
             let reg = /^[0-9a-zA-Z]{4}$/g
             let divs = $("#codev")
-            divs.html("").show().parent().addClass("was-validated").removeClass("invalid-feedback valid-feedback")
+            divs.html("").show().parent().parent().addClass("was-validated").removeClass("invalid-feedback valid-feedback")
             if (!reg.test(content)) {
                 divs.addClass("invalid-feedback").html("验证码输入错误")
                 $("#check")[0].setCustomValidity("验证码输入错误")
@@ -451,17 +316,45 @@
             $("#phone").blur(checkPhone)
             $("#user").blur(checkUser)
             $("#pass").blur(checkPass)
+            $("#pass")[0].addEventListener("input",e => $("#pass_re").val().length > 0 ? checkRePass() : false)
             $("#pass_re").blur(checkRePass)
             $("#check").blur(checkCheck)
             $("button[type=submit]").click((e) => {
+                e.preventDefault()
                 if (checkCheck()) {
                     if (checkUser() && checkPass() && checkRePass() && checkPhone()) {
+                        $.ajax({
+                            url: "/register",
+                            method: "post",
+                            data: {  nickname : $("#user").val(), 
+                            phone: $("#phone").val(), password: $("#pass").val() },
+                        }).then(data => {
+                            let obj = JSON.parse(data)
+                            const overlay = $("#overlay");
+                            if (obj.status == 1) {
+                                // 成功
+                                overlay.find(".popup_title").html("提示")
+                                overlay.find(".popup_content").html(`<b style='color:green'>${obj.msg}</b>`)
+                                window.sessionStorage.setItem("phone",obj.phone)
+                                window.sessionStorage.setItem("token",obj.token)
+                            } else {
+                                // 失败
+                                overlay.find(".popup_title").html("提示")
+                                overlay.find(".popup_content").html(`<b style='color:red'>${obj.msg}</b>`)
+                            }
+                            overlay.show()
+                            setTimeout(()=>{
+                                window.location.href = obj.target
+                            },1000)
+                        })
                     } else {
                         alert("信息填写错误")
+                        app.callv("createCheck")
                         return false
                     }
                 } else {
                     alert("验证码错误")
+                    app.callv("createCheck")
                     return false
                 }
             })

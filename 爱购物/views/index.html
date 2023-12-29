@@ -1,6 +1,6 @@
 <!--
  * @Author: xuranXYS
- * @LastEditTime: 2023-12-25 10:14:57
+ * @LastEditTime: 2023-12-29 14:30:06
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -12,218 +12,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/css/xr.css">
     <title use-template>{{ this.title }}</title>
-    <csspre style="display: none;">
-        //@skip 配置常规变量
-        $img_w : 30px;
-        $img_h : 30px;
-        $img_le_w : 500px;
-        $meida-limit : 980px;
-        $color : #232a3f;
-        //@skip 配置图片混合
-        @mix img-width{
-        width: $img_w;
-        height: $img_h;
-        }
-        @mix img-wdith-a{
-        width: 73px;
-        height: 53px;
-        }
-        body {
-        overflow-x : hidden;
-        }
-        * {
-        font-weight: 100;
-        }
-    </csspre>
-    <csspre style="display: none;">
-        // 滚动条
-        ::-webkit-scrollbar {
-        width: 0;
-        }
-
-        // 开始
-        .xr-card {
-        display: inline-block;
-        padding: 10px;
-        }
-
-        .xr-icon {
-        text-align: center;
-        padding: 5px;
-        }
-
-        .d-inline-block.align-text-top {
-        @include img-width;
-        }
-
-        #title-container {
-        padding: 20px;
-        }
-
-        #title-ws {
-        top: 30%;
-        }
-
-        .img-xr {
-        @include img-width;
-        padding: 5px;
-        }
-
-        .img-left-xr {
-        width: $img_le_w;
-        }
-
-        div[class=position-absolute]:has(.img-left-xr) {
-        right: 20%;
-        top: 200px;
-        text-align: right;
-        }
-
-        .btn-group-xr {
-        padding-top: 70px;
-        gap: 10px;
-        }
-
-        .btn-style-xr {
-        border: solid 1px #6a99ff;
-        color: #6a99ff;
-        border-radius: 20px;
-        font-weight: bold;
-        padding: 10px 30px 10px 30px;
-        background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-style-xr-b {
-        color: rgba(255, 255, 255, 1);
-        border-radius: 20px;
-        font-weight: bold;
-        padding: 10px 30px 10px 30px;
-        background-color: #6a99ff;
-        }
-
-        #background-svg {
-        width: 100%;
-        opacity: 0.15;
-        top: 200px;
-        position: absolute;
-        z-index: -10;
-        }
-
-        .xr-content {
-        width: 100%;
-        top: 100%;
-        }
-
-        #dynamic-last {
-        grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        .xr-login-icon {
-        width: 300px;
-        }
-
-        .login-container {
-        box-shadow: 0 0 50px 5px rgba(200, 200, 200, .3);
-        }
-
-        .dropdown-submenu {
-        display : none;
-        position: absolute;
-        left : 100%;
-        top : calc(40%);
-        background-color: var(--bs-dropdown-bg);
-        background-clip: padding-box;
-        border: var(--bs-dropdown-border-width) solid var(--bs-dropdown-border-color);
-        border-left: 0;
-        }
-        .dropdown-submenu > a:after {
-        display: block;
-        content: " ";
-        float: right;
-        width: 0;
-        height: 0;
-        border-color: transparent;
-        border-style: solid;
-        border-width: 5px 0 5px 5px;
-        border-left-color: #ccc;
-        margin-top: 5px;
-        margin-right: -10px;
-        }
-        .dropdown-submenu > li {
-        list-style-type : none;
-        }
-
-        @media (min-width: $meida-limit) {
-        div[class=position-absolute]:has(.img-left-xr) {
-        right: 100px;
-        top: 200px;
-        }
-
-        #background-svg {
-        width: 100%;
-        top: 300px;
-        }
-
-        #dynamic-last {
-        grid-template-columns: 1fr 1fr 1fr;
-        }
-        }
-
-        @media (max-width: $meida-limit) {
-        #background-svg {
-        top: 350px;
-        }
-
-        div[class=position-absolute]:has(.img-left-xr) {
-        right: 0px;
-        top: 200px;
-        }
-
-        .img-left-xr {
-        display: none;
-        }
-
-        #dynamic-last {
-        grid-template-columns: 1fr 1fr;
-        }
-        }
-
-        @media (max-width: 700px) {
-        #background-svg {
-        top: 500px;
-        }
-
-        #dynamic-last {
-        grid-template-columns: auto;
-        }
-        }
-    </csspre>
     <style>
-        .xr-btn {
-            box-shadow: 0 2px 5px 0 rgba(230, 40, 40, .3);
-            background-color: red;
-            color: white;
-            border: none;
-            text-decoration: none;
-        }
-        .xr-big-screen {
-            transition: all .15s linear;
-        }
-
-        .xr-big-screen:hover {
-            color: darkgrey;
-        }
-
-        .card-new-xr {
-            border: solid 1px rgba(200, 200, 200, .3);
-        }
-
-        #card-xr-ani {
-            animation: show .8s linear;
-            transition: all .8s linear;
-        }
-
         .card-img-top.m-4 {
             transition: all .3s linear;
         }
@@ -232,14 +23,9 @@
             scale: 1.1;
         }
 
-        .xr-bg-div {
-            background: #fff url(../public/img/share-bg.png) no-repeat;
-            position: static;
-            background-size: 100%;
-            height: 330px;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
+
+        .card-new-xr:hover {
+            box-shadow: var(--bs-box-shadow-sm);
         }
 
         .num-line {
@@ -309,7 +95,7 @@
             position: absolute;
             top: auto;
             left: 400px;
-            z-index: 99999999;
+            z-index: 2;
             background-color: white;
             max-width: 50%;
             box-shadow: 5px 0 10px 0 rgba(38, 38, 38, .1);
@@ -322,6 +108,31 @@
 
         .col-md-3.user-select-none.m-1.mx-5:hover {
             box-shadow: 0 1rem 3rem rgba(var(--bs-body-color-rgb), .175) !important;
+        }
+
+        /* 下文章 */
+        .b-ul {
+            padding: 5px;
+            margin: 10px;
+        }
+
+        .b-ul .text-select {
+            box-shadow: none;
+            transition: all .3s linear;
+            border-bottom: solid 2px rgba(152, 112, 112, .1);
+        }
+        .b-ul>span:nth-child(n)>div>div{
+            overflow: hidden;
+        }
+        .text-line {
+            display:block;
+            border-bottom: solid 2px rgba(152, 112, 112, .1);
+            left : -200px;
+            transition: all .3s linear;
+        }
+        .b-ul:hover .text-line {
+            left: 0;
+            border-bottom: solid 2px rgba(255, 0, 0, 1);
         }
 
         .footer {
@@ -386,7 +197,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item" @x-if="this.login==true" use-template no-replace>
+                <li class="nav-item shopcart_pos" @x-if="this.login==true" use-template no-replace>
                     <a class="nav-link" href="./shopcartall" use-template>我的购物车</a>
                 </li>
                 <li class="nav-item">
@@ -568,12 +379,12 @@
                         <div class="xr-bg-div text-center row">
                             <div class="col-md text-center">
                                 <div class="fs-3 fw-bold">商品</div>
-                                <div class="fs-5">你可以分享你用过、见过或听说过的值的推荐的商品。</div>
+                                <div class="text-center p-2">你可以分享你用过、见过或听说过的值的推荐的商品。</div>
                                 <div><button class="xr-btn px-5 pt-1 pb-1 m-2">立即分享</button></div>
                             </div>
                             <div class="col-md text-center">
                                 <div class="fs-3 fw-bold">品牌</div>
-                                <div class="fs-5">你可以完善已有品牌内容，也可以提报未被收录的品牌。</div>
+                                <div class="text-center p-2">你可以完善已有品牌内容，也可以提报未被收录的品牌。</div>
                                 <div><button class="xr-btn px-5 pt-1 pb-1 m-2">我要提报</button></div>
                             </div>
                         </div>
@@ -594,6 +405,11 @@
                 <div class="row justify-content-center align-content-center" @use-id="a_item" use-template>
                 </div>
             </div>
+        </div>
+        <!-- 下文章 -->
+        <div class="row m-5 bg-white p-5">
+            <ul @use-id="ul_bottom" class="list-group row flex-row" use-template>
+            </ul>
         </div>
         <!-- 商品列表 -->
         <div class="row m-5 bg-white flex-column ">
@@ -689,12 +505,6 @@
                 d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
         </svg>
     </template>
-    <template @tmp-id="icon1">
-        <svg class="svg-icon" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-            <path stroke-width="2" stroke="#7fe0ed"
-                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
-        </svg>
-    </template>
     <template @tmp-id="tem_item" @x-for="item in this.reslist" no-run>
         <div class="col-md-3 xr-card" style="cursor: pointer;" id="card-xr-ani">
             <div class="card card-new-xr">
@@ -703,11 +513,14 @@
                         style="width: 150px;height: 150px;" use-template>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title" use-template> {{ $item.p_name}} </h5>
-                    <p class="card-text" style="line-height: 20px;max-height: 100px;min-height: 100px;" use-template>{{
+                    <h5 class="card-title" style="text-overflow: ellipsis;white-space:nowrap;overflow: hidden;"
+                        use-template> {{ $item.p_name}} </h5>
+                    <p class="card-text px-5 text-dark-emphasis" style="line-height: 20px;min-height: 50px;font-size: 14px;
+                        text-overflow: ellipsis;white-space:nowrap;overflow: hidden;
+                        " use-template>{{
                         $item.p_present }}
                     </p>
-                    <div>
+                    <div style="font-size: 12px;">
                         <span>设备分类：</span>
                         <a @x-if="$item.p_type==='ad-product-computer'" use-template no-replace>电脑</a>
                         <a @x-else-if="$item.p_type==='ad-product-phone'" use-template no-replace>手机</a>
@@ -717,6 +530,18 @@
                         <a @x-if="this.login===true" use-template no-replace> 已加入购物车数量： {{ this.resnum[$item.p_id] || 0
                             }}</a>
                     </div>
+                    <span class="p-1 my-2"
+                        style="font-size: 12px;color: rgb(207, 10, 44);border:solid 1px rgba(226, 0, 36, 0.4);border-radius: 4px;"
+                        @x-if="$item.p_price2 - $item.p_price1 > 0" use-template>
+                        直降 {{$item.p_price2 - $item.p_price1 }} 元</span>
+                    <span class="p-1 my-2"
+                        style="font-size: 12px;color: rgb(0, 162, 11);border:solid 1px rgba(0, 162, 11, 0.4);border-radius: 4px;"
+                        @x-if="$item.p_price2 - $item.p_price1 < 0" use-template>
+                        涨价 {{ - ($item.p_price2 - $item.p_price1) }} 元更有性价比</span>
+                    <span class="p-1 my-2"
+                        style="font-size: 12px;border:solid 1px ; border-color: rgba(0, 0, 0, 0.4);;border-radius: 4px;"
+                        @x-if="Math.random() >= 0.5" use-template>
+                        赚积分</span>
                     <div class="p-4">
                         ￥ <a class="text-decoration-line-through" style="color: red;" use-template> {{ $item.p_price2 }}
                         </a>
@@ -749,29 +574,44 @@
                 <path
                     d="M2 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z" />
             </svg>
-            <svg class="mx-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope"
-                viewBox="0 0 16 16" @x-if="$index == 1" use-template>
+            <svg class="mx-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-envelope" viewBox="0 0 16 16" @x-if="$index == 1" use-template>
                 <path
                     d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
             </svg>
-            <svg class="mx-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder"
-                viewBox="0 0 16 16" @x-if="$index == 2" use-template>
+            <svg class="mx-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-folder" viewBox="0 0 16 16" @x-if="$index == 2" use-template>
                 <path
                     d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z" />
             </svg>
-            <svg class="mx-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house"
-                viewBox="0 0 16 16"  @x-if="$index == 3" use-template>
+            <svg class="mx-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-house" viewBox="0 0 16 16" @x-if="$index == 3" use-template>
                 <path fill-rule="evenodd"
                     d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207l-5-5-5 5V13.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7.207Z" />
             </svg>
             {{$item}}
         </span>
     </template>
+    <template @tmp-id="ul_bottom" @x-for="item in this.b_ul">
+        <li class="col-md border-0 row user-select-none b-ul" style="cursor: pointer;">
+            <span class="col-md-3"><img src="$item.img" class="img-fluid" use-template></span>
+            <span class="col-md-9 row flex-column-reverse">
+                <div class="row gap-2">
+                    <span class="col-md-12 text-secondary" use-template>
+                        {{$item.desc}}</span>
+                    <div class="col-md-12" style="overflow: hidden;height: 1px;min-height: 1px;">
+                        <span class="text-line" style="height: 1px;min-height: 1px;"></span></div>
+                    <span class="col-md-12 text-secondary  text-select" style="font-size: 10px;">
+                        评论者：<br><b use-template>{{$item.name}}</b></span>
+                </div>
+            </span>
+        </li>
+    </template>
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <img src="../public/img/google.png" class="rounded me-2 " width="32px" alt="...">
-                <strong class="me-auto">徐然提示您</strong>
+                <strong class="me-auto">XYS提示您</strong>
                 <small>11 mins ago</small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -782,7 +622,7 @@
         <div id="showToast" class="toast bg-white" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <img src="../public/img/google.png" class="rounded me-2 " width="32px" alt="...">
-                <strong class="me-auto">徐然提示您</strong>
+                <strong class="me-auto">XYS提示您</strong>
                 <small>now</small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -868,6 +708,9 @@
                     reslist: {},
                     select: "全部",
                     resnum: {},
+                    b_ul: [{ name: "小明", desc: "爱购物平台是个好东西", img: "../public/img/profile1@2x.png" }
+                        , { name: "小红", desc: "东西必买，好用廉价", img: "../public/img/profile2@2x.png" },
+                    { name: "小吕", desc: "我爸妈都说好用", img: "../public/img/profile3@2x.png" }],
                 }
             },
             methods: {
@@ -890,19 +733,19 @@
                         switch ($(elem).text()) {
                             case "关于我们": {
                                 $(".modal-dialog.modal-dialog-centered").find(".modal-title.fs-5").text("关于我们")
-                                $(".modal-dialog.modal-dialog-centered").find(".modal-body").html("版本：2.0<br>徐然制作——2023.12.23")
+                                $(".modal-dialog.modal-dialog-centered").find(".modal-body").html("版本：2.0<br>XYS制作——2023.12.23")
                                 $(".modal-dialog.modal-dialog-centered").find(".btn.btn-primary").text("确定")
                                 break
                             }
                             case "联系我们": {
                                 $(".modal-dialog.modal-dialog-centered").find(".modal-title.fs-5").text("联系我们")
-                                $(".modal-dialog.modal-dialog-centered").find(".modal-body").html("徐然制作<br>QQ：1783558957")
+                                $(".modal-dialog.modal-dialog-centered").find(".modal-body").html("XYS制作<br>QQ：1783558957")
                                 $(".modal-dialog.modal-dialog-centered").find(".btn.btn-primary").text("确定")
                                 break
                             }
                             case "隐私政策": {
                                 $(".modal-dialog.modal-dialog-centered").find(".modal-title.fs-5").text("隐私政策")
-                                $(".modal-dialog.modal-dialog-centered").find(".modal-body").html(`<div data-v-ad817de0="" class="v-card__title text-h4 my-4 mx-2">爱购物 隐私政策</div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 欢迎您访问我们的产品。 <strong data-v-ad817de0=""> 爱购物 </strong>（包括App等产品提供的服务，以下简称“产品和服务”）是由 <strong data-v-ad817de0=""> 徐然 </strong>（以下简称“我们”）开发并运营的。 确保用户的数据安全和隐私保护是我们的首要任务， 本隐私政策载明了您访问和使用我们的产品和服务时所收集的数据及其处理方式。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 请您在继续使用我们的产品前务必认真仔细阅读并确认充分理解本隐私政策全部规则和要点， 一旦您选择使用，即视为您同意本隐私政策的全部内容，同意我们按其收集和使用您的相关信息。 如您在在阅读过程中，对本政策有任何疑问，可联系我们的客服咨询， 请通过 <strong data-v-ad817de0=""> QQ1783558957 </strong>或产品中的反馈方式与我们取得联系。 如您不同意相关协议或其中的任何条款的，您应停止使用我们的产品和服务。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 本隐私政策帮助您了解以下内容： <div data-v-ad817de0="" class="mt-2">一、我们如何收集和使用您的个人信息；</div><div data-v-ad817de0="">二、我们如何存储和保护您的个人信息；</div><div data-v-ad817de0="">三、我们如何共享、转让、公开披露您的个人信息；</div><div data-v-ad817de0=""> 四、我们如何使用 Cookie 和其他追踪技术； </div><!----></div><div data-v-ad817de0="" class="ml-6 mr-2  text-h6 mb-4"> 一、我们如何收集和使用您的个人信息 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 个人信息是指以电子或者其他方式记录的能够单独或者与其他信息， 结合识别特定自然人身份或者反映特定自然人活动情况的各种信息。 我们根据《中华人民共和国网络安全法》和《信息安全技术个人信息安全规范》（GB/T 35273-2017） 以及其它相关法律法规的要求，并严格遵循正当、合法、必要的原则， 出于您使用我们提供的服务和/或产品等过程中而收集和使用您的个人信息，包括但不限于电话号码、电子邮箱地址等。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 为接受我们全面的产品服务，您应首先注册一个用户账号，我们将通过它记录相关的数据。 您所提供的所有信息均来自于您本人在注册时提供，以及我们从第三方合作伙伴获取的数据。 您准备使用的账户名、密码、您本人的联系方式， 我们可能通过发短信或者邮件的方式来验证您的身份是否有效。 </div><!----><div data-v-ad817de0="" class="ml-6 mr-2  text-h6 mb-4"> 二、我们如何存储和保护您的个人信息 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 作为一般规则，我们仅在实现信息收集目的所需的时间内保留您的个人信息。 我们会在对于管理与您之间的关系严格必要的时间内保留您的个人信息 （例如，当您开立帐户，从我们的产品获取服务时）。 出于遵守法律义务或为证明某项权利或合同满足适用的诉讼时效要求的目的， 我们可能需要在上述期限到期后保留您存档的个人信息，并且无法按您的要求删除。 <span data-v-ad817de0=""> 当您的个人信息对于我们的法定义务或法定时效对应的目的或档案不再必要时， 我们确保将其完全删除或匿名化。 </span><span data-v-ad817de0=""> 如果您确认不再使用我们的产品和服务，并按照要求主动注销了您的账户，所有信息将被完全删除。 </span></div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 我们使用符合业界标准的安全防护措施保护您提供的个人信息，并加密其中的关键数据， 防止其遭到未经授权访问、公开披露、使用、修改、损坏或丢失。我们会采取一切合理可行的措施，保护您的个人信息。 我们会使用加密技术确保数据的保密性；我们会使用受信赖的保护机制防止数据遭到恶意攻击。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 值得一提的是，为了加强对隐私数据的保护，我们在收集时就已对其进行了脱敏处理， 即使在我们自己的数据库中，也不会储存具有关联性的、明文的隐私数据。 </div><div data-v-ad817de0="" class="ml-6 mr-2  text-h6 mb-4"> 三、我们如何共享、转让、公开披露您的个人信息 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 在管理我们的日常业务活动所需要时，为追求合法利益以更好地服务客户， 我们将合规且恰当的使用您的个人信息。出于对业务和各个方面的综合考虑， 我们仅自身使用这些数据，不与任何第三方分享。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 我们可能会根据法律法规规定，或按政府主管部门的强制性要求，对外共享您的个人信息。 在符合法律法规的前提下，当我们收到上述披露信息的请求时，我们会要求必须出具与之相应的法律文件，如传票或调查函。 我们坚信，对于要求我们提供的信息，应该在法律允许的范围内尽可能保持透明。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 在以下情形中，共享、转让、公开披露您的个人信息无需事先征得您的授权同意： <div data-v-ad817de0="" class="mt-2">1、与国家安全、国防安全直接相关的；</div><div data-v-ad817de0="">2、与犯罪侦查、起诉、审判和判决执行等直接相关的；</div><div data-v-ad817de0=""> 3、出于维护您或其他个人的生命、财产等重大合法权益但又很难得到本人同意的； </div><div data-v-ad817de0="">4、您自行向社会公众公开的个人信息；</div><div data-v-ad817de0=""> 5、从合法公开披露的信息中收集个人信息的，如合法的新闻报道、政府信息公开等渠道。 </div><div data-v-ad817de0="">6、根据个人信息主体要求签订和履行合同所必需的；</div><div data-v-ad817de0=""> 7、用于维护所提供的产品或服务的安全稳定运行所必需的，例如发现、处置产品或服务的故障； </div><div data-v-ad817de0="">8、法律法规规定的其他情形。</div></div><div data-v-ad817de0="" class="ml-6 mr-2  text-h6 mb-4"> 四、我们如何使用 Cookie 和其他追踪技术 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 为确保产品正常运转，我们会在您的计算机或移动设备上存储名为 Cookie 的小数据文件。 Cookie 通常包含标识符、产品名称以及一些号码和字符。 借助于 Cookie，我们能够存储您的偏好或商品等数据，并用以判断注册用户是否已经登录， 提升服务和产品质量及优化用户体验。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 我们出于不同的目的使用各种Cookie，包括：严格必要型Cookie、性能Cookie、营销Cookie和功能Cookie。 某些Cookie可能由外部第三方提供，以向我们的产品提供其它功能。 我们不会将 Cookie 用于本政策所述目的之外的任何用途。您可根据自己的偏好管理或删除 Cookie。 您可以清除计算机上或手机中保存的所有 Cookie，大部分网络浏览器都设有阻止或禁用 Cookie 的功能， 您可对浏览器进行配置。阻止或禁用 Cookie 功能后，可能影响您使用或不能充分使用我们的产品和服务。 </div>`)
+                                $(".modal-dialog.modal-dialog-centered").find(".modal-body").html(`<div data-v-ad817de0="" class="v-card__title text-h4 my-4 mx-2">爱购物 隐私政策</div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 欢迎您访问我们的产品。 <strong data-v-ad817de0=""> 爱购物 </strong>（包括App等产品提供的服务，以下简称“产品和服务”）是由 <strong data-v-ad817de0=""> XYS </strong>（以下简称“我们”）开发并运营的。 确保用户的数据安全和隐私保护是我们的首要任务， 本隐私政策载明了您访问和使用我们的产品和服务时所收集的数据及其处理方式。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 请您在继续使用我们的产品前务必认真仔细阅读并确认充分理解本隐私政策全部规则和要点， 一旦您选择使用，即视为您同意本隐私政策的全部内容，同意我们按其收集和使用您的相关信息。 如您在在阅读过程中，对本政策有任何疑问，可联系我们的客服咨询， 请通过 <strong data-v-ad817de0=""> QQ1783558957 </strong>或产品中的反馈方式与我们取得联系。 如您不同意相关协议或其中的任何条款的，您应停止使用我们的产品和服务。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 本隐私政策帮助您了解以下内容： <div data-v-ad817de0="" class="mt-2">一、我们如何收集和使用您的个人信息；</div><div data-v-ad817de0="">二、我们如何存储和保护您的个人信息；</div><div data-v-ad817de0="">三、我们如何共享、转让、公开披露您的个人信息；</div><div data-v-ad817de0=""> 四、我们如何使用 Cookie 和其他追踪技术； </div><!----></div><div data-v-ad817de0="" class="ml-6 mr-2  text-h6 mb-4"> 一、我们如何收集和使用您的个人信息 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 个人信息是指以电子或者其他方式记录的能够单独或者与其他信息， 结合识别特定自然人身份或者反映特定自然人活动情况的各种信息。 我们根据《中华人民共和国网络安全法》和《信息安全技术个人信息安全规范》（GB/T 35273-2017） 以及其它相关法律法规的要求，并严格遵循正当、合法、必要的原则， 出于您使用我们提供的服务和/或产品等过程中而收集和使用您的个人信息，包括但不限于电话号码、电子邮箱地址等。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 为接受我们全面的产品服务，您应首先注册一个用户账号，我们将通过它记录相关的数据。 您所提供的所有信息均来自于您本人在注册时提供，以及我们从第三方合作伙伴获取的数据。 您准备使用的账户名、密码、您本人的联系方式， 我们可能通过发短信或者邮件的方式来验证您的身份是否有效。 </div><!----><div data-v-ad817de0="" class="ml-6 mr-2  text-h6 mb-4"> 二、我们如何存储和保护您的个人信息 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 作为一般规则，我们仅在实现信息收集目的所需的时间内保留您的个人信息。 我们会在对于管理与您之间的关系严格必要的时间内保留您的个人信息 （例如，当您开立帐户，从我们的产品获取服务时）。 出于遵守法律义务或为证明某项权利或合同满足适用的诉讼时效要求的目的， 我们可能需要在上述期限到期后保留您存档的个人信息，并且无法按您的要求删除。 <span data-v-ad817de0=""> 当您的个人信息对于我们的法定义务或法定时效对应的目的或档案不再必要时， 我们确保将其完全删除或匿名化。 </span><span data-v-ad817de0=""> 如果您确认不再使用我们的产品和服务，并按照要求主动注销了您的账户，所有信息将被完全删除。 </span></div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 我们使用符合业界标准的安全防护措施保护您提供的个人信息，并加密其中的关键数据， 防止其遭到未经授权访问、公开披露、使用、修改、损坏或丢失。我们会采取一切合理可行的措施，保护您的个人信息。 我们会使用加密技术确保数据的保密性；我们会使用受信赖的保护机制防止数据遭到恶意攻击。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 值得一提的是，为了加强对隐私数据的保护，我们在收集时就已对其进行了脱敏处理， 即使在我们自己的数据库中，也不会储存具有关联性的、明文的隐私数据。 </div><div data-v-ad817de0="" class="ml-6 mr-2  text-h6 mb-4"> 三、我们如何共享、转让、公开披露您的个人信息 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 在管理我们的日常业务活动所需要时，为追求合法利益以更好地服务客户， 我们将合规且恰当的使用您的个人信息。出于对业务和各个方面的综合考虑， 我们仅自身使用这些数据，不与任何第三方分享。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 我们可能会根据法律法规规定，或按政府主管部门的强制性要求，对外共享您的个人信息。 在符合法律法规的前提下，当我们收到上述披露信息的请求时，我们会要求必须出具与之相应的法律文件，如传票或调查函。 我们坚信，对于要求我们提供的信息，应该在法律允许的范围内尽可能保持透明。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 在以下情形中，共享、转让、公开披露您的个人信息无需事先征得您的授权同意： <div data-v-ad817de0="" class="mt-2">1、与国家安全、国防安全直接相关的；</div><div data-v-ad817de0="">2、与犯罪侦查、起诉、审判和判决执行等直接相关的；</div><div data-v-ad817de0=""> 3、出于维护您或其他个人的生命、财产等重大合法权益但又很难得到本人同意的； </div><div data-v-ad817de0="">4、您自行向社会公众公开的个人信息；</div><div data-v-ad817de0=""> 5、从合法公开披露的信息中收集个人信息的，如合法的新闻报道、政府信息公开等渠道。 </div><div data-v-ad817de0="">6、根据个人信息主体要求签订和履行合同所必需的；</div><div data-v-ad817de0=""> 7、用于维护所提供的产品或服务的安全稳定运行所必需的，例如发现、处置产品或服务的故障； </div><div data-v-ad817de0="">8、法律法规规定的其他情形。</div></div><div data-v-ad817de0="" class="ml-6 mr-2  text-h6 mb-4"> 四、我们如何使用 Cookie 和其他追踪技术 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 为确保产品正常运转，我们会在您的计算机或移动设备上存储名为 Cookie 的小数据文件。 Cookie 通常包含标识符、产品名称以及一些号码和字符。 借助于 Cookie，我们能够存储您的偏好或商品等数据，并用以判断注册用户是否已经登录， 提升服务和产品质量及优化用户体验。 </div><div data-v-ad817de0="" class="ml-6 mr-2 text-body-1 mb-4" style="text-indent: 2em;"> 我们出于不同的目的使用各种Cookie，包括：严格必要型Cookie、性能Cookie、营销Cookie和功能Cookie。 某些Cookie可能由外部第三方提供，以向我们的产品提供其它功能。 我们不会将 Cookie 用于本政策所述目的之外的任何用途。您可根据自己的偏好管理或删除 Cookie。 您可以清除计算机上或手机中保存的所有 Cookie，大部分网络浏览器都设有阻止或禁用 Cookie 的功能， 您可对浏览器进行配置。阻止或禁用 Cookie 功能后，可能影响您使用或不能充分使用我们的产品和服务。 </div>`)
                                 $(".modal-dialog.modal-dialog-centered").find(".btn.btn-primary").text("确定")
                                 break
                             }
@@ -1054,6 +897,16 @@
                 $("#zfb").find("img").show()
             }, () => {
                 $("#zfb").find("img").hide()
+            })
+            // 标题栏
+            let nav_rect = $(".navbar.navbar-expand-lg.navbar-light.bg-white")[0].getBoundingClientRect()
+            $(document).scroll(e => {
+                let offset = 50 // 标题偏移
+                if (window.scrollY >= nav_rect.height + offset) {
+                    $(".navbar.navbar-expand-lg.navbar-light.bg-white").addClass("position-fixed w-100 top-0 z-3")
+                } else {
+                    $(".navbar.navbar-expand-lg.navbar-light.bg-white").removeClass("position-fixed w-100 top-0 z-3")
+                }
             })
         })
         if (window.sessionStorage.getItem("phone") && window.sessionStorage.getItem("token")) {

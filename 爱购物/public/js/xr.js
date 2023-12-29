@@ -1,232 +1,10 @@
 /*
  * @Author: xuranXYS
- * @LastEditTime: 2023-12-25 09:50:15
+ * @LastEditTime: 2023-12-27 22:59:39
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
  */
-/**
- * @description: CSS预编译器
- * @return {*}
- */
-'use strict'
-class XPreprocessor {
-    constructor(dup) {
-        // 全局方法，可在预编译标签里使用
-        this.funcs = {
-            concat: function (a, b) { return a + b } // 拼接字符
-        }
-        // 存储css变量
-        this.variables = {}
-        // 存储css混合
-        this.mixins = {}
-        this.ori = "" // 预编译前字符
-        if (dup instanceof XPreprocessor) {
-            this.funcs = dup.funcs
-            this.variables = dup.variables
-            this.mixins = dup.mixins
-            this.ori = dup.ori
-        }
-    }
-    /**
-     * @description: 获取指定位置字段的行数
-     * @param {*} targetPosition
-     * @return {*}
-     */
-    getline(targetPosition) {
-        let positionCount = 0
-        let lineNumber = 1
-        for (let i = 0; i < this.ori.length; i++) {
-            if (this.ori[i] === '\n') {
-                lineNumber++
-            } else {
-                positionCount++
-            }
-            if (positionCount === targetPosition) {
-                return lineNumber - 2
-            }
-        }
-        return -1
-    }
-    // 值预处理
-    parseValue(val) {
-        try {
-            return new Function("return " + val)()
-        } catch (e) {
-            return val
-        }
-    }
-    /**
-     * @description: 解析变量（存储到this.variables里）
-     * @return {*}
-     */
-    parseVariables() {
-        this.css = String(this.css).replace(/\$([a-zA-Z0-9_-]+)\s*:\s*([^;]+);/g, (match, variable, value) => {
-            this.variables[variable] = this.parseValue(value.trim())
-            return ''
-        });
-        return this
-    }
-    /**
-     * @description: 解析混合（存储到this.mixins里）
-     * @return {*}
-     */
-    parseMixins() {
-        this.css = String(this.css).replace(/@mix\s+([a-zA-Z0-9_-]+)\s*\{([^}]+)\}/g, (match, mixinName, mixinContent) => {
-            this.mixins[mixinName] = mixinContent.trim()
-            return ''
-        });
-        return this
-    }
-    /**
-     * @description: 处理混合（将原来的导入标签替换为混合里的内容，如果不存在就替换为''）
-     * @return {*}
-     */
-    processMixins() {
-        this.css = String(this.css).replace(/@include\s+([a-zA-Z0-9_-]+);/g, (match, mixinName) => {
-            const mixinContent = this.mixins[mixinName]
-            return mixinContent ? mixinContent : ''
-        });
-        return this
-    }
-    /**
-     * @description: 处理变量（将原来的变量标签替换为指定变量的内容，如果不存在保留原来）
-     * @return {*}
-     */
-    processVariables() {
-        this.css = String(this.css).replace(/\$([a-zA-Z0-9_-]+)/g, (match, variable) => {
-            const variableValue = this.variables[variable]
-            // 因为使用全局匹配可能会替换其他内容，所以我们这里不替换为''
-            return variableValue ? this.parseValue(variableValue) : match
-        });
-        return this
-    }
-    /**
-     * @description: 解析for循环
-     * @return {*}
-     */
-    parseForLoops() {
-        // 数字循环
-        this.css = String(this.css).replace(/@for\s+\$([a-zA-Z0-9_-]+)\s+from\s+(\d+)\s+to\s+(\d+)\s*\{([^}]+)\}/g, (match, variable, start, end, loopContent, index) => {
-            let result = ''
-            for (let i = parseInt(start); i <= parseInt(end); i++) {
-                result += loopContent.replace(/\n\s*/, "").replace(new RegExp(`\\$${variable}`, 'g'), i)
-            }
-            return result
-        });
-        // 遍历循环
-        this.css = String(this.css).replace(/@for\s+\$([a-zA-Z0-9_-]+)\s+from\s+\$([a-zA-Z0-9_-]+)\s*\{([^}]+)\}/g, (match, variable, target, loopContent, index) => {
-            let result = ''
-            let target_val = this.variables[target]
-            if (typeof target_val !== "object") {
-                console.error(match)
-                console.error("预编译错误，在" + this.getline(index) + "行")
-                return match
-            }
-            for (let i in target_val) {
-                const loopIterationContent = loopContent.replace(/\n\s*/, "").replace(new RegExp(`\\$${variable}`, 'g'), target_val[i])
-                result += loopIterationContent
-            }
-            return result
-        });
-        return this
-    }
-    /**
-     * @description: 解析单行注释
-     * @param {*} skip
-     * @return {*}
-     */
-    parseSingleLineComments(skip) {
-        this.css = String(this.css).replace(/\/\/([^\n]*)\n/g, (ma, line, index) => {
-            // 判断是否保留注释，如果有 @skip 标记则会跳过这行注释
-            if (!skip && !(/^\s*@skip\s.*/i.test(line))) {
-                return "/* " + line + " */\n"
-            }
-            return ""
-        });
-        return this
-    }
-    /**
-     * @description: 解析多行注释
-     * @param {*} skip
-     * @return {*}
-     */
-    parseMultiLineComments(skip) {
-        this.css = String(this.css).replace(/\/\*([\s\S]*?)\*\//g, (ma, line, index) => {
-            // 判断是否保留注释，如果有 @skip 标记则会跳过这行注释
-            if (!skip && !(/^\s*@skip\s.*/i.test(line))) {
-                return "/* " + line + " */"
-            }
-            return ""
-        });
-        return this
-    }
-    /**
-     * @description: 解析函数
-     * @return {*}
-     */
-    parseFunc() {
-        // 单函数
-        this.css = String(this.css).replace(/\$([a-zA-z]+)\(([^\)]+)\)/g, (ma, name, args, index) => {
-            if (this.funcs.hasOwnProperty(name)) {
-                return this.funcs[name].bind(this)(...args.split(","))
-            }
-            return ma
-        });
-        return this
-    }
-    // 主处理函数
-    /**
-     * @description: 处理预编译css
-     * @param {*} css 
-     * @param {*} skip_comment 是否跳过注释
-     * @return {*} 返回编译后的字符串
-     */
-    process(css, skip_comment = false) {
-        this.css = css
-        this.ori = css
-        this.parseSingleLineComments(skip_comment)
-            .parseMultiLineComments(skip_comment)
-            .parseVariables()
-            .parseForLoops()
-            .parseMixins()
-            .processMixins()
-            .processVariables()
-            .parseFunc()
-        return this.css;
-    }
-}
-// 为了保证csspre标签不显示
-let sub = document.createElement("style")
-sub.innerHTML = "csspre{display:'none';}"
-document.head.appendChild(sub)
-
-// 开始处理标签
-const beforetime = window.performance.now()
-// 获取全部csspre标签或者是style标签（带setup属性）
-let nodes = document.querySelectorAll("csspre,style[setup]")
-const preprocessor = new XPreprocessor()
-let processedCss = ""
-for (let item of nodes) {
-    let skip = false
-    for (let i of item.attributes) {
-        // 解析标签是否含有@skip属性
-        if (i.name == "@skip") {
-            skip = true
-        }
-    }
-    //处理后删除标签
-    processedCss = processedCss + preprocessor.process(item.textContent, skip)
-    item.parentNode.removeChild(item)
-}
-let pcss = document.createElement("style")
-const aftertime = window.performance.now() - beforetime
-let ss = `/*\n 时间：${new Date().toLocaleDateString()} \n 预编译时间:  ${aftertime} ms  \n*/`
-// 将全部编译的内容添加
-pcss.textContent = ss + processedCss
-document.head.appendChild(pcss)
-
-
 /**
  * @description: template模板标签类
  * @return {*}
@@ -274,7 +52,7 @@ class TmpTag {
                     // 解析for循环，分为三种情况，遍历 key in obj ，数字 (index,key) in obj ，索引 index in (0,10)
                     let reg = /([a-zA-Z0-9_]+)\s+in\s+([a-zA-Z0-9._]+)/
                     let reg1 = /\(\s*([a-zA-Z0-9._]+)\s*,\s*([a-zA-Z0-9._]+)\s*\)\s+in\s+([a-zA-Z0-9._]+)/
-                    let reg2 = /([a-zA-Z0-9._]+)\s+in\s+\((?:\(\s*([a-zA-Z0-9]+)\s*\,\s*([a-zA-Z0-9]+)\s*\)|([a-zA-Z0-9]+))\)/
+                    let reg2 = /([a-zA-Z0-9._]+)\s+in\s+\((?:\s*([a-zA-Z0-9]+)\s*\,\s*([a-zA-Z0-9]+)\s*|([a-zA-Z0-9]+))\)/
                     // 编译后将函数字符串封装成函数并写入等待
                     // 遍历
                     if (reg.test(ik.nodeValue)) {
@@ -340,7 +118,7 @@ class TmpTag {
                             }`}
                         this._wait[id].push(new Function(str_func))
                     } else {
-                        throw new Error("for表达式出错：",ik.nodeValue)
+                        throw new Error("for表达式出错：", ik.nodeValue)
                     }
                 }
             }
@@ -366,7 +144,7 @@ class TmpTag {
      * @return {*}
      */
     get(id, is_waitTmp = false) {
-        let elem = is_waitTmp ? this.wait_tmps[this.maps[id]] : this.tmps[this.maps[id]]
+        let elem = is_waitTmp ? this.wait_tmps[this.maps[id]] : this.tmps[this.maps[id]] || this.tmps[this.maps[id]]
         if (elem instanceof HTMLElement) {
             if (elem.attributes["@tmp-id"].nodeValue != id) {
                 elem = null
@@ -392,7 +170,7 @@ class TmpTag {
                 if (ik.name === "@x-for" && id != 0) {
                     let reg = /([a-zA-Z0-9.\[\]]+)\s+in\s+(.+)/
                     let reg1 = /\(\s*([a-zA-Z0-9]+)\s*,\s*([a-zA-Z0-9.\[\]]+)\s*\)\s+in\s+([a-zA-Z0-9.\[\]]+)/
-                    let reg2 = /([a-zA-Z0-9]+)\s+in\s+(?:\(\s*([a-zA-Z0-9]+)\s*\,\s*([a-zA-Z0-9]+)\s*\)|([a-zA-Z0-9]+))/
+                    let reg2 = /([a-zA-Z0-9._]+)\s+in\s+\((?:\s*([a-zA-Z0-9]+)\s*\,\s*([a-zA-Z0-9]+)\s*|([a-zA-Z0-9]+))\)/
                     // 遍历
                     if (reg.test(ik.nodeValue)) {
                         let match = ik.nodeValue.match(reg)
@@ -531,11 +309,38 @@ class Template {
         }
         // 创建缓存，这里使用map是因为后续会让元素作为key
         this.cache = new Map()
+        // 事件绑定列表
+        this.funcs_custom_map = new Map()
+        // 修改继承事件列表
+        Element.prototype._addEventListener = Element.prototype.addEventListener;
+        Element.prototype.addEventListener = function (type, listeners, options) {
+            if (options == void 0)
+                options = false;
+            this._addEventListener(type, listeners, options);
+            if (!window.app.funcs_custom_map.has(this)) {
+                window.app.funcs_custom_map.set(this, {})
+            }
+            if(!window.app.funcs_custom_map.get(this)[type]){
+                window.app.funcs_custom_map.get(this)[type] = []
+            }
+            window.app.funcs_custom_map.get(this)[type].push({ type, listener: listeners })
+        }
+        Element.prototype._removeEventListener = Element.prototype.removeEventListener;
+        Element.prototype.removeEventListener = function (type, listeners) {
+            this._removeEventListener(type, listeners);
+            if (window.app.funcs_custom_map.has(this)) {
+                let stack = window.app.funcs_custom_map.get(this)[type]
+                if (stack instanceof Array && stack.indexOf({ type, listener: listeners }) !== -1) {
+                    delete stack[type][stack.indexOf({ type, listener: listeners })]
+                }
+            }
+        };
         // dom加载完成时初始化
         window.addEventListener("DOMContentLoaded", () => {
             this.TmpTag = new TmpTag()
             this.initupdate()
         })
+        window.app = this
         return this
     }
     /**
@@ -551,8 +356,9 @@ class Template {
      * @return {*}
      */
     getSiblings(element) {
+        let siblings = []
         // 获取父元素的子节点列表
-        let siblings = Array.from(element.parentNode.children);
+        if (element.parentNode) { siblings = Array.from(element.parentNode.children || []); }
         return siblings;
     }
     /**
@@ -578,7 +384,7 @@ class Template {
                     let item = no.attributes[key_name]
                     if ((no.attributes["@x-else"] || no.attributes["@x-if"]) && no.attributes["use-template"]
                         && no.attributes["use-template"] !== "false") {
-                        return show_all ? _arr : null
+                        return show_all ? _arr : i
                     }
                     // 保证有use-template
                     if (item.name === type && attrs.length > 0 && no.attributes["use-template"] && no.attributes["use-template"] !== "false") {
@@ -600,7 +406,7 @@ class Template {
                     let item = i.attributes[key_name]
                     if ((i.attributes["@x-else"] || i.attributes["@x-if"]) && i.attributes["use-template"]
                         && i.attributes["use-template"] !== "false") {
-                        return show_all ? _arr : null
+                        return show_all ? _arr : i
                     }
                     // 保证有use-template
                     if (item.name === type && attrs.length > 0
@@ -704,7 +510,7 @@ class Template {
                                         })
                                         this.observer.observe(document.body, {
                                             childList: true, // 观察目标子节点的变化，是否有添加或者删除
-                                            subtree : true, // 针对整个子树生效
+                                            subtree: true, // 针对整个子树生效
                                         })
                                     }
                                     // 重回这个编译的节点
@@ -761,13 +567,13 @@ class Template {
                         }
                         // 创建匿名函数，用于循环设置if，直到找不到为止
                         const r_if_wihle = (node, action_value = "null", val = false) => {
-                            let res = false
+                            let res = null
                             let sun_node_else_if = this.getIFtoElse(node, "@x-else-if")
                             if (sun_node_else_if) {
                                 if (val) {
                                     // 上次已经有运行成功了
                                     sun_node_else_if.style.display = action_value
-                                    return r_if_wihle(sun_node_else_if, action_value, res)
+                                    return r_if_wihle(sun_node_else_if, action_value, true)
                                 }
                                 res = run(sun_node_else_if)
                                 if (res) {
@@ -775,7 +581,7 @@ class Template {
                                 } else {
                                     sun_node_else_if.style.display = action_value
                                 }
-                                r_if_wihle(sun_node_else_if, action_value, res)
+                                return r_if_wihle(sun_node_else_if, action_value, res)
                             } else if (!val) {
                                 // 如果到最后val值还是为false且已经找不到else-if了，那就设置else
                                 let selse = this.getIFtoElse(node)
@@ -783,44 +589,53 @@ class Template {
                                     selse.style.display = null
                                 }
                             }
-                            return true
+                            return res == null ? val : res
                         }
                         // 判断运行后的结果是否为true
+                        let node_else_if = this.getIFtoElse(i, "@x-else-if")
                         if (status) {
-                            // 显示第一个if
                             i.style.display = null
-                            // 隐藏后面一个else
                             let node_else = this.getIFtoElse(i)
                             if (node_else instanceof HTMLElement) {
                                 node_else.style.display = "none"
                             }
-                            // 隐藏之间的else-if
+                            // 之间的else-if
                             r_if_wihle(i, "none", true)
-                        } else if (this.getIFtoElse(i, "@x-else-if") instanceof HTMLElement) {
-                            // 如果if后有else-if
+                        } else if (this.getIFtoElse(i, "@x-else-if") instanceof HTMLElement && node_else_if && run(node_else_if)) {
                             i.style.display = "none"
-                            // 执行，同理
-                            let node_else_if = this.getIFtoElse(i, "@x-else-if")
-                            if (run(node_else_if)) {
-                                node_else_if.style.display = null
-                                r_if_wihle(node_else_if, "none", true)
+                            // 执行
+                            node_else_if.style.display = null
+                            r_if_wihle(node_else_if, "none", true)
+                            let node_else = this.getIFtoElse(i)
+                            if (node_else instanceof HTMLElement) {
+                                node_else.style.display = "none"
+                            }
+                        } else if (this.getIFtoElse(i, "@x-else-if") instanceof HTMLElement && node_else_if && !run(node_else_if)) {
+                            i.style.display = "none"
+                            // 执行
+                            node_else_if.style.display = "none"
+                            let res = r_if_wihle(node_else_if, "none", false)
+                            let node_else = this.getIFtoElse(i)
+                            if (res) {
+                                if (node_else instanceof HTMLElement) {
+                                    node_else.style.display = "none"
+                                }
                             } else {
-                                node_else_if.style.display = "none"
-                                r_if_wihle(node_else_if, "none", false)
+                                if (node_else instanceof HTMLElement) {
+                                    node_else.style.display = null
+                                }
                             }
                         } else {
-                            // 执行else
                             i.style.display = "none"
-                            //显示后面一个else
+                            // 之间的else-if
+                            r_if_wihle(i, "none", true)
                             let node_else = this.getIFtoElse(i)
                             if (node_else instanceof HTMLElement) {
                                 node_else.style.display = null
                             }
-                            // 之间的else-if
-                            r_if_wihle(i, "none", true)
                         }
-                    }
-                    //自定义方法
+                    }else{
+                                            //自定义方法
                     try {
                         let func_name = item.value
                         // 模板属性
@@ -852,24 +667,34 @@ class Template {
                             is_ori = true
                         }
                         // 判断是否有参数，并绑定事件
-                        if (arr.length > 0) {
-                            if (is_ori) {
-                                i.addEventListener(item.name.substring(1), func_name.bind(this.data, ...arr));
-                            } else {
-                                i.addEventListener(item.name.substring(1), new Function(item.value).bind(this.data, ...arr));
-                            }
-                        } else {
-                            try {
+                        if (!this.funcs_custom_map.has(i)) {
+                            if (arr.length > 0) {
                                 if (is_ori) {
-                                    i.addEventListener(item.name.substring(1), func_name.bind(this.data));
+                                    let fn = func_name.bind(this.data, ...arr)
+                                    i.addEventListener(item.name.substring(1), fn);
                                 } else {
-                                    i.addEventListener(item.name.substring(1), new Function("return " + item.value).bind(this.data));
+                                    let fn = new Function(item.value).bind(this.data, ...arr)
+                                    i.addEventListener(item.name.substring(1), fn);
                                 }
-                            } catch (e) { i.addEventListener(item.name.substring(1), new Function(item.value).bind(this.data)); }
+                            } else {
+                                try {
+                                    if (is_ori) {
+                                        let fn = func_name.bind(this.data)
+                                        i.addEventListener(item.name.substring(1), fn);
+                                    } else {
+                                        let fn = new Function("return " + item.value).bind(this.data)
+                                        i.addEventListener(item.name.substring(1), fn);
+                                    }
+                                } catch (e) {
+                                    let fn = new Function(item.value).bind(this.data)
+                                    i.addEventListener(item.name.substring(1), fn);
+                                }
+                            }
                         }
                     } catch (e) { }
+                    }
                 }
-                if (is_rep) {
+                if (is_rep || /(\$|this)+(['\[\]a-zA-Z0-9\.\_\-])+/g.test(item.nodeValue)) {
                     // 编译
                     com(i, this)
                     // 模板属性
@@ -962,13 +787,12 @@ class Template {
     repeatupdate(node, is_redraw = false, is_wait = false) {
         // 和initupdate差不多，这里就跳过解读这个方法
         if (!(node instanceof HTMLElement)) { return false }
-        let $all = is_redraw ? [node, ...node.querySelectorAll("[use-template]")] : node.querySelectorAll("[use-template]")
+        let $all = [... new Set([node, ...node.querySelectorAll("[use-template]")])]
         for (let i of $all) {
             // 解析@绑定
             let attrs = Object.keys(i.attributes)
             for (let ik in attrs) {
-                let key_name = attrs[ik]
-                let item = i.attributes[key_name]
+                let item = i.attributes[ik]
                 let is_rep = true // 替换模板字符串
                 const com = (node, tmp) => {
                     // 更新模板字符串
@@ -1028,7 +852,7 @@ class Template {
                                         })
                                         this.observer.observe(document.body, {
                                             childList: true, // 观察目标子节点的变化，是否有添加或者删除
-                                            subtree : true, // 针对整个子树生效
+                                            subtree: true, // 针对整个子树生效
                                         })
                                     }
                                     this.repeatupdate(sub_node)
@@ -1046,7 +870,7 @@ class Template {
                     } else if (item.name === "@x-if") {
                         let status = false
                         if (i.attributes["use-template"] && i.attributes["use-template"] !== "false") {
-                            com(i, this)
+                            setTimeout(() => com(i, this), 0)
                             // 模板属性
                             let id_node = this.upproperty(i, "for_id")
                             item.nodeValue.replace(/(.*)/, (match, val, ind) => {
@@ -1080,13 +904,13 @@ class Template {
                             return _res
                         }
                         const r_if_wihle = (node, action_value = "null", val = false) => {
-                            let res = false
+                            let res = null
                             let sun_node_else_if = this.getIFtoElse(node, "@x-else-if")
                             if (sun_node_else_if) {
                                 if (val) {
                                     // 上次已经有运行成功了
                                     sun_node_else_if.style.display = action_value
-                                    return r_if_wihle(sun_node_else_if, action_value, res)
+                                    return r_if_wihle(sun_node_else_if, action_value, true)
                                 }
                                 res = run(sun_node_else_if)
                                 if (res) {
@@ -1094,7 +918,7 @@ class Template {
                                 } else {
                                     sun_node_else_if.style.display = action_value
                                 }
-                                r_if_wihle(sun_node_else_if, action_value, res)
+                                return r_if_wihle(sun_node_else_if, action_value, res)
                             } else if (!val) {
                                 // 如果到最后val值还是为false且已经找不到else-if了，那就设置else
                                 let selse = this.getIFtoElse(node)
@@ -1102,8 +926,9 @@ class Template {
                                     selse.style.display = null
                                 }
                             }
-                            return true
+                            return res == null ? val : res
                         }
+                        let node_else_if = this.getIFtoElse(i, "@x-else-if")
                         if (status) {
                             i.style.display = null
                             let node_else = this.getIFtoElse(i)
@@ -1112,16 +937,29 @@ class Template {
                             }
                             // 之间的else-if
                             r_if_wihle(i, "none", true)
-                        } else if (this.getIFtoElse(i, "@x-else-if") instanceof HTMLElement) {
+                        } else if (this.getIFtoElse(i, "@x-else-if") instanceof HTMLElement && node_else_if && run(node_else_if)) {
                             i.style.display = "none"
                             // 执行
-                            let node_else_if = this.getIFtoElse(i, "@x-else-if")
-                            if (run(node_else_if)) {
-                                node_else_if.style.display = null
-                                r_if_wihle(node_else_if, "none", true)
+                            node_else_if.style.display = null
+                            r_if_wihle(node_else_if, "none", true)
+                            let node_else = this.getIFtoElse(i)
+                            if (node_else instanceof HTMLElement) {
+                                node_else.style.display = "none"
+                            }
+                        } else if (this.getIFtoElse(i, "@x-else-if") instanceof HTMLElement && node_else_if && !run(node_else_if)) {
+                            i.style.display = "none"
+                            // 执行
+                            node_else_if.style.display = "none"
+                            let res = r_if_wihle(node_else_if, "none", false)
+                            let node_else = this.getIFtoElse(i)
+                            if (res) {
+                                if (node_else instanceof HTMLElement) {
+                                    node_else.style.display = "none"
+                                }
                             } else {
-                                node_else_if.style.display = "none"
-                                r_if_wihle(node_else_if, "none", false)
+                                if (node_else instanceof HTMLElement) {
+                                    node_else.style.display = null
+                                }
                             }
                         } else {
                             i.style.display = "none"
@@ -1132,8 +970,8 @@ class Template {
                                 node_else.style.display = null
                             }
                         }
-                    }
-                    //自定义方法
+                    }else{
+                                            //自定义方法
                     try {
                         let func_name = item.value
                         // 模板属性
@@ -1162,25 +1000,35 @@ class Template {
                             func_name = this.funcs_custom[func_name]
                             is_ori = true
                         }
-                        if (arr.length > 0) {
-                            if (is_ori) {
-                                i.addEventListener(item.name.substring(1), func_name.bind(this.data, ...arr));
-                            } else {
-                                i.addEventListener(item.name.substring(1), new Function(item.value).bind(this.data, ...arr));
-                            }
-                        } else {
-                            try {
+                        if (!this.funcs_custom_map.has(i)) {
+                            if (arr.length > 0) {
                                 if (is_ori) {
-                                    i.addEventListener(item.name.substring(1), func_name.bind(this.data));
+                                    let fn = func_name.bind(this.data, ...arr)
+                                    i.addEventListener(item.name.substring(1), fn);
                                 } else {
-                                    i.addEventListener(item.name.substring(1), new Function("return " + item.value).bind(this.data));
+                                    let fn = new Function(item.value).bind(this.data, ...arr)
+                                    i.addEventListener(item.name.substring(1), fn);
                                 }
-                            } catch (e) { i.addEventListener(item.name.substring(1), new Function(item.value).bind(this.data)); }
+                            } else {
+                                try {
+                                    if (is_ori) {
+                                        let fn = func_name.bind(this.data)
+                                        i.addEventListener(item.name.substring(1), fn);
+                                    } else {
+                                        let fn = new Function("return " + item.value).bind(this.data)
+                                        i.addEventListener(item.name.substring(1), fn);
+                                    }
+                                } catch (e) {
+                                    let fn = new Function(item.value).bind(this.data)
+                                    i.addEventListener(item.name.substring(1), fn);
+                                }
+                            }
                         }
                     } catch (e) { }
+                    }
                 }
-                if (is_rep) {
-                    com(i, this)
+                if (is_rep || /(\$|this)+(['\[\]a-zA-Z0-9\.\_\-])+/g.test(item.nodeValue)) {
+                    setTimeout(() => com(i, this), 0)
                     // 内置属性运行
                     // 模板属性
                     let id_node = this.upproperty(i, "for_id")
@@ -1211,9 +1059,14 @@ class Template {
             }
             // 重绘制
             if (is_redraw) {
-                i.innerHTML = ""
                 let item = i.attributes["@use-id"]
                 if (!item) { continue }
+                i.innerHTML = ""
+                // 取消垃圾回收
+                if (this.observer instanceof MutationObserver) {
+                    this.observer.disconnect()
+                    this.observer = null
+                }
                 this.TmpTag.redraw(i)
                 // 使用template模板
                 // 和上面for解析代码差不多，也不多解释
@@ -1236,22 +1089,6 @@ class Template {
                             this.TmpTag.for[id]["self"] = sub_node
                             this.TmpTag.for[id]["parent"] = sub_node
                             i.appendChild(sub_node)
-                            // 垃圾回收
-                            if (!(this.observer instanceof MutationObserver)) {
-                                this.observer = new MutationObserver((obj) => {
-                                    let keys = Object.keys(this.TmpTag.for)
-                                    for (let item of keys) {
-                                        let it = this.TmpTag.for[item]
-                                        if (!document.contains(it.self)) {
-                                            this.TmpTag.processGC(it.self.for_id)
-                                        }
-                                    }
-                                })
-                                this.observer.observe(document.body, {
-                                    childList: true, // 观察目标子节点的变化，是否有添加或者删除
-                                    subtree : true, // 针对整个子树生效
-                                })
-                            }
                             this.repeatupdate(sub_node)
                         }
                     } else {
@@ -1308,7 +1145,7 @@ class Template {
                 }
             }
         }
-        this.repeatupdate(node?.parentNode)
+        if (node instanceof HTMLElement) { setTimeout(this.repeatupdate(node?.parentNode), 0) }
     }
     /**
      * @description: 调用template函数
@@ -1337,6 +1174,10 @@ class Template {
         if (callback instanceof Function) callback()
     }
 }
+/**
+ * @description: URL参数解析
+ * @return {*}
+ */
 class URL_Param {
     constructor(url) {
         const urlSearchParams = new URLSearchParams(url);

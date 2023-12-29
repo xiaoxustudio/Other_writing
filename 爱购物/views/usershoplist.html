@@ -1,6 +1,6 @@
 <!--
  * @Author: xuranXYS
- * @LastEditTime: 2023-12-24 16:46:33
+ * @LastEditTime: 2023-12-29 14:31:47
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -13,246 +13,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <title use-template>{{ this.title }}</title>
-    <csspre style="display: none;">
-        //@skip 声明常规变量
-        $img_w : 30px;
-        $img_h : 30px;
-        $img_le_w : 500px;
-        $meida-limit : 980px;
-        $color : #232a3f;
-        //@skip 声明图片混合
-        @mix img-width{
-        width: $img_w;
-        height: $img_h;
-        }
-        @mix img-wdith-a{
-        width: 73px;
-        height: 53px;
-        }
-        body {
-        overflow-x : hidden;
-        }
-        * {
-        font-weight: 100;
-        }
-    </csspre>
-    <csspre style="display: none;">
-        // 滚动条
-        ::-webkit-scrollbar {
-        width: 0;
-        }
-
-        .cp {
-        cursor: pointer;
-        }
-
-        * {
-        user-select: none;
-        }
-
-        // 开始
-        .xr-card {
-        display: inline-block;
-        padding: 10px;
-        }
-
-        .xr-icon {
-        text-align: center;
-        padding: 5px;
-        }
-
-        .d-inline-block.align-text-top {
-        @include img-width;
-        }
-
-        #title-container {
-        padding: 20px;
-        }
-
-        #title-ws {
-        top: 30%;
-        }
-
-        .img-xr {
-        @include img-width;
-        padding: 5px;
-        }
-
-        .img-left-xr {
-        width: $img_le_w;
-        }
-
-        div[class=position-absolute]:has(.img-left-xr) {
-        right: 20%;
-        top: 200px;
-        text-align: right;
-        }
-
-        .btn-group-xr {
-        padding-top: 70px;
-        gap: 10px;
-        }
-
-        .btn-style-xr {
-        border: solid 1px #6a99ff;
-        color: #6a99ff;
-        border-radius: 20px;
-        font-weight: bold;
-        padding: 10px 30px 10px 30px;
-        background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-style-xr-b {
-        color: rgba(255, 255, 255, 1);
-        border-radius: 20px;
-        font-weight: bold;
-        padding: 10px 30px 10px 30px;
-        background-color: #6a99ff;
-        }
-
-        #background-svg {
-        width: 100%;
-        opacity: 0.15;
-        top: 200px;
-        position: absolute;
-        z-index: -10;
-        }
-
-        .xr-content {
-        width: 100%;
-        top: 100%;
-        }
-        #dynamic-last {
-        grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        .xr-login-icon {
-        width: 300px;
-        }
-
-        .login-container {
-        box-shadow: 0 0 50px 5px rgba(200, 200, 200, .3);
-        }
-
-        .dropdown-submenu {
-        display : none;
-        position: absolute;
-        left : 100%;
-        top : calc(40%);
-        background-color: var(--bs-dropdown-bg);
-        background-clip: padding-box;
-        border: var(--bs-dropdown-border-width) solid var(--bs-dropdown-border-color);
-        border-left: 0;
-        }
-        .dropdown-submenu > a:after {
-        display: block;
-        content: " ";
-        float: right;
-        width: 0;
-        height: 0;
-        border-color: transparent;
-        border-style: solid;
-        border-width: 5px 0 5px 5px;
-        border-left-color: #ccc;
-        margin-top: 5px;
-        margin-right: -10px;
-        }
-        .dropdown-submenu > li {
-        list-style-type : none;
-        }
-
-        .top-btn {
-        position: fixed;
-        top: 75%;
-        right: .3%;
-        z-index: 999999999;
-        border: solid 1px rgba(200, 200, 200, .3);
-        padding: 1px;
-        font-weight: bold;
-        }
-        @media (min-width: $meida-limit) {
-        div[class=position-absolute]:has(.img-left-xr) {
-        right: 100px;
-        top: 200px;
-        }
-
-        #background-svg {
-        width: 100%;
-        top: 300px;
-        }
-
-        #dynamic-last {
-        grid-template-columns: 1fr 1fr 1fr;
-        }
-        }
-
-        @media (max-width: $meida-limit) {
-        #background-svg {
-        top: 350px;
-        }
-
-        div[class=position-absolute]:has(.img-left-xr) {
-        right: 0px;
-        top: 200px;
-        }
-
-        .img-left-xr {
-        display: none;
-        }
-
-        #dynamic-last {
-        grid-template-columns: 1fr 1fr;
-        }
-        }
-
-        @media (max-width: 700px) {
-        #background-svg {
-        top: 500px;
-        }
-
-        #dynamic-last {
-        grid-template-columns: auto;
-        }
-        }
-    </csspre>
+    <link rel="stylesheet" href="../public/css/xr.css">
     <style>
-        .xr-list-item {
-            cursor: pointer;
-            transition: all .3s linear;
-        }
-
-        .xr-list-item:hover {
-            border-radius: calc(var(--bs-border-radius) + 5px) !important;
-            box-shadow: 0 .05rem 1rem rgba(var(--bs-body-color-rgb), .15) !important;
-        }
-
-        .xr-tag {
-            height: 18px;
-            line-height: 18px;
-            display: inline-block;
-            margin-right: 7px;
-            color: #999;
-            font-size: 12px;
-            background: #f5f5f5;
-            border-radius: 2px;
-            padding: 0 6px;
-        }
-
-        .xr-text {
-            color: #444;
-            font-size: 14px;
-            height: 48px;
-            line-height: 24px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            word-break: break-all;
-            white-space: nowrap;
-        }
-        .xr-t{
-            text-overflow: ellipsis;
-            overflow: hidden;
-            word-break: break-all;
-            white-space: nowrap;
+        .top-btn{
+            position: fixed;
+            right: 1%;
+            bottom: 20%;
         }
     </style>
 </head>
@@ -318,12 +84,6 @@
         </div>
     </div>
     <!-- 模板 -->
-    <template @tmp-id="icon1">
-        <svg class="svg-icon" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-            <path stroke-width="2" stroke="#7fe0ed"
-                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
-        </svg>
-    </template>
     <template @tmp-id="tem_item" @x-for="(ind,item) in this.reslist" no-run>
         <div class="row border border-dark m-1 p-3 border-opacity-25 xr-list-item ">
             <div class="col-md-3 row justify-content-center align-content-center">
@@ -370,7 +130,7 @@
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <img src="../public/img/google.png" class="rounded me-2 " width="32px" alt="...">
-                <strong class="me-auto">徐然提示您</strong>
+                <strong class="me-auto">XYS提示您</strong>
                 <small>11 mins ago</small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -381,7 +141,7 @@
         <div id="showToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <img src="../public/img/google.png" class="rounded me-2 " width="32px" alt="...">
-                <strong class="me-auto">徐然提示您</strong>
+                <strong class="me-auto">XYS提示您</strong>
                 <small>11 mins ago</small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -551,9 +311,9 @@
                         mo.find("#staticBackdropLabel").html("提示")
                         let str = null
                         if (arr.status == 1) {
-                            str = "支付成功，3秒后自动刷新页面"
+                            str = "<b class='text-success fw-bold'>支付成功</b>，3秒后自动刷新页面"
                         } else {
-                            str = "支付失败，请检查余额是否充足后再试！"
+                            str = "<b class='text-danger fw-bold'>支付失败</b>，请检查余额是否充足后再试！"
                         }
                         mo.find(".modal-body").html(str)
                         mo.modal('toggle')
@@ -572,6 +332,9 @@
             app.data.phone = window.sessionStorage.getItem("phone")
             app.data.token = window.sessionStorage.getItem("token")
         } else { app.data.login = false; window.location.href = "./" }
+        document.addEventListener("scroll",e =>{
+                console.log(e)
+            })
         $(document).ready(() => {
             app.data.page_num = 0
             $.ajax({

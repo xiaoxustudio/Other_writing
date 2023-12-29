@@ -1,6 +1,6 @@
 <!--
  * @Author: xuranXYS
- * @LastEditTime: 2023-12-24 00:04:01
+ * @LastEditTime: 2023-12-29 08:57:43
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -13,198 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <title use-template>{{ this.title }}</title>
-    <csspre style="display: none;">
-        //@skip 配置常规变量
-        $img_w : 30px;
-        $img_h : 30px;
-        $img_le_w : 500px;
-        $meida-limit : 980px;
-        $color : #232a3f;
-        //@skip 配置图片混合
-        @mix img-width{
-        width: $img_w;
-        height: $img_h;
-        }
-        @mix img-wdith-a{
-        width: 73px;
-        height: 53px;
-        }
-        body {
-        overflow-x : hidden;
-        }
-        * {
-            font-weight: 100;
-        }
-    </csspre>
-    <csspre style="display: none;">
-        // 滚动条
-        ::-webkit-scrollbar {
-        width: 0;
-        }
-
-        // 开始
-        .xr-card {
-        display: inline-block;
-        padding: 10px;
-        }
-
-        .xr-icon {
-        text-align: center;
-        padding: 5px;
-        }
-
-        .d-inline-block.align-text-top {
-        @include img-width;
-        }
-
-        #title-container {
-        padding: 20px;
-        }
-
-        #title-ws {
-        top: 30%;
-        }
-
-        .img-xr {
-        @include img-width;
-        padding: 5px;
-        }
-
-        .img-left-xr {
-        width: $img_le_w;
-        }
-
-        div[class=position-absolute]:has(.img-left-xr) {
-        right: 20%;
-        top: 200px;
-        text-align: right;
-        }
-
-        .btn-group-xr {
-        padding-top: 70px;
-        gap: 10px;
-        }
-
-        .btn-style-xr {
-        border: solid 1px #6a99ff;
-        color: #6a99ff;
-        border-radius: 20px;
-        font-weight: bold;
-        padding: 10px 30px 10px 30px;
-        background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-style-xr-b {
-        color: rgba(255, 255, 255, 1);
-        border-radius: 20px;
-        font-weight: bold;
-        padding: 10px 30px 10px 30px;
-        background-color: #6a99ff;
-        }
-
-        #background-svg {
-        width: 100%;
-        opacity: 0.15;
-        top: 200px;
-        position: absolute;
-        z-index: -10;
-        }
-
-        .xr-content {
-        width: 100%;
-        top: 100%;
-        }
-
-        #dynamic-last {
-        grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        .xr-login-icon {
-        width: 300px;
-        }
-
-        .x-container {
-        box-shadow: 0 0 50px 5px rgba(200, 200, 200, .3);
-        }
-
-        .from-group {
-        margin: 5px;
-        padding: 1px;
-        }
-
-        .dropdown-submenu {
-            display : none;
-            position: absolute;
-            left : 100%;
-            top : calc(40%);
-            background-color: var(--bs-dropdown-bg);
-            background-clip: padding-box;
-            border: var(--bs-dropdown-border-width) solid var(--bs-dropdown-border-color);
-            border-left: 0;
-            }
-            .dropdown-submenu > a:after {
-            display: block;
-            content: " ";
-            float: right;
-            width: 0;
-            height: 0;
-            border-color: transparent;
-            border-style: solid;
-            border-width: 5px 0 5px 5px;
-            border-left-color: #ccc;
-            margin-top: 5px;
-            margin-right: -10px;
-            }
-            .dropdown-submenu > li {
-            list-style-type : none;
-            }
-
-        @media (min-width: $meida-limit) {
-        div[class=position-absolute]:has(.img-left-xr) {
-        right: 100px;
-        top: 200px;
-        }
-
-        #background-svg {
-        width: 100%;
-        top: 300px;
-        }
-
-        #dynamic-last {
-        grid-template-columns: 1fr 1fr 1fr;
-        }
-        }
-        
-
-        @media (max-width: $meida-limit) {
-        #background-svg {
-        top: 350px;
-        }
-
-        div[class=position-absolute]:has(.img-left-xr) {
-        right: 0px;
-        top: 200px;
-        }
-
-        .img-left-xr {
-        display: none;
-        }
-
-        #dynamic-last {
-        grid-template-columns: 1fr 1fr;
-        }
-        }
-
-        @media (max-width: 700px) {
-        #background-svg {
-        top: 500px;
-        }
-
-        #dynamic-last {
-        grid-template-columns: auto;
-        }
-        }
-    </csspre>
+    <link rel="stylesheet" href="../public/css/xr.css">
 </head>
 
 <body>
@@ -254,7 +63,7 @@
     <!-- 内容 -->
     <div class="container">
         <form>
-            <div class="d-md-flex  justify-content-center align-content-center">
+            <div class="d-md-flex  justify-content-center align-content-center bg-white">
                 <div class="row bg-white flex-column user-select-none x-container p-5 m-5 justify-content-center align-content-center"
                     style="grid-template-columns: auto;">
                     <div class="form-group text-center">
@@ -307,7 +116,7 @@
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <img src="../public/img/google.png" class="rounded me-2" width="32px" alt="...">
-                <strong class="me-auto">徐然提示您</strong>
+                <strong class="me-auto">XYS提示您</strong>
                 <small>11 mins ago</small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -318,7 +127,7 @@
         <div id="show" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <img src="../public/img/google.png" class="rounded me-2" width="32px" alt="...">
-                <strong class="me-auto">徐然提示您</strong>
+                <strong class="me-auto">XYS提示您</strong>
                 <small>now</small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
