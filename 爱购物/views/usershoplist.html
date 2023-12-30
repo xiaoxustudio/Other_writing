@@ -15,7 +15,7 @@
     <title use-template>{{ this.title }}</title>
     <link rel="stylesheet" href="../public/css/xr.css">
     <style>
-        .top-btn{
+        .top-btn {
             position: fixed;
             right: 1%;
             bottom: 20%;
@@ -287,11 +287,12 @@
                         method: "post",
                         url: "/userdetail",
                         data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
-                    }).then(data => {
-                        let arr = JSON.parse(data)
-                        if (arr.status == 1) {
-                            this.balance = arr.data[0].balance
-                        } else { this.balance = "查询失败" }
+                        success: data => {
+                            let arr = JSON.parse(data)
+                            if (arr.status == 1) {
+                                this.balance = arr.data[0].balance
+                            } else { this.balance = "查询失败" }
+                        },
                     })
                 },
                 showRun() {
@@ -305,24 +306,25 @@
                         method: "post",
                         url: "/dopay",
                         data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
-                    }).then(data => {
-                        let arr = JSON.parse(data)
-                        let mo = $('#staticBackdrop')
-                        mo.find("#staticBackdropLabel").html("提示")
-                        let str = null
-                        if (arr.status == 1) {
-                            str = "<b class='text-success fw-bold'>支付成功</b>，3秒后自动刷新页面"
-                        } else {
-                            str = "<b class='text-danger fw-bold'>支付失败</b>，请检查余额是否充足后再试！"
-                        }
-                        mo.find(".modal-body").html(str)
-                        mo.modal('toggle')
-                        if (this.reslist.length > 0) {
-                            $("#go-pay").removeAttr("disabled")
-                        } else {
-                            $("#go-pay").attr("disabled", "")
-                        }
-                        setTimeout(() => { window.location.href = "/shopcartall" }, 3000)
+                        success: data => {
+                            let arr = JSON.parse(data)
+                            let mo = $('#staticBackdrop')
+                            mo.find("#staticBackdropLabel").html("提示")
+                            let str = null
+                            if (arr.status == 1) {
+                                str = "<b class='text-success fw-bold'>支付成功</b>，3秒后自动刷新页面"
+                            } else {
+                                str = "<b class='text-danger fw-bold'>支付失败</b>，请检查余额是否充足后再试！"
+                            }
+                            mo.find(".modal-body").html(str)
+                            mo.modal('toggle')
+                            if (this.reslist.length > 0) {
+                                $("#go-pay").removeAttr("disabled")
+                            } else {
+                                $("#go-pay").attr("disabled", "")
+                            }
+                            setTimeout(() => { window.location.href = "/shopcartall" }, 3000)
+                        },
                     })
                 },
             }
@@ -332,9 +334,9 @@
             app.data.phone = window.sessionStorage.getItem("phone")
             app.data.token = window.sessionStorage.getItem("token")
         } else { app.data.login = false; window.location.href = "./" }
-        document.addEventListener("scroll",e =>{
-                console.log(e)
-            })
+        document.addEventListener("scroll", e => {
+            console.log(e)
+        })
         $(document).ready(() => {
             app.data.page_num = 0
             $.ajax({
@@ -342,51 +344,52 @@
                 method: "post",
                 url: "/shopcartall",
                 data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
-            }).then(data => {
-                let res = JSON.parse(data)
-                if (res.status !== 1) {
-                    alert("信息获取出错")
-                    window.location.href = "./"
-                    return false
-                }
-                let run = []
-                let index = 0
-                for (let i of res.data) {
-                    $.ajax({
-                        type: "data",
-                        method: "post",
-                        url: "/detail",
-                        data: { id: i.p_id },
-                    }).then(rdata => {
-                        let rda = JSON.parse(rdata)
-                        if (rda.status === 1) {
-                            run.push({ ...rda.data, ...i })
-                        }
-                        index++
-                        if (index == res.data.length) {
-                            app.data.reslist = run
-                            // 信息全部加载完成
-                            // 更新视图
-                            app.repeatupdate($("#item_container")[0], true, true)
-                            let num = 0
-                            for (let i of run) {
-                                num += parseFloat(i.p_price1) * parseFloat(i.num)
+                success: data => {
+                    let res = JSON.parse(data)
+                    if (res.status !== 1) {
+                        alert("信息获取出错")
+                        window.location.href = "./"
+                        return false
+                    }
+                    let run = []
+                    let index = 0
+                    for (let i of res.data) {
+                        $.ajax({
+                            type: "data",
+                            method: "post",
+                            url: "/detail",
+                            data: { id: i.p_id },
+                        }).then(rdata => {
+                            let rda = JSON.parse(rdata)
+                            if (rda.status === 1) {
+                                run.push({ ...rda.data, ...i })
                             }
-                            // 更新总价
-                            app.data.allPrice = num
-                            if (app.data.reslist.length > 0) {
-                                $("#go-pay").removeAttr("disabled")
-                            } else {
-                                $("#go-pay").attr("disabled", "")
+                            index++
+                            if (index == res.data.length) {
+                                app.data.reslist = run
+                                // 信息全部加载完成
+                                // 更新视图
+                                app.repeatupdate($("#item_container")[0], true, true)
+                                let num = 0
+                                for (let i of run) {
+                                    num += parseFloat(i.p_price1) * parseFloat(i.num)
+                                }
+                                // 更新总价
+                                app.data.allPrice = num
+                                if (app.data.reslist.length > 0) {
+                                    $("#go-pay").removeAttr("disabled")
+                                } else {
+                                    $("#go-pay").attr("disabled", "")
+                                }
                             }
-                        }
-                    })
-                }
-                if (app.data.reslist.length > 0) {
-                    $("#go-pay").removeAttr("disabled")
-                } else {
-                    $("#go-pay").attr("disabled", "")
-                }
+                        })
+                    }
+                    if (app.data.reslist.length > 0) {
+                        $("#go-pay").removeAttr("disabled")
+                    } else {
+                        $("#go-pay").attr("disabled", "")
+                    }
+                },
             })
             $("#go-toggle-top").click(() => {
                 app.callv("scrollToTop")

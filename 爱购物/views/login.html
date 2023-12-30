@@ -207,12 +207,13 @@
                         type: "data",
                         method: "post",
                         url: "/userdetail",
+                        success: data => {
+                            let arr = JSON.parse(data)
+                            if (arr.status == 1) {
+                                this.balance = arr.data[0].balance
+                            } else { this.balance = "查询失败" }
+                        },
                         data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
-                    }).then(data => {
-                        let arr = JSON.parse(data)
-                        if (arr.status == 1) {
-                            this.balance = arr.data[0].balance
-                        } else { this.balance = "查询失败" }
                     })
                 },
             }
@@ -276,25 +277,26 @@
                         $.ajax({
                             url: "/login",
                             method: "post",
+                            success: data => {
+                                let obj = JSON.parse(data)
+                                const overlay = $("#overlay");
+                                if (obj.status == 1) {
+                                    // 成功
+                                    overlay.find(".popup_title").html("提示")
+                                    overlay.find(".popup_content").html(`<b style='color:green'>${obj.msg}</b>`)
+                                    window.sessionStorage.setItem("phone", obj.phone)
+                                    window.sessionStorage.setItem("token", obj.token)
+                                } else {
+                                    // 失败
+                                    overlay.find(".popup_title").html("提示")
+                                    overlay.find(".popup_content").html(`<b style='color:red'>${obj.msg}</b>`)
+                                }
+                                overlay.show()
+                                setTimeout(() => {
+                                    window.location.href = obj.target
+                                }, 1000)
+                            },
                             data: { phone: $("#phone").val(), password: $("#pass").val() },
-                        }).then(data => {
-                            let obj = JSON.parse(data)
-                            const overlay = $("#overlay");
-                            if (obj.status == 1) {
-                                // 成功
-                                overlay.find(".popup_title").html("提示")
-                                overlay.find(".popup_content").html(`<b style='color:green'>${obj.msg}</b>`)
-                                window.sessionStorage.setItem("phone",obj.phone)
-                                window.sessionStorage.setItem("token",obj.token)
-                            } else {
-                                // 失败
-                                overlay.find(".popup_title").html("提示")
-                                overlay.find(".popup_content").html(`<b style='color:red'>${obj.msg}</b>`)
-                            }
-                            overlay.show()
-                            setTimeout(()=>{
-                                window.location.href = obj.target
-                            },1000)
                         })
                     } else {
                         alert("信息填写错误")

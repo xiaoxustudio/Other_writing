@@ -1,6 +1,6 @@
 <!--
  * @Author: xuranXYS
- * @LastEditTime: 2023-12-29 08:57:21
+ * @LastEditTime: 2023-12-31 00:03:58
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -77,12 +77,13 @@
                         src="../public/img/shopItem/$item.p_img1" class="card-img-top m-4"
                         style="width: 150px;height: 150px;" use-template></div>
                 <div class="card-body">
-                    <h5 class="card-title text-center" 
-                    style="text-overflow: ellipsis;white-space:nowrap;overflow: hidden;" use-template> {{ $item.p_name}} </h5>
-                    <p class="card-text px-5 text-dark-emphasis"
-                    style="line-height: 20px;max-height: 100px;min-height: 100px;font-size: 12px;
-                    -webkit-line-clamp:2;text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical;" use-template>{{
-                    $item.p_present }}
+                    <h5 class="card-title text-center"
+                        style="text-overflow: ellipsis;white-space:nowrap;overflow: hidden;" use-template> {{
+                        $item.p_name}} </h5>
+                    <p class="card-text px-5 text-dark-emphasis" style="line-height: 20px;max-height: 100px;min-height: 100px;font-size: 12px;
+                    -webkit-line-clamp:2;text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical;"
+                        use-template>{{
+                        $item.p_present }}
                     </p>
                     <div class="text-center" style="font-size: 12px;">
                         <span>设备分类：</span>
@@ -99,7 +100,8 @@
                         </a>
                         <a style="font-weight: bold;color: red;" use-template>{{ $item.p_price1 }}</a> 元
                     </div>
-                    <div class="text-center"><a class="btn px-3 border-dark-subtle" index="$item.p_id" @click="add_shopcart" use-template>加入购物车</a></div>
+                    <div class="text-center"><a class="btn px-3 border-dark-subtle" index="$item.p_id"
+                            @click="add_shopcart" use-template>加入购物车</a></div>
                 </div>
             </div>
         </div>
@@ -164,16 +166,17 @@
                         type: "data",
                         method: "post",
                         url: "/addshopcart",
+                        success: data => {
+                            let res = JSON.parse(data)
+                            app.data.res_add = res.msg
+                            app.callv("updatenum")
+                            // 每次显示更新文本
+                            const toastLiveExample = $('#showToast')
+                            const toast = new bootstrap.Toast(toastLiveExample)
+                            app.update($("#showToast .toast-body")[0])
+                            toast.show()
+                        },
                         data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token"), id: e.srcElement.attributes["index"].nodeValue },
-                    }).then(data => {
-                        let res = JSON.parse(data)
-                        app.data.res_add = res.msg
-                        app.callv("updatenum")
-                        // 每次显示更新文本
-                        const toastLiveExample = $('#showToast')
-                        const toast = new bootstrap.Toast(toastLiveExample)
-                        app.update($("#showToast .toast-body")[0])
-                        toast.show()
                     })
                 },
                 loginout() {
@@ -210,31 +213,28 @@
                     })
                 },
                 updatenum() {
-                    if (this.reslist.length <= 0) { return }
+                    if (!this.login) { return }
                     let index = 0
                     let data = this.reslist
                     let num_arr = {}
                     // 获取当页购物车的数量
-                    for (let i of data) {
-                        $.ajax({
-                            type: "data",
-                            method: "post",
-                            url: "/shopcartnum",
-                            data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token"), id: i.p_id },
-                        }).then(data => {
+                    $.ajax({
+                        type: "data",
+                        method: "post",
+                        url: "/shopcartnums",
+                        async: false,
+                        success: data => {
                             let res = JSON.parse(data)
                             if (res.status != 0) {
-                                num_arr[i.p_id] = res.num
-                            }
-                            index++
-                        }).then(() => {
-                            if (index == data.length) {
+                                res.nums.map(val => {
+                                    num_arr[val.p_id] = val.num
+                                })
                                 this.resnum = num_arr
-                                return true
                             }
-                        })
-                    }
-                }
+                        },
+                        data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
+                    })
+                },
             }
         })
         if (window.sessionStorage.getItem("phone") && window.sessionStorage.getItem("token")) {
@@ -254,10 +254,11 @@
                 data: {
                     s_word: param.s_word,
                 },
-            }).then(data => {
-                let res = JSON.parse(data)
-                app.data.reslist = res.data
-                app.callv("update_view")
+                success: data => {
+                    let res = JSON.parse(data)
+                    app.data.reslist = res.data
+                    app.callv("update_view")
+                },
             })
             $(".dropdown").mouseover(function () {
                 app.callv("updateBalance")

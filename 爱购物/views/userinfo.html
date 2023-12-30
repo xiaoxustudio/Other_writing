@@ -36,16 +36,18 @@
                         <a class="nav-link" href="./register">注册</a>
                     </li>
                     <li class="nav-item dropdown" @x-if="this.login==true" use-template no-replace>
-                        <button type="button" class="btn dropdown-toggle"
-                            @click="updateBalance" use-template>欢迎您，{{
+                        <button type="button" class="btn dropdown-toggle" @click="updateBalance" use-template>欢迎您，{{
                             this.phone }}用户</button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/userdetail">个人信息</a></li>
                             <li><a class="dropdown-item" href="#" use-template>余额：{{this.userinfo.balance}}</a></li>
                             <li id="other-item"><a class="dropdown-item" href="#">其他</a>
                                 <ul class="dropdown-submenu">
-                                    <li  @click="loginout" use-template><a class="dropdown-item text-muted user-select-none" style="cursor: pointer;">注销</a></li>
-                                    <li><a class="dropdown-item text-muted user-select-none" style="cursor: pointer;">暂无内容</a></li>
+                                    <li @click="loginout" use-template><a
+                                            class="dropdown-item text-muted user-select-none"
+                                            style="cursor: pointer;">注销</a></li>
+                                    <li><a class="dropdown-item text-muted user-select-none"
+                                            style="cursor: pointer;">暂无内容</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -157,7 +159,7 @@
                     const toast = new bootstrap.Toast(toastLiveExample)
                     app.update($(".toast-body")[0])
                     toast.show()
-                },loginout() {
+                }, loginout() {
                     this.phone = window.sessionStorage.removeItem("phone")
                     this.token = window.sessionStorage.removeItem("token")
                     this.login = false
@@ -169,13 +171,14 @@
                         type: "data",
                         method: "post",
                         url: "/userdetail",
+                        success: data => {
+                            let arr = JSON.parse(data)
+                            if (arr.status == 1) {
+                                this.userinfo = arr.data[0]
+                                app.callv("update")
+                            } else { this.userinfo = {} }
+                        },
                         data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
-                    }).then(data => {
-                        let arr = JSON.parse(data)
-                        if (arr.status == 1) {
-                            this.userinfo = arr.data[0]
-                            app.callv("update")
-                        } else { this.userinfo = {} }
                     })
                 },
                 update() {
@@ -211,17 +214,18 @@
                             balance: $("#balance").val(),
                             u_id: $("#u_id").text(),
                         },
-                    }).then(data => {
-                        let arr = JSON.parse(data)
-                        if (arr.status == 1) {
-                            $(".toast-body").html("修改成功")
-                            toast.show()
-                        } else {
-                            this.userinfo = {}
-                            $(".toast-body").html("修改失败，请检查格式是否正确")
-                            toast.show()
-                        }
-                        app.callv("updateUserInfo")
+                        success: data => {
+                            let arr = JSON.parse(data)
+                            if (arr.status == 1) {
+                                $(".toast-body").html("修改成功")
+                                toast.show()
+                            } else {
+                                this.userinfo = {}
+                                $(".toast-body").html("修改失败，请检查格式是否正确")
+                                toast.show()
+                            }
+                            app.callv("updateUserInfo")
+                        },
                     })
                 },
             }

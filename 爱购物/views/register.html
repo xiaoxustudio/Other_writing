@@ -110,11 +110,12 @@
                             <label for="check">验证码</label>
                         </div>
                         <div class="col-md ">
-                            <input type="text" class="form-control p-3 m-3"
-                                id="check" placeholder="请输入验证码" maxlength="4" required>
+                            <input type="text" class="form-control p-3 m-3" id="check" placeholder="请输入验证码"
+                                maxlength="4" required>
                         </div>
                         <div class="col-md-2 row  align-content-center">
-                            <canvas id="showx" width="100" height="46" @click="createCheck" use-template style="cursor: pointer;"></canvas>
+                            <canvas id="showx" width="100" height="46" @click="createCheck" use-template
+                                style="cursor: pointer;"></canvas>
                         </div>
                         <div class="col-md-12">
                             <div id="codev" class="text-end valid-feedback">
@@ -231,11 +232,12 @@
                         method: "post",
                         url: "/userdetail",
                         data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
-                    }).then(data => {
-                        let arr = JSON.parse(data)
-                        if (arr.status == 1) {
-                            this.balance = arr.data[0].balance
-                        } else { this.balance = "查询失败" }
+                        success: data => {
+                            let arr = JSON.parse(data)
+                            if (arr.status == 1) {
+                                this.balance = arr.data[0].balance
+                            } else { this.balance = "查询失败" }
+                        },
                     })
                 },
             }
@@ -316,7 +318,7 @@
             $("#phone").blur(checkPhone)
             $("#user").blur(checkUser)
             $("#pass").blur(checkPass)
-            $("#pass")[0].addEventListener("input",e => $("#pass_re").val().length > 0 ? checkRePass() : false)
+            $("#pass")[0].addEventListener("input", e => $("#pass_re").val().length > 0 ? checkRePass() : false)
             $("#pass_re").blur(checkRePass)
             $("#check").blur(checkCheck)
             $("button[type=submit]").click((e) => {
@@ -326,26 +328,29 @@
                         $.ajax({
                             url: "/register",
                             method: "post",
-                            data: {  nickname : $("#user").val(), 
-                            phone: $("#phone").val(), password: $("#pass").val() },
-                        }).then(data => {
-                            let obj = JSON.parse(data)
-                            const overlay = $("#overlay");
-                            if (obj.status == 1) {
-                                // 成功
-                                overlay.find(".popup_title").html("提示")
-                                overlay.find(".popup_content").html(`<b style='color:green'>${obj.msg}</b>`)
-                                window.sessionStorage.setItem("phone",obj.phone)
-                                window.sessionStorage.setItem("token",obj.token)
-                            } else {
-                                // 失败
-                                overlay.find(".popup_title").html("提示")
-                                overlay.find(".popup_content").html(`<b style='color:red'>${obj.msg}</b>`)
-                            }
-                            overlay.show()
-                            setTimeout(()=>{
-                                window.location.href = obj.target
-                            },1000)
+                            data: {
+                                nickname: $("#user").val(),
+                                phone: $("#phone").val(), password: $("#pass").val()
+                            },
+                            success: data => {
+                                let obj = JSON.parse(data)
+                                const overlay = $("#overlay");
+                                if (obj.status == 1) {
+                                    // 成功
+                                    overlay.find(".popup_title").html("提示")
+                                    overlay.find(".popup_content").html(`<b style='color:green'>${obj.msg}</b>`)
+                                    window.sessionStorage.setItem("phone", obj.phone)
+                                    window.sessionStorage.setItem("token", obj.token)
+                                } else {
+                                    // 失败
+                                    overlay.find(".popup_title").html("提示")
+                                    overlay.find(".popup_content").html(`<b style='color:red'>${obj.msg}</b>`)
+                                }
+                                overlay.show()
+                                setTimeout(() => {
+                                    window.location.href = obj.target
+                                }, 1000)
+                            },
                         })
                     } else {
                         alert("信息填写错误")

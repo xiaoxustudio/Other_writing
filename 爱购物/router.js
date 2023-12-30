@@ -1,6 +1,6 @@
 /*
  * @Author: xuranXYS
- * @LastEditTime: 2023-12-29 14:29:06
+ * @LastEditTime: 2023-12-30 21:08:19
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -243,6 +243,39 @@ module.exports = function (req, res) {
                     res.end(JSON.stringify(obj));
                     return
                 }
+            })
+            return
+        })
+        return
+    } else if (pathname === "/shopcartnums" && method === "post") {
+        var form = new formidable.IncomingForm()
+        form.parse(req, function (err, fileds, files) {
+            let phone = fileds?.phone?.[0] || -1
+            let token = fileds?.token?.[0] || -1
+            let obj = { status: 0 }
+            let sql = `SELECT id,p_id,phone,num FROM shopcart WHERE phone='${phone || null}' group by p_id `;
+            model.is_invalid(phone, token, (e, r) => {
+                if (r) {
+                    model.query(sql, (err, result) => {
+                        try {
+                            obj.status = 1
+                            obj.nums = result
+                            res.end(JSON.stringify(obj));
+                            return
+                        } catch (e) {
+                            obj.status = 0
+                            obj.nums = -1
+                            res.end(JSON.stringify(obj));
+                            return
+                        }
+                    })
+                } else {
+                    obj.status = 0
+                    obj.nums = -1
+                    res.end(JSON.stringify(obj));
+                    return
+                }
+                return
             })
             return
         })

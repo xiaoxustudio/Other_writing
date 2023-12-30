@@ -1,6 +1,6 @@
 <!--
  * @Author: xuranXYS
- * @LastEditTime: 2023-12-29 14:30:06
+ * @LastEditTime: 2023-12-30 23:59:40
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -15,14 +15,39 @@
     <link rel="stylesheet" href="../public/css/xr.css">
     <title use-template>{{ this.title }}</title>
     <style>
-        .card-img-top.m-4 {
+        .card-img-top {
+            width: 150px;
+            height: 150px;
             transition: all .3s linear;
         }
 
-        .card-img-top.m-4:hover {
-            scale: 1.1;
+        .card-img-top:hover {
+            scale: 1.05;
         }
 
+        @media (max-width : 490px) {
+            .card-img-top {
+                width: 100px;
+                height: 100px;
+                transition: all .3s linear;
+            }
+        }
+
+        @media (min-width : 490px) and (max-width : 1000px) {
+            .card-img-top {
+                width: 120px;
+                height: 120px;
+                transition: all .3s linear;
+            }
+        }
+
+        @media (mix-width : 1000px) {
+            .card-img-top {
+                width: 150px;
+                height: 150px;
+                transition: all .3s linear;
+            }
+        }
 
         .card-new-xr:hover {
             box-shadow: var(--bs-box-shadow-sm);
@@ -121,15 +146,18 @@
             transition: all .3s linear;
             border-bottom: solid 2px rgba(152, 112, 112, .1);
         }
-        .b-ul>span:nth-child(n)>div>div{
+
+        .b-ul>span:nth-child(n)>div>div {
             overflow: hidden;
         }
+
         .text-line {
-            display:block;
+            display: block;
             border-bottom: solid 2px rgba(152, 112, 112, .1);
-            left : -200px;
+            left: -200px;
             transition: all .3s linear;
         }
+
         .b-ul:hover .text-line {
             left: 0;
             border-bottom: solid 2px rgba(255, 0, 0, 1);
@@ -408,11 +436,11 @@
         </div>
         <!-- 下文章 -->
         <div class="row m-5 bg-white p-5">
-            <ul @use-id="ul_bottom" class="list-group row flex-row" use-template>
+            <ul @use-id="ul_bottom" class="list-group row flex-row p-2" use-template>
             </ul>
         </div>
         <!-- 商品列表 -->
-        <div class="row m-5 bg-white flex-column ">
+        <div class="row m-5 bg-white flex-column">
             <div class="col-md px-5">
                 <div class="p-3 flex-row">
                     <a name="shoplist_panel"></a>
@@ -425,22 +453,28 @@
                             {{ this.select }}
                         </a>
                         <ul class="dropdown-menu" style="min-width: 75px;">
-                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem(全部)" use-template>全部
+                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem($self.innerHTML)"
+                                use-template x-empty>全部
                             </li>
-                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem(电脑)" use-template>电脑
+                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem($self.innerHTML)"
+                                use-template x-empty>电脑
                             </li>
-                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem(手机)" use-template>手机
+                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem($self.innerHTML)"
+                                use-template x-empty>手机
                             </li>
-                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem(平板)" use-template>平板
+                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem($self.innerHTML)"
+                                use-template x-empty>平板
                             </li>
-                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem(耳机)" use-template>耳机
+                            <li class="dropdown-item" style="cursor: pointer;" @click="changeItem($self.innerHTML)"
+                                use-template x-empty>耳机
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="col-md">
-                <div class="container text-center m-2" @use-id="tem_item" id="item_container" use-template>
+                <div class="text-center m-1 row justify-content-center align-content-center" @use-id="tem_item"
+                    id="item_container" use-template>
                 </div>
             </div>
         </div>
@@ -506,49 +540,51 @@
         </svg>
     </template>
     <template @tmp-id="tem_item" @x-for="item in this.reslist" no-run>
-        <div class="col-md-3 xr-card" style="cursor: pointer;" id="card-xr-ani">
-            <div class="card card-new-xr">
-                <div class="flex-column justify-content-center align-items-center text-center">
-                    <img src="../public/img/shopItem/$item.p_img1" class="card-img-top m-4"
-                        style="width: 150px;height: 150px;" use-template>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title" style="text-overflow: ellipsis;white-space:nowrap;overflow: hidden;"
-                        use-template> {{ $item.p_name}} </h5>
-                    <p class="card-text px-5 text-dark-emphasis" style="line-height: 20px;min-height: 50px;font-size: 14px;
+        <div class="col-md-3 col-12 mt-3">
+            <div class="card card-new-xr" style="cursor: pointer;" id="card-xr-ani">
+                <div class="row">
+                    <div class="col-md-12">
+                        <img src="../public/img/shopItem/$item.p_img1" class="card-img-top m-2 xr-img" use-template>
+                    </div>
+                    <div class="col-md-12 card-body">
+                        <h5 class="card-title" style="text-overflow: ellipsis;white-space:nowrap;overflow: hidden;"
+                            use-template> {{ $item.p_name}} </h5>
+                        <p class="card-text px-5 text-dark-emphasis" style="line-height: 20px;min-height: 50px;font-size: 14px;
                         text-overflow: ellipsis;white-space:nowrap;overflow: hidden;
                         " use-template>{{
-                        $item.p_present }}
-                    </p>
-                    <div style="font-size: 12px;">
-                        <span>设备分类：</span>
-                        <a @x-if="$item.p_type==='ad-product-computer'" use-template no-replace>电脑</a>
-                        <a @x-else-if="$item.p_type==='ad-product-phone'" use-template no-replace>手机</a>
-                        <a @x-else-if="$item.p_type==='ad-product-ear'" use-template no-replace>耳机</a>
-                        <a @x-else-if="$item.p_type==='ad-product-pad'" use-template no-replace>平板</a>
-                        <br>
-                        <a @x-if="this.login===true" use-template no-replace> 已加入购物车数量： {{ this.resnum[$item.p_id] || 0
-                            }}</a>
+                            $item.p_present }}
+                        </p>
+                        <div style="font-size: 12px;">
+                            <span>设备分类：</span>
+                            <a @x-if="$item.p_type==='ad-product-computer'" use-template no-replace>电脑</a>
+                            <a @x-else-if="$item.p_type==='ad-product-phone'" use-template no-replace>手机</a>
+                            <a @x-else-if="$item.p_type==='ad-product-ear'" use-template no-replace>耳机</a>
+                            <a @x-else-if="$item.p_type==='ad-product-pad'" use-template no-replace>平板</a>
+                            <br>
+                            <a @x-if="this.login===true" use-template no-replace> 已加入购物车数量： {{ this.resnum[$item.p_id]
+                                || 0 }}</a>
+                        </div>
+                        <span class="p-1 my-2"
+                            style="font-size: 12px;color: rgb(207, 10, 44);border:solid 1px rgba(226, 0, 36, 0.4);border-radius: 4px;"
+                            @x-if="$item.p_price2 - $item.p_price1 > 0" use-template>
+                            直降 {{$item.p_price2 - $item.p_price1 }} 元</span>
+                        <span class="p-1 my-2"
+                            style="font-size: 12px;color: rgb(0, 162, 11);border:solid 1px rgba(0, 162, 11, 0.4);border-radius: 4px;"
+                            @x-if="$item.p_price2 - $item.p_price1 < 0" use-template>
+                            涨价 {{ - ($item.p_price2 - $item.p_price1) }} 元更有性价比</span>
+                        <span class="p-1 my-2"
+                            style="font-size: 12px;border:solid 1px ; border-color: rgba(0, 0, 0, 0.4);;border-radius: 4px;"
+                            @x-if="Math.random() >= 0.5" use-template>
+                            赚积分</span>
+                        <div class="p-4">
+                            ￥ <a class="text-decoration-line-through" style="color: red;" use-template> {{
+                                $item.p_price2 }}
+                            </a>
+                            <a style="font-weight: bold;color: red;" use-template>{{ $item.p_price1 }}</a> 元
+                        </div>
+                        <a class="btn mt-3 px-3 border-dark-subtle" @x-if="this.login===true" index="$item.p_id"
+                            @click="add_shopcart" use-template>加入购物车</a>
                     </div>
-                    <span class="p-1 my-2"
-                        style="font-size: 12px;color: rgb(207, 10, 44);border:solid 1px rgba(226, 0, 36, 0.4);border-radius: 4px;"
-                        @x-if="$item.p_price2 - $item.p_price1 > 0" use-template>
-                        直降 {{$item.p_price2 - $item.p_price1 }} 元</span>
-                    <span class="p-1 my-2"
-                        style="font-size: 12px;color: rgb(0, 162, 11);border:solid 1px rgba(0, 162, 11, 0.4);border-radius: 4px;"
-                        @x-if="$item.p_price2 - $item.p_price1 < 0" use-template>
-                        涨价 {{ - ($item.p_price2 - $item.p_price1) }} 元更有性价比</span>
-                    <span class="p-1 my-2"
-                        style="font-size: 12px;border:solid 1px ; border-color: rgba(0, 0, 0, 0.4);;border-radius: 4px;"
-                        @x-if="Math.random() >= 0.5" use-template>
-                        赚积分</span>
-                    <div class="p-4">
-                        ￥ <a class="text-decoration-line-through" style="color: red;" use-template> {{ $item.p_price2 }}
-                        </a>
-                        <a style="font-weight: bold;color: red;" use-template>{{ $item.p_price1 }}</a> 元
-                    </div>
-                    <a class="btn mt-3 px-3 border-dark-subtle" @x-if="this.login===true" index="$item.p_id"
-                        @click="add_shopcart" use-template>加入购物车</a>
                 </div>
             </div>
         </div>
@@ -600,7 +636,8 @@
                     <span class="col-md-12 text-secondary" use-template>
                         {{$item.desc}}</span>
                     <div class="col-md-12" style="overflow: hidden;height: 1px;min-height: 1px;">
-                        <span class="text-line" style="height: 1px;min-height: 1px;"></span></div>
+                        <span class="text-line" style="height: 1px;min-height: 1px;"></span>
+                    </div>
                     <span class="col-md-12 text-secondary  text-select" style="font-size: 10px;">
                         评论者：<br><b use-template>{{$item.name}}</b></span>
                 </div>
@@ -757,33 +794,31 @@
                         method: "post",
                         url: "/userdetail",
                         data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
-                    }).then(data => {
-                        let arr = JSON.parse(data)
-                        if (arr.status == 1) {
-                            this.balance = arr.data[0].balance
-                        } else { this.balance = "查询失败" }
+                        success: (data) => {
+                            let arr = JSON.parse(data)
+                            if (arr.status == 1) {
+                                this.balance = arr.data[0].balance
+                            } else { this.balance = "查询失败" }
+                        }
                     })
                 },
                 update_view() {
-                    new Promise((res, rev) => { res("") }).then(async e => {
-                        return await app.callv("updatenum")
-                    }).then(e => {
-                        app.repeatupdate($("#item_container")[0], true, true)
-                        // 动画
-                        $(".card").hover(function () {
-                            $(this).find("img").css("border", "solid 1px red")
-                            // $(this).css("color","rgba(0,0,0,0.55)")
-                        }, function () {
-                            $(this).find("img").css("border", "")
-                            // $(this).css("color", "")
-                        })
-                        // 使用mouseover和out（其实用hover就可以）
-                        $(".card").mouseover(function () {
-                            $(this).css("color", "rgba(0,0,0,0.55)")
-                        })
-                        $(".card").mouseout(function () {
-                            $(this).css("color", "")
-                        })
+                    app.callv("updatenum")
+                    app.repeatupdate($("#item_container")[0], true, true)
+                    // 动画
+                    $(".card").hover(function () {
+                        $(this).find("img").css("border", "solid 1px red")
+                        // $(this).css("color","rgba(0,0,0,0.55)")
+                    }, function () {
+                        $(this).find("img").css("border", "")
+                        // $(this).css("color", "")
+                    })
+                    // 使用mouseover和out（其实用hover就可以）
+                    $(".card").mouseover(function () {
+                        $(this).css("color", "rgba(0,0,0,0.55)")
+                    })
+                    $(".card").mouseout(function () {
+                        $(this).css("color", "")
                     })
                 },
                 updatenum() {
@@ -792,38 +827,37 @@
                     let data = this.reslist
                     let num_arr = {}
                     // 获取当页购物车的数量
-                    for (let i of data) {
-                        $.ajax({
-                            type: "data",
-                            method: "post",
-                            url: "/shopcartnum",
-                            data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token"), id: i.p_id },
-                        }).then(data => {
+                    $.ajax({
+                        type: "data",
+                        method: "post",
+                        url: "/shopcartnums",
+                        async: false,
+                        success: data => {
                             let res = JSON.parse(data)
                             if (res.status != 0) {
-                                num_arr[i.p_id] = res.num
-                            }
-                            index++
-                        }).then(() => {
-                            if (index == data.length) {
+                                res.nums.map(val => {
+                                    num_arr[val.p_id] = val.num
+                                })
                                 this.resnum = num_arr
                             }
-                        })
-                    }
+                        },
+                        data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token") },
+                    })
                 }, add_shopcart(e) {
                     $.ajax({
                         type: "data",
                         method: "post",
                         url: "/addshopcart",
+                        success: data => {
+                            let res = JSON.parse(data)
+                            app.data.res_add = res.msg
+                            app.callv("updatenum")
+                            const toastLiveExample = $('#showToast')
+                            const toast = new bootstrap.Toast(toastLiveExample)
+                            app.update($("#showToast .toast-body")[0])
+                            toast.show()
+                        },
                         data: { phone: window.sessionStorage.getItem("phone"), token: window.sessionStorage.getItem("token"), id: e.srcElement.attributes["index"].nodeValue },
-                    }).then(data => {
-                        let res = JSON.parse(data)
-                        app.data.res_add = res.msg
-                        app.callv("updatenum")
-                        const toastLiveExample = $('#showToast')
-                        const toast = new bootstrap.Toast(toastLiveExample)
-                        app.update($("#showToast .toast-body")[0])
-                        toast.show()
                     })
                 }, changeItem(type) {
                     this.select = type || "全部"
@@ -831,31 +865,32 @@
                         type: "data",
                         method: "post",
                         url: "/shoplist",
-                    }).then(data => {
-                        let res = JSON.parse(data)
-                        switch (this.select) {
-                            case "电脑": {
-                                app.data.reslist = res.data[0]
-                                break
+                        success: data => {
+                            let res = JSON.parse(data)
+                            switch (this.select) {
+                                case "电脑": {
+                                    app.data.reslist = res.data[0]
+                                    break
+                                }
+                                case "手机": {
+                                    app.data.reslist = res.data[1]
+                                    break
+                                }
+                                case "平板": {
+                                    app.data.reslist = res.data[2]
+                                    break
+                                }
+                                case "耳机": {
+                                    app.data.reslist = res.data[3]
+                                    break
+                                }
+                                default: {
+                                    app.data.reslist = res.all
+                                    break
+                                }
                             }
-                            case "手机": {
-                                app.data.reslist = res.data[1]
-                                break
-                            }
-                            case "平板": {
-                                app.data.reslist = res.data[2]
-                                break
-                            }
-                            case "耳机": {
-                                app.data.reslist = res.data[3]
-                                break
-                            }
-                            default: {
-                                app.data.reslist = res.all
-                                break
-                            }
+                            app.callv("update_view")
                         }
-                        app.callv("update_view")
                     })
                 }
             }

@@ -1,6 +1,6 @@
 /*
  * @Author: xuranXYS
- * @LastEditTime: 2023-12-27 22:59:39
+ * @LastEditTime: 2023-12-31 00:02:09
  * @GitHub: www.github.com/xiaoxustudio
  * @WebSite: www.xiaoxustudio.top
  * @Description: By xuranXYS
@@ -270,17 +270,26 @@ class TmpTag {
         }
     }
 }
+
 /**
  * @description: 模板类：可实现事件注册、双向绑定等...
  * @return {*}
  */
 class Template {
     constructor(obj) {
+        this.Reg = {
+            String: /\$([0-9a-zA-Z.\_\-\[\]]+)/g, // for字符串
+            ModelString: /\{\{([^}}]+)\}\}/g, // 模板字符串
+            AttrString: /(\$|this|arguments\[[0-9]+\])+([.\[\]\_\-a-zA-Z0-9]+)+/i, // 属性，值字符串
+            FuncString: /([a-zA-Z0-9.\[\]\$\_]+)\((.*)\)$/i,
+        }
         let odata = obj.data() || {}
         // 将update的环境设置为本身，方便后续操作
         const update = this.update.bind(this)
         // 垃圾回收
         this.observer = null
+        // 事件队列
+        this.events = new Promise((res, _rej) => res(true))
         // 可能会用到继承，所以写上
         if (obj instanceof Template) {
             this.TmpTag = obj.TmpTag
@@ -295,10 +304,10 @@ class Template {
             this.initupdate()
             return this
         }
-        // 创建代理，用于实现类似于vue的双向绑定功能
+        // 创建代理，用于实现类似于vue的双向绑定功能，ES6新东西
         this.data = new Proxy(odata, {
             get(o, p) { return o[p] },
-            set(o, p, v) { o[p] = v; /*使用异步更新*/window.setTimeout(update(), 0); return true; }
+            set(o, p, v) { o[p] = v; /*使用异步更新*/window.app.events.then(e => update()); return true; }
         })
         // 创建静态数据(不会被更改)，后续会用到
         this.s_data = obj.s_data?.bind(this.data)() || (function () { return {} }).bind(this.data)()
@@ -320,7 +329,7 @@ class Template {
             if (!window.app.funcs_custom_map.has(this)) {
                 window.app.funcs_custom_map.set(this, {})
             }
-            if(!window.app.funcs_custom_map.get(this)[type]){
+            if (!window.app.funcs_custom_map.get(this)[type]) {
                 window.app.funcs_custom_map.get(this)[type] = []
             }
             window.app.funcs_custom_map.get(this)[type].push({ type, listener: listeners })
@@ -424,6 +433,369 @@ class Template {
         return show_all ? _arr : null
     }
     /**
+     * @description: 更改数据指向
+     * @param {*} textNode
+     * @return {*}
+     */
+    convertSdata(textNode) {
+        let id_node = this.upproperty(textNode, "for_id")
+        let sdata = this.s_data
+        if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
+            sdata = this.TmpTag.for[id_node.for_id]
+        }
+        return sdata
+    }
+    /**
+     * @description: 编译模板字符串
+     * @param {*} node 节点（必须）
+     * @param {*} tmp 环境 || 字符串
+     * @param {*} is_add 是否开启首次添加映射
+     * @return {*}
+     */
+    complie(node, tmp, is_add = true) {
+        // 如果是字符串，则直接编译返回
+        if (typeof tmp === "string" && this.isElem(node)) {
+            return tmp.replace(this.Reg.ModelString, (match, val, ind) => {
+                // 替换$...为arguments[0]....
+                val = val.replace(this.Reg.String, (ma, v) => {
+                    return "arguments[0]." + v
+                })
+                // 判断是否找到了for_id找到了使用它的作用域，没有则使用静态数据
+                let sdata = this.convertSdata(node)
+                // 运行编译并返回
+                let res = null
+                let env = { ...sdata, self: node }
+                try {
+                    res = new Function("return " + val.trim()).bind(this.data, env)()
+                } catch (e) {
+                    console.error("模板字符串编译异常：", match, env)
+                    throw e
+                }
+                return res
+            })
+        }
+        // 更新模板字符串
+        // 创建该节点的文本迭代器
+        const iterator = document.createNodeIterator(node, NodeFilter.SHOW_TEXT);
+        let textNode;
+        while (textNode = iterator.nextNode()) {
+            // 模板属性，确保元素没有首次加入过
+            if (this.Reg.ModelString.test(textNode.nodeValue) && textNode.parentNode.attributes["use-template"]?.nodeValue == '') {
+                // 判断是否添加进映射
+                if (is_add && !this.cache.has(textNode.parentNode)) {
+                    // 设置键值，因为我们之前用的是Map，所以键可以为任何对象
+                    tmp.cache.set(textNode.parentNode, { text: textNode.nodeValue, textNode })
+                }
+                if (!textNode.rawNodeValue) {
+                    textNode.rawNodeValue = textNode.nodeValue
+                }
+                // 替换{{ ... }}字符串
+                textNode.nodeValue = textNode.nodeValue.replace(this.Reg.ModelString, (match, val, ind) => {
+                    // 替换$...为arguments[0]....
+                    val = val.replace(this.Reg.String, (ma, v) => {
+                        return "arguments[0]." + v
+                    })
+                    // 判断是否找到了for_id找到了使用它的作用域，没有则使用静态数据
+                    let sdata = this.convertSdata(textNode)
+                    // 运行编译并返回
+                    let res = null
+                    let env = { ...sdata, self: textNode.parentNode }
+                    try {
+                        res = new Function("return " + val.trim()).bind({...this.data,...this}, env)()
+                    } catch (e) {
+                        console.error("模板字符串编译异常：", match, env)
+                        throw e
+                    }
+                    return res
+                })
+            }
+        }
+    }
+    /**
+     * @description: 编译属性字符串
+     * @param {*} node 节点
+     * @param {*} item 属性列表
+     * @return {*}
+     */
+    complieAttr(node, item, is_debug = false) {
+        if (typeof item === "string" && this.isElem(node)) {
+            if (this.Reg.AttrString.test(item)) {
+                let val = item.replace(this.Reg.String, (ma, v) => {
+                    return "arguments[0]." + v
+                })
+                let match = val.match(this.Reg.AttrString)
+                let sdata = this.convertSdata(node)
+                let env = { ...sdata, self: node }
+                let res = ""
+                try {
+                    res = new Function("return " + match[0].trim()).bind(this.data, env)()
+                } catch (e) {
+                    console.error("属性字符串编译异常：", item, env)
+                    throw e
+                }
+                // 拼接
+                res = item.substring(0, match.index) + res + item.substring(match.index + match[0].length)
+                return String(res).trim()
+            }
+        } else if (!item.rawNodeValue) {
+            item.rawNodeValue = item.nodeValue
+        }
+        if (this.Reg.AttrString.test(item.nodeValue)) {
+            let val = item.nodeValue.replace(this.Reg.String, (ma, v) => {
+                return "arguments[0]." + v
+            })
+            let match = val.match(this.Reg.AttrString)
+            let sdata = this.convertSdata(node)
+            let env = { ...sdata, self: node }
+            let res = ""
+            try {
+                res = new Function("return " + match[0].trim()).bind(this.data, env)()
+            } catch (e) {
+                console.error("属性字符串编译异常：", item.nodeValue, env)
+                throw e
+            }
+            // 拼接
+            res = val.substring(0, match.index) + res + val.substring(match.index + match[0].length)
+            return String(res).trim()
+        }
+        return item.nodeValue
+    }
+    /**
+     * @description: 运行if属性文本
+     * @param {*} node 元素
+     * @return {*}
+     */
+    runIf(node) {
+        let _res = false
+        for (let ite of node.attributes) {
+            if (ite.name === "@x-else-if") {
+                // 模板属性
+                let val = ite.nodeValue.replace(this.Reg.String, (ma, v) => {
+                    return "arguments[0]." + v
+                })
+                let sdata = this.convertSdata(node)
+                let env = { ...sdata, self: node }
+                _res = new Function("return " + val.trim()).bind(this.data, env)()
+            }
+        }
+        return _res
+    }
+    /**
+     * @description: 执行结果if-else设定
+     * @param {HTMLElement} node 节点
+     * @param {String} action_value 设定值
+     * @param {Boolean} val 是否已经成功
+     * @return {*}
+     */
+    runIFWhile(node, action_value = "null", val = false) {
+        let res = null
+        let sun_node_else_if = this.getIFtoElse(node, "@x-else-if")
+        if (sun_node_else_if) {
+            if (val) {
+                // 上次已经有运行成功了
+                sun_node_else_if.style.display = action_value
+                return this.runIFWhile(sun_node_else_if, action_value, true)
+            }
+            res = this.runIf(sun_node_else_if)
+            if (res) {
+                sun_node_else_if.style.display = null
+            } else {
+                sun_node_else_if.style.display = action_value
+            }
+            return this.runIFWhile(sun_node_else_if, action_value, res)
+        } else if (!val) {
+            // 如果到最后val值还是为false且已经找不到else-if了，那就设置else
+            let selse = this.getIFtoElse(node)
+            if (this.isElem(selse)) {
+                selse.style.display = null
+            }
+        }
+        return res == null ? val : res
+    }
+    /**
+     * @description: 绑定属性函数
+     * @param {*} node 元素
+     * @param {*} item 属性
+     * @return {*}
+     */
+    callFunBind(node, item) {
+        let func_name = item.value
+        // 模板属性
+        let reg = this.Reg.FuncString
+        let arr = []
+        // 判断是否是传参函数，是的话，将函数名称进行编译
+        if (reg.test(func_name)) {
+            let _arr = func_name.match(reg)
+            func_name = _arr[1]
+            _arr = _arr.splice(2)
+            let id_node = this.upproperty(node, "for_id")
+            for (let mi of _arr) {
+                if (mi) {
+                    if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
+                        mi = this.complieAttr(id_node, mi.trim())
+                    } else {
+                        mi = this.complieAttr(node, mi.trim())
+                    }
+                    arr.push(mi)
+                }
+            }
+        }
+        let is_ori = false // 是否是自身函数
+        // 判断函数名称是否存在
+        if (this.funcs_custom[func_name]) {
+            func_name = this.funcs_custom[func_name]
+            is_ori = true
+        }
+        // 判断是否有参数，并绑定事件
+        if (!this.funcs_custom_map.has(node)) {
+            if (arr.length > 0) {
+                if (is_ori) {
+                    let fn = func_name.bind(this.data,  ...arr)
+                    node.addEventListener(item.name.substring(1), fn);
+                } else {
+                    let fn = new Function(item.value).bind(this.data, ...arr)
+                    node.addEventListener(item.name.substring(1), fn);
+                }
+            } else {
+                try {
+                    if (is_ori) {
+                        let fn = func_name.bind(this.data)
+                        node.addEventListener(item.name.substring(1), fn);
+                    } else {
+                        let fn = new Function("return " + item.value).bind(this.data)
+                        node.addEventListener(item.name.substring(1), fn);
+                    }
+                } catch (e) {
+                    let fn = new Function(item.value).bind(this.data)
+                    node.addEventListener(item.name.substring(1), fn);
+                }
+            }
+        }
+    }
+    /**
+     * @description: 检测垃圾回收
+     * @return {*}
+     */
+    callProcessGC() {
+        if (!(this.observer instanceof MutationObserver)) {
+            this.observer = new MutationObserver((obj) => {
+                let keys = Object.keys(this.TmpTag.for)
+                for (let item of keys) {
+                    let it = this.TmpTag.for[item]
+                    if (!document.contains(it.parent)) {
+                        this.TmpTag.processGC(it.parent.for_id)
+                    }
+                }
+            })
+            this.observer.observe(document.body, {
+                childList: true, // 观察目标子节点的变化，是否有添加或者删除
+                subtree: true, // 针对整个子树生效
+            })
+        }
+    }
+    /**
+     * @description: 运行动态节点
+     * @param {*} node 节点
+     * @param {*} item 动态节点属性
+     * @param {*} tmp 模板源
+     * @return {*}
+     */
+    runDynamicElem(node, item, tmp) {
+        // 解析并运行将当前节点和当前this还有模板的内容解析传入
+        this.TmpTag.runWait(item.nodeValue, this, new DOMParser().parseFromString(tmp.innerHTML, "text/html").body)
+        // 遍历动态数据
+        for (let i_item of this.TmpTag.tmps_dynamic) {
+            // 我们只要第一个就可以
+            let sub_node = new DOMParser().parseFromString(i_item.s_node, "text/html").body.children[0]
+            // 创建for循环的id，循环的时候需要用到
+            let id = this.cr_id()
+            sub_node.for_id = id
+            // 解析for属性
+            for (let f_it in i_item.data) {
+                if (!this.TmpTag.for[id]) {
+                    this.TmpTag.for[id] = {}
+                }
+                // 将循环的数据存储
+                this.TmpTag.for[id][f_it] = i_item.data[f_it]
+            }
+            //其他存储
+            this.TmpTag.for[id]["parent"] = sub_node
+            // 垃圾回收
+            this.callProcessGC()
+            // 重回这个编译的节点
+            this.repeatupdate(sub_node)
+            // 添加编译后的节点
+            node.appendChild(sub_node)
+        }
+    }
+    /**
+     * @description: 执行if相关功能
+     * @param {*} node 元素
+     * @param {*} status 返回结果
+     * @return {*}
+     */
+    runIF(node, status) {
+        // 判断运行后的结果是否为true
+        let node_else_if = this.getIFtoElse(node, "@x-else-if")
+        if (status) {
+            node.style.display = null
+            let node_else = this.getIFtoElse(node)
+            if (this.isElem(node_else)) {
+                node_else.style.display = "none"
+            }
+            // 之间的else-if
+            this.runIFWhile(node, "none", true)
+        } else if (this.getIFtoElse(node, "@x-else-if") && this.isElem(node_else_if) && node_else_if && this.runIf(node_else_if)) {
+            node.style.display = "none"
+            // 执行
+            node_else_if.style.display = null
+            this.runIFWhile(node_else_if, "none", true)
+            let node_else = this.getIFtoElse(node)
+            if (this.isElem(node_else)) {
+                node_else.style.display = "none"
+            }
+        } else if (this.getIFtoElse(node, "@x-else-if") && this.isElem(node_else_if) && node_else_if && !this.runIf(node_else_if)) {
+            node.style.display = "none"
+            // 执行
+            node_else_if.style.display = "none"
+            let res = this.runIFWhile(node_else_if, "none", false)
+            let node_else = this.getIFtoElse(node)
+            if (res) {
+                if (this.isElem(node_else)) {
+                    node_else.style.display = "none"
+                }
+            } else {
+                if (this.isElem(node_else)) {
+                    node_else.style.display = null
+                }
+            }
+        } else {
+            node.style.display = "none"
+            // 之间的else-if
+            this.runIFWhile(node, "none", true)
+            let node_else = this.getIFtoElse(node)
+            if (this.isElem(node_else)) {
+                node_else.style.display = null
+            }
+        }
+    }
+    /**
+     * @description: 是否开启模板
+     * @param {HTMLElement} node
+     * @return {*}
+     */
+    isUseTemplate(node) {
+        return node.attributes["use-template"] && node.attributes["use-template"] !== "false"
+    }
+    /**
+     * @description: 是否为HTML节点
+     * @param {HTMLElement} node
+     * @return {*}
+     */
+    isElem(node) {
+        return node instanceof HTMLElement
+    }
+    /**
      * @description: 初始化
      * @return {*}
      */
@@ -437,36 +809,8 @@ class Template {
                 let key_name = attrs[ik]
                 let item = i.attributes[key_name]
                 let is_rep = true // 替换模板字符串
-                const com = (node, tmp) => {
-                    // 更新模板字符串
-                    // 创建该节点的文本迭代器
-                    const iterator = document.createNodeIterator(node, NodeFilter.SHOW_TEXT);
-                    let textNode;
-                    while (textNode = iterator.nextNode()) {
-                        // 模板属性，确保元素没有首次加入过
-                        if (/\{\{([^}}]+)\}\}/g.test(textNode.nodeValue) && !this.cache.has(textNode.parentNode) && textNode.parentNode.attributes["use-template"]?.nodeValue == '') {
-                            let id_node = this.upproperty(textNode, "for_id")
-                            // 替换{{ ... }}字符串
-                            textNode.nodeValue = textNode.nodeValue.replace(/\{\{([^}}]+)\}\}/g, (match, val, ind) => {
-                                // 设置键值，因为我们之前用的是Map，所以键可以为任何对象
-                                tmp.cache.set(textNode.parentNode, { text: textNode.nodeValue, textNode })
-                                // 替换$...为arguments[0]....
-                                val = val.replace(/\$([0-9a-zA-Z.\_\-\[\]]+)/g, (ma, v) => {
-                                    return "arguments[0]." + v
-                                })
-                                // 判断是否找到了for_id找到了使用它的作用域，没有则使用静态数据
-                                let sdata = this.s_data
-                                if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                    sdata = this.TmpTag.for[id_node.for_id]
-                                }
-                                // 运行编译并返回
-                                return new Function("return " + val.trim()).bind(this.data, sdata)()
-                            })
-                        }
-                    }
-                }
                 // 确保为@开头且有use-template属性
-                if (item.name.startsWith("@") && attrs.length > 0 && i.attributes["use-template"] && i.attributes["use-template"] !== "false") {
+                if (item.name.startsWith("@") && attrs.length > 0 && this.isUseTemplate(i)) {
                     // 内置属性
                     if (item.name === "@use-id") {
                         // 使用template模板
@@ -475,54 +819,14 @@ class Template {
                         // 确保其id存在
                         if (tmp && this.TmpTag._wait[item.nodeValue]) {
                             if (this.TmpTag._wait[item.nodeValue].length > 0) {
-                                // 解析并运行将当前节点和当前this还有模板的内容解析传入
-                                this.TmpTag.runWait(item.nodeValue, this, new DOMParser().parseFromString(tmp.innerHTML, "text/html").body)
-                                // 遍历动态数据
-                                for (let i_item of this.TmpTag.tmps_dynamic) {
-                                    // 我们只要第一个就可以
-                                    let sub_node = new DOMParser().parseFromString(i_item.s_node, "text/html").body.children[0]
-                                    // 创建for循环的id，循环的时候需要用到
-                                    let id = this.cr_id()
-                                    sub_node.for_id = id
-                                    // 解析for属性
-                                    for (let f_it in i_item.data) {
-                                        if (!this.TmpTag.for[id]) {
-                                            this.TmpTag.for[id] = {}
-                                        }
-                                        // 将循环的数据存储
-                                        this.TmpTag.for[id][f_it] = i_item.data[f_it]
-                                    }
-                                    //其他存储
-                                    this.TmpTag.for[id]["self"] = sub_node
-                                    this.TmpTag.for[id]["parent"] = sub_node
-                                    // 添加编译后的节点
-                                    i.appendChild(sub_node)
-                                    // 垃圾回收
-                                    if (!(this.observer instanceof MutationObserver)) {
-                                        this.observer = new MutationObserver((obj) => {
-                                            let keys = Object.keys(this.TmpTag.for)
-                                            for (let item of keys) {
-                                                let it = this.TmpTag.for[item]
-                                                if (!document.contains(it.self)) {
-                                                    this.TmpTag.processGC(it.self.for_id)
-                                                }
-                                            }
-                                        })
-                                        this.observer.observe(document.body, {
-                                            childList: true, // 观察目标子节点的变化，是否有添加或者删除
-                                            subtree: true, // 针对整个子树生效
-                                        })
-                                    }
-                                    // 重回这个编译的节点
-                                    this.repeatupdate(sub_node)
-                                    is_rep = false // 不替换，上面的repeatupdate会帮我们替换
-                                }
+                                this.runDynamicElem(i, item, tmp)
+                                is_rep = false // 不替换，上面的repeatupdate会帮我们替换
                             } else {
                                 // 如果不是for循环，则直接添加即可
                                 // 使用默认模板功能
                                 let sub_node = new DOMParser().parseFromString(tmp.innerHTML, "text/html").body.children[0]
-                                i.appendChild(sub_node)
                                 this.repeatupdate(sub_node)
+                                i.appendChild(sub_node)
                                 is_rep = false
                             }
                             this.TmpTag.tmps_dynamic = [] // 最后清空动态数据
@@ -531,197 +835,44 @@ class Template {
                         // 设置默认结果为false
                         let status = false
                         // 保证使用了use-template
-                        if (i.attributes["use-template"] && i.attributes["use-template"] !== "false") {
+                        if (this.isUseTemplate(i)) {
                             // 模板属性
-                            let id_node = this.upproperty(i, "for_id")
                             item.nodeValue.replace(/(.*)/, (match, val, ind) => {
-                                val = match.replace(/\$([0-9a-zA-Z.\_\-\[\]]+)/g, (ma, v) => {
+                                val = match.replace(this.Reg.String, (ma, v) => {
                                     return "arguments[0]." + v
                                 })
-                                let sdata = this.s_data
-                                if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                    sdata = this.TmpTag.for[id_node.for_id]
-                                }
-                                status = new Function("return " + val.trim()).bind(this.data, sdata)()
+                                let sdata = this.convertSdata(item)
+                                let env = { ...sdata, self: i }
+                                status = new Function("return " + val.trim()).bind(this.data, env)()
                                 return status
                             })
                         }
                         // 运行
-                        const run = (node) => {
-                            let _res = false
-                            for (let ite of node.attributes) {
-                                if (ite.name === "@x-else-if") {
-                                    // 模板属性
-                                    let id_node = this.upproperty(node, "for_id")
-                                    let val = ite.nodeValue.replace(/\$([0-9a-zA-Z.\_\-\[\]]+)/g, (ma, v) => {
-                                        return "arguments[0]." + v
-                                    })
-                                    let sdata = this.s_data
-                                    if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                        sdata = this.TmpTag.for[id_node.for_id]
-                                    }
-                                    _res = new Function("return " + val.trim()).bind(this.data, sdata)()
-                                }
-                            }
-                            return _res
+                        this.runIF(i, status)
+                    } else {
+                        //自定义方法
+                        try {
+                            this.callFunBind(i, item)
+                        } catch (e) {
+                            console.error("事件添加失败", item.nodeValue)
+                            throw e
                         }
-                        // 创建匿名函数，用于循环设置if，直到找不到为止
-                        const r_if_wihle = (node, action_value = "null", val = false) => {
-                            let res = null
-                            let sun_node_else_if = this.getIFtoElse(node, "@x-else-if")
-                            if (sun_node_else_if) {
-                                if (val) {
-                                    // 上次已经有运行成功了
-                                    sun_node_else_if.style.display = action_value
-                                    return r_if_wihle(sun_node_else_if, action_value, true)
-                                }
-                                res = run(sun_node_else_if)
-                                if (res) {
-                                    sun_node_else_if.style.display = null
-                                } else {
-                                    sun_node_else_if.style.display = action_value
-                                }
-                                return r_if_wihle(sun_node_else_if, action_value, res)
-                            } else if (!val) {
-                                // 如果到最后val值还是为false且已经找不到else-if了，那就设置else
-                                let selse = this.getIFtoElse(node)
-                                if (selse instanceof HTMLElement) {
-                                    selse.style.display = null
-                                }
-                            }
-                            return res == null ? val : res
-                        }
-                        // 判断运行后的结果是否为true
-                        let node_else_if = this.getIFtoElse(i, "@x-else-if")
-                        if (status) {
-                            i.style.display = null
-                            let node_else = this.getIFtoElse(i)
-                            if (node_else instanceof HTMLElement) {
-                                node_else.style.display = "none"
-                            }
-                            // 之间的else-if
-                            r_if_wihle(i, "none", true)
-                        } else if (this.getIFtoElse(i, "@x-else-if") instanceof HTMLElement && node_else_if && run(node_else_if)) {
-                            i.style.display = "none"
-                            // 执行
-                            node_else_if.style.display = null
-                            r_if_wihle(node_else_if, "none", true)
-                            let node_else = this.getIFtoElse(i)
-                            if (node_else instanceof HTMLElement) {
-                                node_else.style.display = "none"
-                            }
-                        } else if (this.getIFtoElse(i, "@x-else-if") instanceof HTMLElement && node_else_if && !run(node_else_if)) {
-                            i.style.display = "none"
-                            // 执行
-                            node_else_if.style.display = "none"
-                            let res = r_if_wihle(node_else_if, "none", false)
-                            let node_else = this.getIFtoElse(i)
-                            if (res) {
-                                if (node_else instanceof HTMLElement) {
-                                    node_else.style.display = "none"
-                                }
-                            } else {
-                                if (node_else instanceof HTMLElement) {
-                                    node_else.style.display = null
-                                }
-                            }
-                        } else {
-                            i.style.display = "none"
-                            // 之间的else-if
-                            r_if_wihle(i, "none", true)
-                            let node_else = this.getIFtoElse(i)
-                            if (node_else instanceof HTMLElement) {
-                                node_else.style.display = null
-                            }
-                        }
-                    }else{
-                                            //自定义方法
-                    try {
-                        let func_name = item.value
-                        // 模板属性
-                        let reg = /([a-zA-Z0-9.\[\]\$\_]+)\((.*)\)$/i
-                        let arr = []
-                        // 判断是否是传参函数，是的话，将函数名称进行编译
-                        if (reg.test(func_name)) {
-                            let _arr = func_name.match(reg)
-                            func_name = _arr[1]
-                            _arr[0] = null
-                            _arr[1] = null
-                            let id_node = this.upproperty(i, "for_id")
-                            for (let mi of _arr) {
-                                if (mi) {
-                                    mi = mi.replace(/^[\$]\$([0-9a-zA-Z.\_\-\[\]\"\']+)/g, (ma, v) => {
-                                        return "arguments[0]." + v
-                                    })
-                                    if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                        mi = new Function("return " + mi.trim()).bind(this.data, this.TmpTag.for[id_node.for_id])()
-                                    }
-                                    arr.push(mi)
-                                }
-                            }
-                        }
-                        let is_ori = false // 是否是自身函数
-                        // 判断函数名称是否存在
-                        if (this.funcs_custom[func_name]) {
-                            func_name = this.funcs_custom[func_name]
-                            is_ori = true
-                        }
-                        // 判断是否有参数，并绑定事件
-                        if (!this.funcs_custom_map.has(i)) {
-                            if (arr.length > 0) {
-                                if (is_ori) {
-                                    let fn = func_name.bind(this.data, ...arr)
-                                    i.addEventListener(item.name.substring(1), fn);
-                                } else {
-                                    let fn = new Function(item.value).bind(this.data, ...arr)
-                                    i.addEventListener(item.name.substring(1), fn);
-                                }
-                            } else {
-                                try {
-                                    if (is_ori) {
-                                        let fn = func_name.bind(this.data)
-                                        i.addEventListener(item.name.substring(1), fn);
-                                    } else {
-                                        let fn = new Function("return " + item.value).bind(this.data)
-                                        i.addEventListener(item.name.substring(1), fn);
-                                    }
-                                } catch (e) {
-                                    let fn = new Function(item.value).bind(this.data)
-                                    i.addEventListener(item.name.substring(1), fn);
-                                }
-                            }
-                        }
-                    } catch (e) { }
                     }
                 }
-                if (is_rep || /(\$|this)+(['\[\]a-zA-Z0-9\.\_\-])+/g.test(item.nodeValue)) {
+                if (is_rep || this.Reg.AttrString.test(item.nodeValue)) {
                     // 编译
-                    com(i, this)
+                    this.complie(i, this)
                     // 模板属性
-                    let id_node = this.upproperty(i, "for_id")
                     // 如果设置了no-replace，则只运行，但不替换内容
                     if (i.attributes["no-replace"] && i.attributes["no-replace"] !== "false") {
-                        item.nodeValue.replace(/(\$|this)+(['\[\]a-zA-Z0-9\.\_\-])+/g, (match, val, ind) => {
-                            val = match.replace(/\$([0-9a-zA-Z.\_\-\[\]]+)/g, (ma, v) => {
-                                return "arguments[0]." + v
-                            })
-                            let sdata = this.s_data
-                            if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                sdata = this.TmpTag.for[id_node.for_id]
-                            }
-                            return new Function("return " + val.trim()).bind(this.data, sdata)()
-                        })
+                        this.complieAttr(i, item)
                     } else {
-                        item.nodeValue = item.nodeValue.replace(/(\$|this)+(['\[\]a-zA-Z0-9\.\_\-])+/g, (match, val, ind) => {
-                            val = match.replace(/\$([0-9a-zA-Z.\_\-\[\]]+)/g, (ma, v) => {
-                                return "arguments[0]." + v
-                            })
-                            let sdata = this.s_data
-                            if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                sdata = this.TmpTag.for[id_node.for_id]
-                            }
-                            return new Function("return " + val.trim()).bind(this.data, sdata)()
-                        })
+                        // 是否替换空格
+                        if (i.attributes["x-empty"]) {
+                            item.nodeValue = this.complieAttr(i, item).replace(/\s/g, '');
+                        } else {
+                            item.nodeValue = this.complieAttr(i, item)
+                        }
                     }
                 }
             }
@@ -744,10 +895,10 @@ class Template {
                 }
             }
             let narr = direction > 0 ? pnode.parentNode : pnode.children
-            if (narr instanceof HTMLElement) { return this.upattr(pnode.parentNode, str, direction) } else {
+            if (this.isElem(narr)) { return this.upattr(pnode.parentNode, str, direction) } else {
                 for (let i of narr) {
                     let res = this.upattr(i, str, direction)
-                    if (res instanceof HTMLElement) return res
+                    if (this.isElem(res)) return res
                 }
             }
             return -1
@@ -766,10 +917,10 @@ class Template {
         try {
             if (!pnode.hasOwnProperty(property)) {
                 let narr = direction > 0 ? pnode.parentNode : pnode.children
-                if (narr instanceof HTMLElement) { return this.upproperty(narr, property, direction) } else {
+                if (this.isElem(narr)) { return this.upproperty(narr, property, direction) } else {
                     for (let i of narr) {
                         let res = this.upproperty(i, property, direction)
-                        if (res instanceof HTMLElement) return res
+                        if (this.isElem(res)) return res
                     }
                 }
                 return -1
@@ -786,7 +937,7 @@ class Template {
      */
     repeatupdate(node, is_redraw = false, is_wait = false) {
         // 和initupdate差不多，这里就跳过解读这个方法
-        if (!(node instanceof HTMLElement)) { return false }
+        if (!(this.isElem(node))) { return false }
         let $all = [... new Set([node, ...node.querySelectorAll("[use-template]")])]
         for (let i of $all) {
             // 解析@绑定
@@ -794,74 +945,20 @@ class Template {
             for (let ik in attrs) {
                 let item = i.attributes[ik]
                 let is_rep = true // 替换模板字符串
-                const com = (node, tmp) => {
-                    // 更新模板字符串
-                    const iterator = document.createNodeIterator(node, NodeFilter.SHOW_TEXT);
-                    let textNode;
-                    while (textNode = iterator.nextNode()) {
-                        // 模板属性
-                        if (/\{\{([^}}]+)\}\}/g.test(textNode.nodeValue) && !this.cache.has(textNode.parentNode) && textNode.parentNode.attributes["use-template"]?.nodeValue == '') {
-                            let id_node = this.upproperty(textNode, "for_id")
-                            textNode.nodeValue = textNode.nodeValue.replace(/\{\{([^}}]+)\}\}/g, (match, val, ind) => {
-                                tmp.cache.set(textNode.parentNode, { text: textNode.nodeValue, textNode })
-                                val = val.replace(/\$([0-9a-zA-Z.\_\-\[\]]+)/g, (ma, v) => {
-                                    return "arguments[0]." + v
-                                })
-                                let sdata = this.s_data
-                                if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                    sdata = this.TmpTag.for[id_node.for_id]
-                                }
-                                return new Function("return " + val.trim()).bind(this.data, sdata)()
-                            })
-                        }
-                    }
-                }
-                if (item.name.startsWith("@") && attrs.length > 0 && i.attributes["use-template"] && i.attributes["use-template"] !== "false") {
+                if (item.name.startsWith("@") && attrs.length > 0 && this.isUseTemplate(i)) {
                     // 内置属性
                     if (item.name === "@use-id") {
                         // 使用template模板
                         let tmp = this.TmpTag.get(item.nodeValue)
                         if (tmp && this.TmpTag._wait[item.nodeValue]) {
                             if (this.TmpTag._wait[item.nodeValue].length > 0) {
-                                this.TmpTag.runWait(item.nodeValue, this, new DOMParser().parseFromString(tmp.innerHTML, "text/html").body)
-                                for (let i_item of this.TmpTag.tmps_dynamic) {
-                                    let sub_node = new DOMParser().parseFromString(i_item.s_node, "text/html").body.children[0]
-                                    let id = this.cr_id()
-                                    sub_node.for_id = id
-                                    // 解析for遍历属性
-                                    for (let f_it in i_item.data) {
-                                        if (!this.TmpTag.for[id]) {
-                                            this.TmpTag.for[id] = {}
-                                        }
-                                        this.TmpTag.for[id][f_it] = i_item.data[f_it]
-                                    }
-                                    //其他存储
-                                    this.TmpTag.for[id]["self"] = sub_node
-                                    this.TmpTag.for[id]["parent"] = sub_node
-                                    i.appendChild(sub_node)
-                                    // 垃圾回收
-                                    if (!(this.observer instanceof MutationObserver)) {
-                                        this.observer = new MutationObserver((obj) => {
-                                            let keys = Object.keys(this.TmpTag.for)
-                                            for (let item of keys) {
-                                                let it = this.TmpTag.for[item]
-                                                if (!document.contains(it.self)) {
-                                                    this.TmpTag.processGC(it.self.for_id)
-                                                }
-                                            }
-                                        })
-                                        this.observer.observe(document.body, {
-                                            childList: true, // 观察目标子节点的变化，是否有添加或者删除
-                                            subtree: true, // 针对整个子树生效
-                                        })
-                                    }
-                                    this.repeatupdate(sub_node)
-                                }
+                                this.runDynamicElem(i, item, tmp)
+                                is_rep = false
                             } else {
                                 // 使用默认模板功能
                                 let sub_node = new DOMParser().parseFromString(tmp.innerHTML, "text/html").body.children[0]
-                                i.appendChild(sub_node)
                                 this.repeatupdate(sub_node)
+                                i.appendChild(sub_node)
                                 is_rep = false
                                 this.TmpTag.tmps_dynamic = []
                             }
@@ -869,191 +966,43 @@ class Template {
                         }
                     } else if (item.name === "@x-if") {
                         let status = false
-                        if (i.attributes["use-template"] && i.attributes["use-template"] !== "false") {
-                            setTimeout(() => com(i, this), 0)
+                        if (this.isUseTemplate(i)) {
+                            this.complie(i, this)
                             // 模板属性
-                            let id_node = this.upproperty(i, "for_id")
                             item.nodeValue.replace(/(.*)/, (match, val, ind) => {
-                                val = match.replace(/\$([0-9a-zA-Z.\_\-\[\]]+)/g, (ma, v) => {
+                                val = match.replace(this.Reg.String, (ma, v) => {
                                     return "arguments[0]." + v
                                 })
-                                let sdata = this.s_data
-                                if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                    sdata = this.TmpTag.for[id_node.for_id]
-                                }
-                                status = new Function("return " + val.trim()).bind(this.data, sdata)()
+                                let sdata = this.convertSdata(i)
+                                let env = { ...sdata, self: i }
+                                status = new Function("return " + val.trim()).bind(this.data, env)()
                                 return status
                             })
                         }
-                        const run = (node) => {
-                            let _res = false
-                            for (let ite of node.attributes) {
-                                if (ite.name === "@x-else-if") {
-                                    // 模板属性
-                                    let id_node = this.upproperty(node, "for_id")
-                                    let val = ite.nodeValue.replace(/\$([0-9a-zA-Z.\_\-\[\]]+)/g, (ma, v) => {
-                                        return "arguments[0]." + v
-                                    })
-                                    let sdata = this.s_data
-                                    if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                        sdata = this.TmpTag.for[id_node.for_id]
-                                    }
-                                    _res = new Function("return " + val.trim()).bind(this.data, sdata)()
-                                }
-                            }
-                            return _res
+                        this.runIF(i, status)
+                    } else {
+                        //自定义方法
+                        try {
+                            this.callFunBind(i, item)
+                        } catch (e) {
+                            console.error("事件添加失败", item.nodeValue)
+                            throw e
                         }
-                        const r_if_wihle = (node, action_value = "null", val = false) => {
-                            let res = null
-                            let sun_node_else_if = this.getIFtoElse(node, "@x-else-if")
-                            if (sun_node_else_if) {
-                                if (val) {
-                                    // 上次已经有运行成功了
-                                    sun_node_else_if.style.display = action_value
-                                    return r_if_wihle(sun_node_else_if, action_value, true)
-                                }
-                                res = run(sun_node_else_if)
-                                if (res) {
-                                    sun_node_else_if.style.display = null
-                                } else {
-                                    sun_node_else_if.style.display = action_value
-                                }
-                                return r_if_wihle(sun_node_else_if, action_value, res)
-                            } else if (!val) {
-                                // 如果到最后val值还是为false且已经找不到else-if了，那就设置else
-                                let selse = this.getIFtoElse(node)
-                                if (selse instanceof HTMLElement) {
-                                    selse.style.display = null
-                                }
-                            }
-                            return res == null ? val : res
-                        }
-                        let node_else_if = this.getIFtoElse(i, "@x-else-if")
-                        if (status) {
-                            i.style.display = null
-                            let node_else = this.getIFtoElse(i)
-                            if (node_else instanceof HTMLElement) {
-                                node_else.style.display = "none"
-                            }
-                            // 之间的else-if
-                            r_if_wihle(i, "none", true)
-                        } else if (this.getIFtoElse(i, "@x-else-if") instanceof HTMLElement && node_else_if && run(node_else_if)) {
-                            i.style.display = "none"
-                            // 执行
-                            node_else_if.style.display = null
-                            r_if_wihle(node_else_if, "none", true)
-                            let node_else = this.getIFtoElse(i)
-                            if (node_else instanceof HTMLElement) {
-                                node_else.style.display = "none"
-                            }
-                        } else if (this.getIFtoElse(i, "@x-else-if") instanceof HTMLElement && node_else_if && !run(node_else_if)) {
-                            i.style.display = "none"
-                            // 执行
-                            node_else_if.style.display = "none"
-                            let res = r_if_wihle(node_else_if, "none", false)
-                            let node_else = this.getIFtoElse(i)
-                            if (res) {
-                                if (node_else instanceof HTMLElement) {
-                                    node_else.style.display = "none"
-                                }
-                            } else {
-                                if (node_else instanceof HTMLElement) {
-                                    node_else.style.display = null
-                                }
-                            }
-                        } else {
-                            i.style.display = "none"
-                            // 之间的else-if
-                            r_if_wihle(i, "none", true)
-                            let node_else = this.getIFtoElse(i)
-                            if (node_else instanceof HTMLElement) {
-                                node_else.style.display = null
-                            }
-                        }
-                    }else{
-                                            //自定义方法
-                    try {
-                        let func_name = item.value
-                        // 模板属性
-                        let reg = /([a-zA-Z0-9.\[\]\$\_]+)\((.*)\)$/i
-                        let arr = []
-                        if (reg.test(func_name)) {
-                            let _arr = func_name.match(reg)
-                            func_name = _arr[1]
-                            _arr[0] = null
-                            _arr[1] = null
-                            let id_node = this.upproperty(i, "for_id")
-                            for (let mi of _arr) {
-                                if (mi) {
-                                    mi = mi.replace(/\$([0-9a-zA-Z.\_\-\[\]\"\']+)/g, (ma, v) => {
-                                        return "arguments[0]." + v
-                                    })
-                                    if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                        mi = new Function("return " + mi.trim()).bind(this.data, this.TmpTag.for[id_node.for_id])()
-                                    }
-                                    arr.push(mi)
-                                }
-                            }
-                        }
-                        let is_ori = false // 是否是自身函数
-                        if (this.funcs_custom[func_name]) {
-                            func_name = this.funcs_custom[func_name]
-                            is_ori = true
-                        }
-                        if (!this.funcs_custom_map.has(i)) {
-                            if (arr.length > 0) {
-                                if (is_ori) {
-                                    let fn = func_name.bind(this.data, ...arr)
-                                    i.addEventListener(item.name.substring(1), fn);
-                                } else {
-                                    let fn = new Function(item.value).bind(this.data, ...arr)
-                                    i.addEventListener(item.name.substring(1), fn);
-                                }
-                            } else {
-                                try {
-                                    if (is_ori) {
-                                        let fn = func_name.bind(this.data)
-                                        i.addEventListener(item.name.substring(1), fn);
-                                    } else {
-                                        let fn = new Function("return " + item.value).bind(this.data)
-                                        i.addEventListener(item.name.substring(1), fn);
-                                    }
-                                } catch (e) {
-                                    let fn = new Function(item.value).bind(this.data)
-                                    i.addEventListener(item.name.substring(1), fn);
-                                }
-                            }
-                        }
-                    } catch (e) { }
                     }
                 }
-                if (is_rep || /(\$|this)+(['\[\]a-zA-Z0-9\.\_\-])+/g.test(item.nodeValue)) {
-                    setTimeout(() => com(i, this), 0)
+                if (is_rep || this.Reg.AttrString.test(item.nodeValue)) {
+                    this.complie(i, this)
                     // 内置属性运行
                     // 模板属性
-                    let id_node = this.upproperty(i, "for_id")
                     if (i.attributes["no-replace"] && i.attributes["no-replace"] !== "false") {
-                        item.nodeValue.replace(/(\$|this)+(['\[\]a-zA-Z0-9\.\_\-])+/g, (match, val, ind) => {
-                            val = match.replace(/\$([0-9a-zA-Z.\_\-\[\]]+)/g, (ma, v) => {
-                                return "arguments[0]." + v
-                            })
-                            let sdata = this.s_data
-                            if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                sdata = this.TmpTag.for[id_node.for_id]
-                            }
-                            return new Function("return " + val.trim()).bind(this.data, sdata)()
-                        })
+                        this.complieAttr(i, item)
                     } else {
-                        item.nodeValue = item.nodeValue.replace(/(\$|this)+(['\[\]a-zA-Z0-9\.\_\-])+/g, (match, val, ind) => {
-                            val = match.replace(/\$([0-9a-zA-Z.\_\-\[\]]+)/g, (ma, v) => {
-                                return "arguments[0]." + v
-                            })
-                            let sdata = this.s_data
-                            if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                sdata = this.TmpTag.for[id_node.for_id]
-                            }
-                            return new Function("return " + val.trim()).bind(this.data, sdata)()
-                        })
+                        // 是否替换空格
+                        if (i.attributes["x-empty"]) {
+                            item.nodeValue = this.complieAttr(i, item).replace(/\s/g, '');
+                        } else {
+                            item.nodeValue = this.complieAttr(i, item)
+                        }
                     }
                 }
             }
@@ -1061,41 +1010,28 @@ class Template {
             if (is_redraw) {
                 let item = i.attributes["@use-id"]
                 if (!item) { continue }
-                i.innerHTML = ""
                 // 取消垃圾回收
                 if (this.observer instanceof MutationObserver) {
                     this.observer.disconnect()
                     this.observer = null
                 }
+                for (let rmitem of i.children) {
+                    this.cache.delete(rmitem)
+                    rmitem.remove()
+                }
+                i.innerHTML = ""
                 this.TmpTag.redraw(i)
                 // 使用template模板
                 // 和上面for解析代码差不多，也不多解释
                 let tmp = this.TmpTag.get(item.nodeValue, is_wait)
                 if (tmp && this.TmpTag._wait[item.nodeValue]) {
                     if (this.TmpTag._wait[item.nodeValue].length > 0) {
-                        this.TmpTag.runWait(item.nodeValue, this, new DOMParser().parseFromString(tmp.innerHTML, "text/html").body)
-                        for (let i_item of this.TmpTag.tmps_dynamic) {
-                            let sub_node = new DOMParser().parseFromString(i_item.s_node, "text/html").body.children[0]
-                            let id = this.cr_id()
-                            sub_node.for_id = id
-                            // 解析for属性
-                            for (let f_it in i_item.data) {
-                                if (!this.TmpTag.for[id]) {
-                                    this.TmpTag.for[id] = {}
-                                }
-                                this.TmpTag.for[id][f_it] = i_item.data[f_it]
-                            }
-                            //其他存储
-                            this.TmpTag.for[id]["self"] = sub_node
-                            this.TmpTag.for[id]["parent"] = sub_node
-                            i.appendChild(sub_node)
-                            this.repeatupdate(sub_node)
-                        }
+                        this.runDynamicElem(i, item, tmp)
                     } else {
                         // 使用默认模板功能
                         let sub_node = new DOMParser().parseFromString(tmp.innerHTML, "text/html").body.children[0]
-                        i.appendChild(sub_node)
                         this.repeatupdate(sub_node)
+                        i.appendChild(sub_node)
                     }
                     this.TmpTag.tmps_dynamic = []
                 }
@@ -1116,36 +1052,30 @@ class Template {
             let textNode;
             while (textNode = iterator.nextNode()) {
                 // 模板属性
-                if (/\{\{([^}}]+)\}\}/g.test(value.text) && key === textNode.parentNode && textNode == value.textNode && textNode.parentNode.attributes["use-template"]?.nodeValue == '') {
-                    if (node && node instanceof HTMLElement && textNode.parentNode === node) {
-                        let id_node = this.upproperty(textNode, "for_id")
-                        textNode.nodeValue = value.text.replace(/\{\{([^}}]+)\}\}/g, (match, val, ind) => {
-                            val = val.replace(/\$([0-9a-zA-Z.\_\-\[\]]+)/g, (ma, v) => {
+                if (this.Reg.ModelString.test(value.text) && key === textNode.parentNode && textNode == value.textNode && textNode.parentNode.attributes["use-template"]?.nodeValue == '') {
+                    if (node && this.isElem(node) && textNode.parentNode === node) {
+                        textNode.nodeValue = value.text.replace(this.Reg.ModelString, (match, val, ind) => {
+                            val = val.replace(this.Reg.String, (ma, v) => {
                                 return "arguments[0]." + v
                             })
-                            let sdata = this.s_data
-                            if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                                sdata = this.TmpTag.for[id_node.for_id]
-                            }
-                            return new Function("return " + val.trim()).bind(this.data, sdata)()
+                            let sdata = this.convertSdata(textNode)
+                            let env = { ...sdata, self: textNode.parentNode }
+                            return new Function("return " + val.trim()).bind(this.data, env)()
                         })
                         return;
                     }
-                    let id_node = this.upproperty(textNode, "for_id")
-                    textNode.nodeValue = value.text.replace(/\{\{([^}}]+)\}\}/g, (match, val, ind) => {
-                        val = val.replace(/\$([0-9a-zA-Z.\_\-\[\]]+)/g, (ma, v) => {
+                    textNode.nodeValue = value.text.replace(this.Reg.ModelString, (match, val, ind) => {
+                        val = val.replace(this.Reg.String, (ma, v) => {
                             return "arguments[0]." + v
                         })
-                        let sdata = this.s_data
-                        if (id_node !== -1 && id_node !== void 0 && id_node !== null) {
-                            sdata = this.TmpTag.for[id_node.for_id]
-                        }
-                        return new Function("return " + val.trim()).bind(this.data, sdata)()
+                        let sdata = this.convertSdata(textNode)
+                        let env = { ...sdata, self: textNode.parentNode }
+                        return new Function("return " + val.trim()).bind(this.data, env)()
                     })
                 }
             }
         }
-        if (node instanceof HTMLElement) { setTimeout(this.repeatupdate(node?.parentNode), 0) }
+        if (this.isElem(node)) { this.repeatupdate(node?.parentNode) }
     }
     /**
      * @description: 调用template函数
